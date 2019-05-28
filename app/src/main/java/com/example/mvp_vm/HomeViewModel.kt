@@ -1,11 +1,7 @@
 package com.example.mvp_vm
 
 import android.arch.lifecycle.MutableLiveData
-import android.os.SystemClock
-import android.provider.Browser.sendString
-import android.provider.Contacts
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Unconfined
 import java.util.*
 
 /**
@@ -23,8 +19,8 @@ class HomeViewModel : BaseViewModel() {
     /**
      * 模拟获取网络数据
      */
-    fun getTextData()= runBlocking {
-        GlobalScope.launch(Dispatchers.Main){
+    fun getTextData() = runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             loadLiveData.value = true
             delay(1000)
             val text = TextModel("来了,老弟" + random.nextInt(100))

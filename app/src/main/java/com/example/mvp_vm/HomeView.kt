@@ -6,5 +6,5 @@ package com.example.mvp_vm
 18 * @Author: lyf
 19 * @Date: 2019-05-27 23:47
 20 */
-interface HomeView :BaseView {
+interface HomeView : BaseView {
 }

@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity(), HomeView {
 
     private lateinit var mBinding: ActivityMainBinding
     private val mViewModel by lazy { ViewModelProviders.of(this).get(HomeViewModel::class.java) }
-    private val mPresenter by lazy { HomePresenter(this, mViewModel,this) }
-    private val mDialog by lazy { KProgressHUD.create(this).setLabel("加载中").setCancellable(true).setSize(160,120) }
+    private val mPresenter by lazy { HomePresenter(this, mViewModel, this) }
+    private val mDialog by lazy { KProgressHUD.create(this).setLabel("加载中").setCancellable(true).setSize(160, 120) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
