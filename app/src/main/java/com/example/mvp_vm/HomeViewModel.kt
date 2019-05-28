@@ -23,13 +23,6 @@ class HomeViewModel : BaseViewModel() {
     /**
      * 模拟获取网络数据
      */
-    /*fun getTextData() {
-        loadLiveData.value = true
-        SystemClock.sleep(1000)
-        val text = TextModel("来了,老弟" + random.nextInt(100))
-        textLiveData.value = text
-        loadLiveData.value = false
-    }*/
     fun getTextData()= runBlocking {
         GlobalScope.launch(Dispatchers.Main){
             loadLiveData.value = true

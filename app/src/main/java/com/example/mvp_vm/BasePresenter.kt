@@ -11,7 +11,7 @@ import android.arch.lifecycle.LifecycleOwner
 abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
     var mView: V?,
     var mViewModel: VM?,
-    var owner: LifecycleOwner
+    owner: LifecycleOwner
 ) {
     init {
         this.start(owner)
