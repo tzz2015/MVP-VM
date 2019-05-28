@@ -12,6 +12,7 @@ import java.util.*
 20 */
 class HomeViewModel : BaseViewModel() {
     private val random by lazy { Random() }
+
     val textLiveData by lazy { MutableLiveData<TextModel>() }
 
 

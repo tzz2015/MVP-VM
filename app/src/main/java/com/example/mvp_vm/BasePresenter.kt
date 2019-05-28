@@ -19,6 +19,9 @@ abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
         this.start(owner)
     }
 
+    /**
+     * 统一显示加载框
+     */
     private fun initCommon(owner: LifecycleOwner) {
         mViewModel?.loadLiveData?.observe(owner, Observer {
             when (it) {
@@ -33,6 +36,7 @@ abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
     }
 
     protected abstract fun start(owner: LifecycleOwner)
+
     fun onDestroy() {
         mView = null
         mViewModel?.onCleared()

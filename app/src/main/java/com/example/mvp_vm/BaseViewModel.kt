@@ -12,6 +12,7 @@ import android.util.Log
 20 */
 abstract class BaseViewModel : ViewModel() {
     val loadLiveData by lazy { MutableLiveData<Boolean>() }
+
     public override fun onCleared() {
         super.onCleared()
         Log.e("BaseViewModel", "onCleared")
