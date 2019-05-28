@@ -13,7 +13,6 @@ import java.util.*
 class HomeViewModel : BaseViewModel() {
     private val random by lazy { Random() }
     val textLiveData by lazy { MutableLiveData<TextModel>() }
-    val loadLiveData by lazy { MutableLiveData<Boolean>() }
 
 
     /**

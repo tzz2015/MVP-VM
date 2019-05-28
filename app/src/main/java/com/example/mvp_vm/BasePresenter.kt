@@ -1,6 +1,7 @@
 package com.example.mvp_vm
 
 import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.Observer
 
 /**
 16 * @ClassName: BasePresenter
@@ -14,7 +15,21 @@ abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
     owner: LifecycleOwner
 ) {
     init {
+        this.initCommon(owner)
         this.start(owner)
+    }
+
+    private fun initCommon(owner: LifecycleOwner) {
+        mViewModel?.loadLiveData?.observe(owner, Observer {
+            when (it) {
+                true -> {
+                    mView?.showLoading()
+                }
+                else -> {
+                    mView?.hideLoading()
+                }
+            }
+        })
     }
 
     protected abstract fun start(owner: LifecycleOwner)

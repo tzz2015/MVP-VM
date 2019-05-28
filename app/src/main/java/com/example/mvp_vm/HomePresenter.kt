@@ -13,17 +13,6 @@ import android.util.Log
 class HomePresenter(mView: HomeView, mViewModel: HomeViewModel, owner: LifecycleOwner) :
     BasePresenter<HomeView, HomeViewModel>(mView, mViewModel, owner) {
     override fun start(owner: LifecycleOwner) {
-        mViewModel?.loadLiveData?.observe(owner, Observer {
-
-            when (it) {
-                true -> {
-                    mView?.showLoading()
-                }
-                else -> {
-                    mView?.hideLoading()
-                }
-            }
-        })
         mViewModel?.textLiveData!!.observe(owner, Observer {
             it?.let { data ->
                 Log.e("HomePresenter", data.text)
