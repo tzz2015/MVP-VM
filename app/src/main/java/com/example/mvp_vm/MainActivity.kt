@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), HomeView {
     override fun onDestroy() {
         super.onDestroy()
         hideLoading()
+        mPresenter.onDestroy()
     }
 
 }
