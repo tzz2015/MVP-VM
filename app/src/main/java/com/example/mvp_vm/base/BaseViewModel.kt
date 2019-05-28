@@ -1,4 +1,4 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.base
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

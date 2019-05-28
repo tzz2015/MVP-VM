@@ -3,6 +3,7 @@ package com.example.mvp_vm
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.util.Log
+import com.example.mvp_vm.base.BasePresenter
 
 /**
 16 * @ClassName: HomePresenter

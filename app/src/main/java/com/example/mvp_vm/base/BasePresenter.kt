@@ -1,4 +1,4 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.base
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer

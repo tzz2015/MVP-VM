@@ -1,6 +1,7 @@
 package com.example.mvp_vm
 
 import android.arch.lifecycle.MutableLiveData
+import com.example.mvp_vm.base.BaseViewModel
 import kotlinx.coroutines.*
 import java.util.*
 

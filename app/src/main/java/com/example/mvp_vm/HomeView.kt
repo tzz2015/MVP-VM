@@ -1,5 +1,7 @@
 package com.example.mvp_vm
 
+import com.example.mvp_vm.base.BaseView
+
 /**
 16 * @ClassName: HomeView
 17 * @Description: java类作用描述
