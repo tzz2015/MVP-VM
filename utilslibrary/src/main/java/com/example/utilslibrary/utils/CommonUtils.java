@@ -14,6 +14,10 @@ import android.widget.Toast;
 public class CommonUtils {
     private static Toast mToast;
 
+    private CommonUtils(){
+
+    }
+
     /**
      * 显示toast
      *

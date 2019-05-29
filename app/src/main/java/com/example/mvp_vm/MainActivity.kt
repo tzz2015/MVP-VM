@@ -1,13 +1,9 @@
 package com.example.mvp_vm
 
-import android.app.ProgressDialog
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ProgressBar
-import android.widget.Toast
 import com.example.mvp_vm.databinding.ActivityMainBinding
 import com.kaopiz.kprogresshud.KProgressHUD
 
