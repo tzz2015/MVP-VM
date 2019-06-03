@@ -15,17 +15,18 @@ class HomePresenter(mView: HomeView, mViewModel: HomeViewModel, owner: Lifecycle
     BasePresenter<HomeView, HomeViewModel>(mView, mViewModel, owner) {
 
     override fun start(owner: LifecycleOwner) {
-        mViewModel?.textLiveData!!.observe(owner, Observer {
+        getViewModel()?.textLiveData?.observe(owner, Observer {
             it?.let { data ->
                 Log.e("HomePresenter", data.text)
             }
         })
+
     }
 
     /**
      * 点击按钮
      */
     fun clickChange() {
-        mViewModel?.getTextData()
+        getViewModel()?.getTextData()
     }
 }
