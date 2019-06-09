@@ -1,4 +1,4 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.view
 
 import com.example.mvp_vm.base.BaseView
 

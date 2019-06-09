@@ -1,9 +1,9 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
+import com.example.mvp_vm.model.TextModel
 import com.example.mvp_vm.base.BaseViewModel
 import kotlinx.coroutines.*
-import kotlin.random.Random
 
 /**
 16 * @ClassName: BottomViewModel

@@ -4,6 +4,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.databinding.ActivityMainBinding
+import com.example.mvp_vm.presenter.HomePresenter
+import com.example.mvp_vm.view.HomeView
 
 class MainActivity : BaseActivity(), HomeView {
 

@@ -4,9 +4,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="mViewModel"
-                  type="com.example.mvp_vm.HomeViewModel"/>
+                  type="com.example.mvp_vm.viewmodel.HomeViewModel"/>
         <variable name="mPresenter"
-                  type="com.example.mvp_vm.HomePresenter"/>
+                  type="com.example.mvp_vm.presenter.HomePresenter"/>
     </data>
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

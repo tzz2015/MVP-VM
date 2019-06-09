@@ -1,11 +1,13 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.presenter
 
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.util.Log
 import android.view.View
+import com.example.mvp_vm.viewmodel.HomeViewModel
+import com.example.mvp_vm.MainActivity
 import com.example.mvp_vm.base.BasePresenter
+import com.example.mvp_vm.view.HomeView
 
 /**
 16 * @ClassName: HomePresenter
@@ -36,6 +38,6 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 绑定底部view 底部布局逻辑由BottomPresenter去完成
      */
     fun binBottom(view:View){
-        getContext()?.let { BottomPresenter(it,getView(),view) }
+        getContext()?.let { BottomPresenter(it, getView(), view) }
     }
 }

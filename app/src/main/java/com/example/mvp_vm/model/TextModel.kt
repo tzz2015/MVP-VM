@@ -1,4 +1,4 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.model
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
