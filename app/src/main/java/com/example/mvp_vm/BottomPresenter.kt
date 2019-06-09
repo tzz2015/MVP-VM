@@ -27,7 +27,7 @@ class BottomPresenter(mContext: MainActivity, mIView: HomeView?, mView: View) :
         mBinding?.mViewModel = mBottomModel
         mBottomModel.colorLiveData.observe(mContext, Observer {
             it?.let { data ->
-                Log.e("color:", ""+data.getIntColor())
+                Log.e("color:", ""+data.text)
             }
         })
         initCommon(mBottomModel)
