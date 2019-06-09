@@ -23,6 +23,7 @@ class BottomPresenter(mContext: MainActivity, mIView: HomeView?, mView: View) :
     init {
         mBinding = DataBindingUtil.bind(mView)
         mBinding?.mPresenter = this
+        mBinding?.lifecycleOwner = mContext
         mBinding?.mViewModel = mBottomModel
         mBottomModel.colorLiveData.observe(mContext, Observer {
             it?.let { data ->
