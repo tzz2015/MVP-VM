@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             tools:context=".MainActivity">
 
-        <com.example.mvp_vm.CustomTextView
+        <TextView
                 android:id="@+id/tv_name_dse"
                 android:textSize="25sp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,7 @@
                 android:layout_marginTop="100dp"
                 android:layout_height="wrap_content"
                 android:text="姓名："/>
-        <com.example.mvp_vm.CustomTextView
+        <TextView
                 android:layout_width="wrap_content"
                 android:text="@{mViewModel.textLiveData.text??`来了，老弟`}"
                 android:textSize="25sp"
