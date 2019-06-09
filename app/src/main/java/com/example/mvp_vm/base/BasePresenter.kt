@@ -1,7 +1,9 @@
 package com.example.mvp_vm.base
 
+import android.app.Activity
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
+import android.support.v4.app.FragmentActivity
 import java.lang.ref.WeakReference
 
 /**
@@ -10,39 +12,29 @@ import java.lang.ref.WeakReference
 18 * @Author: lyf
 19 * @Date: 2019-05-27 16:46
 20 */
-abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
-    mView: V?,
-    mViewModel: VM?,
-    owner: LifecycleOwner
-) {
-    private var mViewRef: WeakReference<V>? = WeakReference<V>(mView)
-    private var mViewModelRef: WeakReference<VM>? = WeakReference<VM>(mViewModel)
+abstract class BasePresenter< MC : BaseActivity,V : BaseView?>(mContext: MC, mView: V?) {
+    private  val mViewRef: WeakReference<V?> = WeakReference(mView)
+    private  val mContextRef: WeakReference<MC> = WeakReference(mContext)
 
-    init {
-        this.initCommon(owner)
-        this.start(owner)
+
+    fun getContext():MC?{
+        return mContextRef.get()
     }
 
     /**
      * 获取View
      */
     fun getView(): V? {
-        return mViewRef?.get()
+        return mViewRef.get()
     }
 
-    /**
-     * 获取ViewModel
-     */
-    fun getViewModel(): VM? {
-        return mViewModelRef?.get()
-    }
 
 
     /**
      * 统一显示加载框
      */
-    private fun initCommon(owner: LifecycleOwner) {
-        getViewModel()?.loadLiveData?.observe(owner, Observer {
+    fun initCommon(viewModel: BaseViewModel) {
+        viewModel.loadLiveData.observe(mContextRef.get()!!.getLifecycleOwner(), Observer {
             when (it) {
                 true -> {
                     getView()?.showLoading()
@@ -54,13 +46,10 @@ abstract class BasePresenter<V : BaseView, VM : BaseViewModel>(
         })
     }
 
-    protected abstract fun start(owner: LifecycleOwner)
 
     fun onDestroy() {
-        mViewRef?.clear()
-        mViewModelRef?.clear()
-        mViewRef = null
-        mViewModelRef = null
+        mViewRef.clear()
+        mContextRef.clear()
     }
 }
 
