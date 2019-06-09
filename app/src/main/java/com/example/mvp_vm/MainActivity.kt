@@ -16,7 +16,7 @@ class MainActivity : BaseActivity(), HomeView {
         mBinding.lifecycleOwner = this
         mBinding.mPresenter = mPresenter
         mBinding.mViewModel = mPresenter.mHomeModel
-        // 顶部布局逻辑由底部的presenter实现
+        // 底部布局逻辑由底部的presenter实现
         mPresenter.binBottom(mBinding.inBottom.root)
     }
 
