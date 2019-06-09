@@ -18,6 +18,8 @@ import com.example.mvp_vm.view.HomeView
 class HomePresenter(mContext: MainActivity, mView: HomeView) :
     BasePresenter<MainActivity, HomeView>(mContext, mView) {
     val mHomeModel by lazy { ViewModelProviders.of(mContext).get(HomeViewModel::class.java) }
+    private var mBottomPresenter: BottomPresenter? = null
+
     init {
         initCommon(mHomeModel)
         mHomeModel.textLiveData.observe(mContext, Observer {
@@ -34,10 +36,19 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
     fun clickChange() {
         mHomeModel.getTextData()
     }
+
     /**
      * 绑定底部view 底部布局逻辑由BottomPresenter去完成
      */
-    fun binBottom(view:View){
-        getContext()?.let { BottomPresenter(it, getView(), view) }
+    fun binBottom(view: View) {
+        getContext()?.let {
+            mBottomPresenter = BottomPresenter(it, getView(), view)
+        }
     }
+
+    override fun onDestroy() {
+        mBottomPresenter?.onDestroy()
+    }
+
+
 }

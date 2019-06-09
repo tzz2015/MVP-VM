@@ -47,7 +47,7 @@ abstract class BasePresenter< MC : BaseActivity,V : BaseView?>(mContext: MC, mVi
     }
 
 
-    fun onDestroy() {
+    open fun onDestroy() {
         mViewRef.clear()
         mContextRef.clear()
     }
