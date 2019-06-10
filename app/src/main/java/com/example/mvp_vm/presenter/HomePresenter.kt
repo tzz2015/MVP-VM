@@ -2,12 +2,14 @@ package com.example.mvp_vm.presenter
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.example.mvp_vm.viewmodel.HomeViewModel
 import com.example.mvp_vm.MainActivity
+import com.example.mvp_vm.WebActivity
 import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.view.HomeView
+import com.example.mvp_vm.viewmodel.HomeViewModel
 
 /**
 16 * @ClassName: HomePresenter
@@ -35,6 +37,13 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      */
     fun clickChange() {
         mHomeModel.getTextData()
+    }
+    /**
+     * 跳转webView
+     */
+    fun toWeb(){
+        val intent= Intent(getContext(),WebActivity::class.java)
+        getContext()?.startActivity(intent)
     }
 
     /**
