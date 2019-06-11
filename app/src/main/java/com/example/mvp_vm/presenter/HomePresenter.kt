@@ -11,6 +11,7 @@ import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.view.HomeView
 import com.example.mvp_vm.viewmodel.HomeViewModel
 
+
 /**
 16 * @ClassName: HomePresenter
 17 * @Description: java类作用描述
@@ -38,12 +39,15 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
     fun clickChange() {
         mHomeModel.getTextData()
     }
+
     /**
      * 跳转webView
      */
-    fun toWeb(){
-        val intent= Intent(getContext(),WebActivity::class.java)
-        getContext()?.startActivity(intent)
+    fun toWeb() {
+         val intent= Intent(getContext(), WebActivity::class.java)
+         getContext()?.startActivity(intent)
+       /* val intent = Intent(Intent.ACTION_VIEW, Uri.parse("fubei://platformapi/startapp?appId=index&action=mine"))
+        getContext()?.startActivity(intent)*/
     }
 
     /**
