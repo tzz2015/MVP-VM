@@ -46,8 +46,6 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
     fun toWeb() {
          val intent= Intent(getContext(), WebActivity::class.java)
          getContext()?.startActivity(intent)
-       /* val intent = Intent(Intent.ACTION_VIEW, Uri.parse("fubei://platformapi/startapp?appId=index&action=mine"))
-        getContext()?.startActivity(intent)*/
     }
 
     /**
