@@ -6,7 +6,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".WebActivity">
+        tools:context=".activity.WebActivity">
     <EditText
             android:id="@+id/input_app_id"
             app:layout_constraintTop_toTopOf="parent"

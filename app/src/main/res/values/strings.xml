@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MVP-VM</string>
+    <!--CutImgActivity-->
+    <string name="suggest_save_code">建议只保留二维码部分</string>
+    <string name="upload_er_code">上传二维码</string>
+    <string name="corp_img_fail">截图失败</string>
+    <string name="common_finish">完成</string>
+    <string name="common_cancel">取消</string>
 </resources>

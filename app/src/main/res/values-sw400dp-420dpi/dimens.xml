@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- font size-->
+    <dimen name="size_20">10.99sp</dimen>
+    <dimen name="size_22">12.09sp</dimen>
+    <dimen name="size_24">13.19sp</dimen>
+    <dimen name="size_26">14.29sp</dimen>
+    <dimen name="size_28">15.38sp</dimen>
+    <dimen name="size_30">16.48sp</dimen>
+    <dimen name="size_32">17.58sp</dimen>
+    <dimen name="size_34">18.68sp</dimen>
+    <dimen name="size_36">19.78sp</dimen>
+    <dimen name="size_38">20.88sp</dimen>
+    <dimen name="size_40">21.98sp</dimen>
+    <dimen name="size_48">26.37sp</dimen>
+    <dimen name="size_52">28.57sp</dimen>
+    <dimen name="size_56">30.77sp</dimen>
+    <dimen name="size_58">31.87sp</dimen>
+    <dimen name="size_60">32.97sp</dimen>
+    <dimen name="size_64">35.16sp</dimen>
+    <dimen name="size_82">45.05sp</dimen>
+    <dimen name="size_92">50.55sp</dimen>
+    <dimen name="size_118">64.84sp</dimen>
+
+    <!-- 不要出现命名方式 -->
+    <dimen name="dp20">10.99dp</dimen>
+    <dimen name="dp22">12.09dp</dimen>
+    <dimen name="dp24">13.19dp</dimen>
+    <dimen name="dp26">14.29dp</dimen>
+    <dimen name="dp28">15.38dp</dimen>
+    <dimen name="dp30">16.48dp</dimen>
+    <dimen name="dp34">18.68dp</dimen>
+    <dimen name="dp36">19.78dp</dimen>
+    <dimen name="dp40">21.98dp</dimen>
+    <dimen name="dp44">24.18dp</dimen>
+    <dimen name="dp60">32.97dp</dimen>
+    <dimen name="dp68">37.36dp</dimen>
+    <dimen name="dp80">43.96dp</dimen>
+    <dimen name="dp124">68.13dp</dimen>
+    <dimen name="dp140">76.92dp</dimen>
+    <dimen name="dp207">113.74dp</dimen>
+    <dimen name="dp194">106.59dp</dimen>
+    <dimen name="dp246">135.16dp</dimen>
+    <dimen name="dp278">152.75dp</dimen>
+    <dimen name="dp290">159.34dp</dimen>
+    <dimen name="dp355">199.45dp</dimen>
+    <dimen name="dp416">228.57dp</dimen>
+    <dimen name="dp540">296.70dp</dimen>
+
+    <!-- common margin dimen-->
+    <dimen name="common_margin_2">1.10dip</dimen>
+    <dimen name="common_margin_3">1.65dip</dimen>
+    <dimen name="common_margin_4">2.20dip</dimen>
+    <dimen name="common_margin_5">2.75dip</dimen>
+    <dimen name="common_margin_6">3.30dip</dimen>
+    <dimen name="common_margin_8">4.40dip</dimen>
+    <dimen name="common_margin_10">5.49dip</dimen>
+    <dimen name="common_margin_12">6.59dip</dimen>
+    <dimen name="common_margin_15">8.24dip</dimen>
+    <dimen name="common_margin_16">8.79dip</dimen>
+    <dimen name="common_margin_18">9.89dip</dimen>
+    <dimen name="common_margin_20">10.99dip</dimen>
+    <dimen name="common_margin_22">12.09dip</dimen>
+    <dimen name="common_margin_24">13.19dip</dimen>
+    <dimen name="common_margin_25">13.74dip</dimen>
+    <dimen name="common_margin_27">14.84dip</dimen>
+    <dimen name="common_margin_28">15.38dip</dimen>
+    <dimen name="common_margin_30">16.48dip</dimen>
+    <dimen name="common_margin_32">17.58dip</dimen>
+    <dimen name="common_margin_35">19.23dip</dimen>
+    <dimen name="common_margin_37">20.33dip</dimen>
+    <dimen name="common_margin_40">21.98dip</dimen>
+    <dimen name="common_margin_45">24.73dip</dimen>
+    <dimen name="common_margin_47">25.82dip</dimen>
+    <dimen name="common_margin_48">26.37dip</dimen>
+    <dimen name="common_margin_49">26.92dip</dimen>
+    <dimen name="common_margin_50">27.47dip</dimen>
+    <dimen name="common_margin_55">30.22dip</dimen>
+    <dimen name="common_margin_60">32.97dip</dimen>
+    <dimen name="common_margin_65">35.71dip</dimen>
+    <dimen name="common_margin_70">38.46dip</dimen>
+    <dimen name="common_margin_80">43.96dip</dimen>
+    <dimen name="common_margin_90">49.45dip</dimen>
+    <dimen name="common_margin_100">54.95dip</dimen>
+
+    <!-- radius -->
+    <dimen name="common_radius_2">1.10dp</dimen>
+    <dimen name="common_radius_4">2.20dp</dimen>
+    <dimen name="common_radius_6">3.30dp</dimen>
+    <dimen name="common_radius_8">4.40dp</dimen>
+    <dimen name="common_radius_10">5.49dp</dimen>
+
+    <!-- common -->
+    <dimen name="common_divider_height">0.55dp</dimen>
+    <dimen name="common_dialog_radius">7.69dp</dimen>
+    <dimen name="common_toolbar_height">48.35dp</dimen>
+    <dimen name="common_toolbar_back_layout_width">49.45dp</dimen>
+    <dimen name="common_toolbar_back_width">16.48dp</dimen>
+    <dimen name="common_toolbar_back_height">21.98dp</dimen>
+    <dimen name="common_toolbar_cross_wh">19.78dp</dimen>
+    <dimen name="common_toolbar_margin_right">16.48dp</dimen>
+    <dimen name="common_toolbar_title_tv_max_width">274.73dp</dimen>
+    <dimen name="common_toolbar_margin_left">16.48dp</dimen>
+    <dimen name="common_margin_horizontal_40">21.98dip</dimen>
+    <dimen name="common_padding_horizontal_40">21.98dip</dimen>
+    <dimen name="common_padding_horizontal_30">16.48dip</dimen>
+    <dimen name="common_loading_progress_width">164.84dp</dimen>
+    <dimen name="common_loading_progress_height">164.84dp</dimen>
+    <dimen name="common_toast_layout_max_width">268.13dp</dimen>
+    <dimen name="common_toast_layout_min_height">41.76dp</dimen>
+    <dimen name="common_toast_layout_padding_rl">16.48dp</dimen>
+    <dimen name="common_toast_layout_padding_tb">13.19dp</dimen>
+    <dimen name="common_toast_layout_radius">4.40dp</dimen>
+    <dimen name="common_icon_toast_layout_min_width">182.42dp</dimen>
+    <dimen name="common_icon_toast_layout_min_height">76.92dp</dimen>
+    <dimen name="common_icon_toast_iv_width">24.18dp</dimen>
+    <dimen name="common_icon_toast_iv_height">16.48dp</dimen>
+    <dimen name="common_icon_toast_iv_margin_top">15.38dp</dimen>
+    <dimen name="common_icon_toast_layout_padding_top">14.29dp</dimen>
+    <dimen name="common_icon_toast_layout_padding_bottom">10.99dp</dimen>
+    <dimen name="common_icon_toast_tv_margin_top">9.89dp</dimen>
+    <dimen name="common_progress_layout_min_height">90.11dp</dimen>
+    <dimen name="common_progress_iv_wh">30.77dp</dimen>
+    <dimen name="common_screen_width">412.09dp</dimen>
+    <dimen name="common_screen_height">732.97dp</dimen>
+    <dimen name="common_line_width">0.55dp</dimen>
+    <dimen name="common_line_height">0.55dp</dimen>
+    <dimen name="common_arrow_width">8.24dp</dimen>
+    <dimen name="common_arrow_height">15.38dp</dimen>
+    <dimen name="common_keyboard_height">48.35dp</dimen>
+    <dimen name="common_keyboard_line">1.10dp</dimen>
+    <dimen name="common_header_arrow_iv_wh">35.16dp</dimen>
+    <dimen name="common_loading_progress_bar_wh">25.27dp</dimen>
+    <dimen name="common_footer_loading_tv_margin_left">13.19dp</dimen>
+    <dimen name="common_footer_loading_height">32.97dp</dimen>
+    <dimen name="common_new_btn_height">48.35dp</dimen>
+    <dimen name="common_black_point_wh">5.49dp</dimen>
+
+    <!-- alert dialog-->
+    <dimen name="common_alert_dialog_width">296.70dp</dimen>
+    <dimen name="common_alert_dialog_height">153.85dp</dimen>
+    <dimen name="common_alert_no_title_dialog_height">95.60dp</dimen>
+    <dimen name="common_alert_dialog_title_height">43.96dp</dimen>
+    <dimen name="common_alert_dialog_content_layout_padding_rl">35.16dp</dimen>
+    <dimen name="common_alert_dialog_btn_layout_height">43.96dp</dimen>
+
+    <!-- upgrade dialog-->
+    <dimen name="common_upgrade_dialog_rl_width">270.33dp</dimen>
+    <dimen name="common_upgrade_dialog_rl_height">359.34dp</dimen>
+    <dimen name="common_upgrade_dialog_rl_margin_top">137.36dp</dimen>
+    <dimen name="common_upgrade_cancel_iv_wh">26.37dp</dimen>
+    <dimen name="common_upgrade_cancel_iv_margin_right">34.07dp</dimen>
+    <dimen name="common_upgrade_vertical_line_height">29.67dp</dimen>
+    <dimen name="common_upgrade_vertical_line_margin_right">47.25dp</dimen>
+    <dimen name="common_upgrade_vertical_line_margin_bottom">-28.57dp</dimen>
+    <dimen name="common_upgrade_content_rl_height">331.87dp</dimen>
+    <dimen name="common_upgrade_progress_wv_wh">65.93dp</dimen>
+    <dimen name="common_upgrade_progress_wv_margin_top">10.99dp</dimen>
+    <dimen name="common_upgrade_version_info_rl_height">164.84dp</dimen>
+    <dimen name="common_upgrade_version_info_rl_margin_top">27.47dp</dimen>
+    <dimen name="common_upgrade_version_info_rl_margin_rl">38.46dp</dimen>
+    <dimen name="common_upgrade_title_tv_margin_top">16.48dp</dimen>
+    <dimen name="common_upgrade_divider_line_width">87.91dp</dimen>
+    <dimen name="common_upgrade_divider_line_height">3.30dp</dimen>
+    <dimen name="common_upgrade_tips_tv_margin_top">10.99dp</dimen>
+    <dimen name="common_upgrade_tips_sv_margin_top">5.49dp</dimen>
+    <dimen name="common_upgrade_wifi_hint_tv_margin_top">10.99dp</dimen>
+    <dimen name="common_upgrade_wifi_hint_tv_margin_bottom">18.68dp</dimen>
+    <dimen name="common_upgrade_group_radius">38.46dp</dimen>
+    <dimen name="common_upgrade_group_view_wh">76.92dp</dimen>
+    <dimen name="common_upgrade_group_view_margin_top">10.99dp</dimen>
+    <dimen name="common_upgrade_start_tv_radius">32.97dp</dimen>
+    <dimen name="common_upgrade_content_tv_line_space">5.49dp</dimen>
+    <dimen name="common_upgrade_vertical_line_width">1.10dp</dimen>
+
+    <!-- main activity-->
+    <dimen name="splash_logo_width">164.84dp</dimen>
+    <dimen name="splash_logo_height">61.54dp</dimen>
+    <dimen name="splash_logo_margin_top">219.78dp</dimen>
+    <dimen name="splash_gif_width">214.29dp</dimen>
+    <dimen name="splash_gif_height">21.98dp</dimen>
+    <dimen name="splash_gif_margin_top">46.15dp</dimen>
+
+    <!-- scan activity -->
+    <dimen name="scan_toolbar_image_wh">48.35dp</dimen>
+    <dimen name="scan_toolbar_image_margin_lr">21.98dp</dimen>
+    <dimen name="scan_toolbar_image_margin_tb">10.99dp</dimen>
+    <dimen name="scan_frame_width">270.33dp</dimen>
+    <dimen name="scan_frame_height">270.33dp</dimen>
+    <dimen name="scan_frame_margin_top">89.01dp</dimen>
+    <dimen name="scan_frame_margin_left">70.33dp</dimen>
+    <dimen name="scan_frame_corner_width">21.98dp</dimen>
+    <dimen name="scan_frame_corner_thick">2.75dp</dimen>
+    <dimen name="gather_way_layout_margin_lr">21.98dp</dimen>
+    <dimen name="gather_way_wechat_margin_left">27.47dp</dimen>
+    <dimen name="gather_way_layout_margin_top">60.44dp</dimen>
+    <dimen name="gather_way_height">40.66dp</dimen>
+    <dimen name="scan_member_hint_layout_margin_bottom">43.96dp</dimen>
+    <dimen name="scan_member_hint_margin_top">120.88dp</dimen>
+    <dimen name="scan_pay_layout_height">112.09dp</dimen>
+    <dimen name="scan_pay_icon_wh">32.97dp</dimen>
+    <dimen name="scan_toast_w">217.58dp</dimen>
+    <dimen name="scan_toast_h">41.76dp</dimen>
+    <dimen name="scan_toast_mb">85.16dp</dimen>
+    <dimen name="scan_cancel_h">43.96dp</dimen>
+    <dimen name="scan_cancel_w">183.52dp</dimen>
+    <dimen name="scan_cancel_mb">98.90dp</dimen>
+    <dimen name="scan_notice_mt">431.87dp</dimen>
+    <dimen name="scan_toast_mt">420.88dp</dimen>
+
+
+    <!--scan activity v2.0-->
+    <dimen name="scanner_iv_wh">274.73dp</dimen>
+    <dimen name="scanner_iv_margin_top">125.27dp</dimen>
+    <dimen name="scanner_sv_margin_top">125.27dp</dimen>
+    <dimen name="scanner_sv_margin_left">68.68dp</dimen>
+    <dimen name="scanner_sv_corner_width">19.78dp</dimen>
+    <dimen name="scanner_sv_corner_thick">2.75dp</dimen>
+    <dimen name="electric_torch_iv_margin_bottom">49.45dp</dimen>
+    <dimen name="electric_torch_width">21.98dp</dimen>
+    <dimen name="electric_torch_height">27.47dp</dimen>
+
+    <!--CutImgActivity-->
+    <dimen name="cut_scanner_drop_h">506.59dp</dimen>
+    <dimen name="cut_scanner_iv_wh">368.13dp</dimen>
+    <dimen name="cut_scanner_iv_margin_top">63.74dp</dimen>
+    <dimen name="cut_scanner_sv_margin_left">21.98dp</dimen>
+    <dimen name="cut_scanner_sv_corner_width">19.78dp</dimen>
+    <dimen name="cut_scanner_sv_corner_thick">2.75dp</dimen>
+    <dimen name="cut_scanner_notice_margin_top">-37.36dp</dimen>
+
+
+    <!--payment code activity-->
+    <dimen name="payment_unit_margin_bottom">16.48dp</dimen>
+    <dimen name="payment_code_layout_margin_top">17.58dp</dimen>
+    <dimen name="payment_code_layout_margin_rl">15.38dp</dimen>
+    <dimen name="payment_way_layout_margin_top">38.46dp</dimen>
+    <dimen name="payment_way_img_width">24.18dp</dimen>
+    <dimen name="payment_way_img_height">24.18dp</dimen>
+    <dimen name="payment_title_margin_top">18.68dp</dimen>
+    <dimen name="payment_title_margin_left">5.49dp</dimen>
+    <dimen name="payment_code_wh">269.23dp</dimen>
+    <dimen name="payment_code_margin_top">24.18dp</dimen>
+    <dimen name="payment_code_pw_wh">164.84dp</dimen>
+    <dimen name="payment_code_pw_margin_top">153.85dp</dimen>
+    <dimen name="payment_code_pw_margin_bottom">87.91dp</dimen>
+    <dimen name="payment_code_pw_bar_width">5.49dp</dimen>
+    <dimen name="bounty_account_layout_height">148.35dp</dimen>
+    <dimen name="bounty_today_count_hint_margin_top">19.23dp</dimen>
+    <dimen name="bounty_today_count_margin_top">5.49dp</dimen>
+    <dimen name="bounty_all_count_margin_top">19.23dp</dimen>
+    <dimen name="bounty_activity_state_height">42.86dp</dimen>
+    <dimen name="bounty_voice_width">16.48dp</dimen>
+    <dimen name="bounty_voice_height">16.48dp</dimen>
+    <dimen name="bounty_line_height">10.99dp</dimen>
+    <dimen name="bounty_bank_card_height">48.35dp</dimen>
+    <dimen name="bounty_icon_logo_wh">23.08dp</dimen>
+    <dimen name="bounty_input_bounty_height">76.92dp</dimen>
+    <dimen name="bounty_input_margin_left">5.49dp</dimen>
+    <dimen name="bounty_btn_height">48.35dp</dimen>
+    <dimen name="bounty_btn_layout_height">86.81dp</dimen>
+    <dimen name="bounty_item_height">48.35dp</dimen>
+    <dimen name="bounty_detail_margin_top">32.97dp</dimen>
+    <dimen name="bounty_activity_margin_left">5.49dp</dimen>
+    <dimen name="bounty_input_clean_wh">19.78dp</dimen>
+    <dimen name="bounty_clean_margin_left">2.75dp</dimen>
+    <dimen name="close_keyboard_height">32.97dp</dimen>
+    <dimen name="bounty_close_keyboard_icon_wh">21.98dp</dimen>
+    <dimen name="bounty_keyboard_delete_width">31.87dp</dimen>
+    <dimen name="bounty_keyboard_delete_height">23.08dp</dimen>
+    <dimen name="bounty_input_account_min_width">219.78dp</dimen>
+    <dimen name="bounty_clean_margin_right">2.75dp</dimen>
+    <dimen name="bounty_btn_margin_top">21.98dp</dimen>
+    <dimen name="bounty_account_clean_icon_wh">19.78dp</dimen>
+    <dimen name="withdraw_bank_logo_wh">27.47dp</dimen>
+    <dimen name="withdraw_draw_plan_true_logo_wh">17.58dp</dimen>
+    <dimen name="withdraw_btn_margin_top">79.67dp</dimen>
+    <dimen name="withdraw_info_layout_height">313.19dp</dimen>
+
+    <!--screen activity-->
+    <dimen name="screen_grid_view_item_margin">4.40dp</dimen>
+    <dimen name="screen_delete_ic_margin">16.48dp</dimen>
+    <dimen name="screen_select_time_margin_top">41.21dp</dimen>
+    <dimen name="screen_select_time_margin_left">8.79dp</dimen>
+    <dimen name="screen_item_height">32.97dp</dimen>
+    <dimen name="screen_layout_height">48.35dp</dimen>
+    <dimen name="screen_bottom_button_height">24.73dp</dimen>
+
+    <dimen name="empty_icon_width">129.67dp</dimen>
+    <dimen name="empty_icon_height">108.79dp</dimen>
+    <dimen name="bounty_detail_item_height">76.92dp</dimen>
+    <dimen name="bounty_detail_item_icon_wh">42.86dp</dimen>
+    <dimen name="bounty_detail_title_height">53.85dp</dimen>
+    <dimen name="bounty_item_title_time_margin_top">7.69dp</dimen>
+    <dimen name="bounty_screening_margin_bottom">46.70dp</dimen>
+    <dimen name="bounty_screening_btn_margin_left">10.99dp</dimen>
+    <dimen name="loop_data_padding_left_and_right">82.42dp</dimen>
+    <dimen name="loop_data_layout_height">192.31dp</dimen>
+    <dimen name="draw_item_icon_wh">15.38dp</dimen>
+    <dimen name="draw_item_arrow_width">8.79dp</dimen>
+    <dimen name="draw_item_arrow_height">16.48dp</dimen>
+    <dimen name="draw_detail_contact_service_width">21.98dp</dimen>
+    <dimen name="draw_detail_contact_service_height">20.88dp</dimen>
+    <dimen name="header_view_width">21.98dp</dimen>
+    <dimen name="header_view_height">27.47dp</dimen>
+    <dimen name="bounty_bounty_failure_mark_width">37.36dp</dimen>
+    <dimen name="bounty_bounty_failure_mark_height">16.48dp</dimen>
+    <dimen name="bounty_header_view_height">43.96dp</dimen>
+    <dimen name="bounty_btn_layout_height_max">113.19dp</dimen>
+    <dimen name="bounty_text_margin_top">2.20dp</dimen>
+    <dimen name="loading_data_icon_wh">76.92dp</dimen>
+    <dimen name="location_dialog_width">340.66dp</dimen>
+    <dimen name="location_dialog_height">312.09dp</dimen>
+    <dimen name="location_dialog_img_width">130.77dp</dimen>
+    <dimen name="location_dialog_img_height">97.25dp</dimen>
+    <dimen name="location_dialog_btn_width">260.44dp</dimen>
+    <dimen name="location_dialog_btn_height">40.66dp</dimen>
+
+    <dimen name="draw_detail_serial_number_width">318.68dp</dimen>
+    <dimen name="voice_setting_item_height">74.18dp</dimen>
+    <dimen name="voice_gathering_report_margin_top">3.30dp</dimen>
+    <dimen name="voice_setting_switch_width">56.04dp</dimen>
+    <dimen name="voice_setting_switch_height">34.07dp</dimen>
+    <dimen name="voice_setting_btn_height">30.77dp</dimen>
+    <dimen name="voice_go_back_width">8.24dp</dimen>
+    <dimen name="voice_go_back_height">15.38dp</dimen>
+    <dimen name="voice_setting_switch_wh">32.97dp</dimen>
+    <dimen name="voice_report_optimize_icon_wh">17.58dp</dimen>
+    <dimen name="select_shop_top_text_height">63.74dp</dimen>
+    <dimen name="select_shop_btn_layout_height">81.32dp</dimen>
+    <dimen name="push_store_item_height">63.74dp</dimen>
+    <dimen name="home_drag_image_wh">54.95dp</dimen>
+    <dimen name="home_drag_image_margin_left">4.40dp</dimen>
+    <dimen name="home_drag_image_margin_bottom">49.45dp</dimen>
+    <dimen name="home_drag_image_shadow_radius">39.56dp</dimen>
+    <dimen name="push_store_item_checkbox_wh">19.23dp</dimen>
+    <dimen name="report_optimize_top_img_height">120.88dp</dimen>
+    <dimen name="report_optimize_top_icon_width">192.31dp</dimen>
+    <dimen name="report_optimize_top_icon_height">120.88dp</dimen>
+    <dimen name="report_optimize_item_height">98.90dp</dimen>
+    <dimen name="report_optimize_item_icon_wh">36.26dp</dimen>
+    <dimen name="report_software_start_btn_width">59.34dp</dimen>
+    <dimen name="report_software_start_btn_height">32.97dp</dimen>
+    <dimen name="report_software_btn_line">0.82dp</dimen>
+    <dimen name="card_view_shade">9.89dp</dimen>
+    <dimen name="report_check_image_wh">232.97dp</dimen>
+    <dimen name="report_check_item_msg_margin_left">76.92dp</dimen>
+    <dimen name="check_round_red_refresh_wh">19.23dp</dimen>
+    <dimen name="system_git_height">153.85dp</dimen>
+    <dimen name="system_git_width">153.85dp</dimen>
+    <dimen name="system_item_but_width">61.54dp</dimen>
+    <dimen name="system_item_but_height">26.37dp</dimen>
+    <dimen name="system_btn_margin_top">76.92dp</dimen>
+    <dimen name="select_shop_all_shop_width">56.04dp</dimen>
+    <dimen name="select_shop_all_shop_height">35.16dp</dimen>
+    <dimen name="push_store_item_address_max_width">329.67dp</dimen>
+    <dimen name="system_git_layout_width">169.23dp</dimen>
+    <dimen name="report_stop_max_width">192.31dp</dimen>
+    <dimen name="shop_empty_width">114.29dp</dimen>
+    <dimen name="shop_empty_height">101.10dp</dimen>
+    <dimen name="system_top_hint_width">61.54dp</dimen>
+
+    <!-- ordering activity-->
+    <dimen name="ordering_introduce_rl_width">379.12dp</dimen>
+    <dimen name="ordering_introduce_rl_height">340.66dp</dimen>
+    <dimen name="ordering_introduce_rl_margin_top">82.42dp</dimen>
+    <dimen name="ordering_introduce_rl_margin_top_notch">98.90dp</dimen>
+    <dimen name="ordering_introduce_rl_icon_w">19.78dp</dimen>
+    <dimen name="ordering_introduce_rl_icon_h">13.19dp</dimen>
+    <dimen name="ordering_shop_name_tv_margin_top">8.79dp</dimen>
+    <dimen name="ordering_no_shop_ll_padding_bottom">6.59dp</dimen>
+    <dimen name="ordering_no_shop_ll_padding_top">10.99dp</dimen>
+    <dimen name="ordering_agree_rl_margin_lr">23.08dp</dimen>
+    <dimen name="also_read_tv_margin_left">4.40dp</dimen>
+    <dimen name="open_server_dialog_ll_width">296.70dp</dimen>
+    <dimen name="open_server_dialog_ll_height">346.15dp</dimen>
+    <dimen name="agree_btn_wh">15.38dp</dimen>
+    <dimen name="agree_btn_margin_top">2.20dp</dimen>
+    <dimen name="agreement_tv_margin_left">2.20dp</dimen>
+
+    <!-- GreyUpdateDialog Fragment-->
+    <dimen name="dialog_width">296.70dp</dimen>
+    <dimen name="grey_update_dialog_vertical_line_height">32.97dp</dimen>
+    <dimen name="head_iv_height">135.16dp</dimen>
+    <dimen name="update_btn_height">43.96dp</dimen>
+    <dimen name="min_scrollview_height">21.98dp</dimen>
+    <dimen name="max_scrollview_height">43.96dp</dimen>
+    <dimen name="update_detail_sl_height">107.69dp</dimen>
+
+    <!--EquipmentListActivity-->
+    <dimen name="change_tab_height">48.35dp</dimen>
+    <dimen name="item_height">43.96dp</dimen>
+    <dimen name="mine_equip_margin_left">67.03dp</dimen>
+    <dimen name="my_equip_margin_left">68.13dp</dimen>
+    <dimen name="my_equip_margin_right">273.63dp</dimen>
+    <dimen name="red_line_width">70.33dp</dimen>
+    <dimen name="down_arrow_width">7.69dp</dimen>
+    <dimen name="down_arrow_height">6.04dp</dimen>
+    <dimen name="right_arrow_width">8.79dp</dimen>
+    <dimen name="right_arrow_height">14.29dp</dimen>
+    <dimen name="red_line_height">2.20dp</dimen>
+    <dimen name="down_arrow_margin_left">4.40dp</dimen>
+    <dimen name="equip_class_item_height">46.70dp</dimen>
+    <dimen name="equip_class_select_iv_height">18.68dp</dimen>
+    <dimen name="mini_equip_item_iv_size">103.30dp</dimen>
+    <dimen name="empty_equip_item_iv_width">134.62dp</dimen>
+    <dimen name="empty_equip_item_iv_height">92.31dp</dimen>
+    <dimen name="empty_equip_item_iv_mt">152.75dp</dimen>
+    <dimen name="show_equip_notice_h">32.97dp</dimen>
+    <dimen name="show_equip_shop_car_s">20.88dp</dimen>
+    <dimen name="show_equip_shop_car_ml">107.69dp</dimen>
+
+    <!--AddYunBoxActivity-->
+    <dimen name="shop_stall_h">141.76dp</dimen>
+    <dimen name="icon_shop_stall_hw">53.85dp</dimen>
+    <dimen name="icon_shop_stall_mt">31.32dp</dimen>
+    <dimen name="icon_con_wh">8.79dp</dimen>
+    <dimen name="icon_con_mt">57.14dp</dimen>
+    <dimen name="relation_menu_h">48.35dp</dimen>
+    <dimen name="net_bt_height">43.96dp</dimen>
+
+
+    <!--WifiListActivity-->
+    <dimen name="wifi_list_hint_cl_height">164.84dp</dimen>
+    <dimen name="wifi_icon_tv_wh">53.85dp</dimen>
+    <dimen name="wifi_icon_tv_margin_top">27.47dp</dimen>
+    <dimen name="wifi_select_hint_tv_margin_top">16.48dp</dimen>
+    <dimen name="wifi_item_cl_height">48.35dp</dimen>
+    <dimen name="wifi_name_tv_width">296.70dp</dimen>
+    <dimen name="wifi_name_tv_margin_left">16.48dp</dimen>
+    <dimen name="wifi_level_iv_wh">17.58dp</dimen>
+    <dimen name="wifi_password_iv_width">10.99dp</dimen>
+    <dimen name="wifi_password_iv_height">13.19dp</dimen>
+    <dimen name="wifi_list_empty_iv_width">107.14dp</dimen>
+    <dimen name="wifi_list_empty_iv_height">96.15dp</dimen>
+    <dimen name="open_permission_tv_width">91.21dp</dimen>
+    <dimen name="open_permission_tv_height">32.97dp</dimen>
+    <dimen name="wifi_name_cl_height">48.35dp</dimen>
+
+    <!-- ConnectYunBoxActivity-->
+    <dimen name="connect_yun_box_hint_tv_margin_top">49.45dp</dimen>
+    <dimen name="connect_yun_box_hint_iv_width">370.33dp</dimen>
+    <dimen name="connect_yun_box_hint_iv_height">231.87dp</dimen>
+    <dimen name="connect_yun_box_hint_iv_margin_top">74.73dp</dimen>
+    <dimen name="connect_yun_box_voice_hint_btn_margin_top">63.19dp</dimen>
+    <dimen name="connect_yun_box_again_hint_iv_width">379.12dp</dimen>
+    <dimen name="connect_yun_box_again_hint_iv_height">223.63dp</dimen>
+    <dimen name="connect_yun_box_voice_again_hint_cl_margin_top">126.37dp</dimen>
+    <dimen name="connect_yun_box_fail_reason_hint_cl_height">141.76dp</dimen>
+    <dimen name="connect_yun_box_fail_reason_hint_iv_wh">53.85dp</dimen>
+    <dimen name="connect_yun_box_fail_reason_hint_iv_margin_top">27.47dp</dimen>
+    <dimen name="connect_yun_box_fail_reason_list_cl_height">206.59dp</dimen>
+    <dimen name="connect_yun_box_fail_question_hint_iv_wh">19.78dp</dimen>
+    <dimen name="connect_yun_box_fail_question_hint_iv_margin_top">23.08dp</dimen>
+    <dimen name="connect_yun_box_fail_question_hint_cl_height">61.54dp</dimen>
+    <dimen name="connect_yun_box_fail_reason_item_tv_margin_left">5.49dp</dimen>
+
+    <!-- ConnectYunBoxFailActivity-->
+    <dimen name="connect_hot_point_hint_tv_margin_top">49.45dp</dimen>
+    <dimen name="connect_hot_point_hint_iv_width">407.69dp</dimen>
+    <dimen name="connect_hot_point_hint_iv_height">303.30dp</dimen>
+    <dimen name="connect_hot_point_hint_iv_margin_top">32.97dp</dimen>
+    <dimen name="connect_hot_point_setting_btn_margin_top">43.96dp</dimen>
+
+    <!-- YunBoxInputPsdDialog-->
+    <dimen name="input_psd_cl_width">318.68dp</dimen>
+    <dimen name="input_psd_cl_height">182.42dp</dimen>
+    <dimen name="input_psd_et_width">274.73dp</dimen>
+    <dimen name="input_psd_et_height">36.26dp</dimen>
+
+    <!-- stall_shop_activity-->
+    <dimen name="equip_select_shop_item_h">55.49dp</dimen>
+    <dimen name="shop_item_right_arrow_width">18.68dp</dimen>
+    <dimen name="shop_item_right_arrow_height">13.19dp</dimen>
+    <dimen name="equip_select_stall_item_h">88.46dp</dimen>
+    <dimen name="select_stall_head_icon_wh">37.36dp</dimen>
+    <dimen name="equip_search_view_out_h">47.25dp</dimen>
+    <dimen name="equip_search_edit_text_h">30.77dp</dimen>
+    <dimen name="equip_search_edit_icon_wh">13.74dp</dimen>
+
+    <!-- EquipDetailActivity-->
+    <dimen name="equip_detail_voice_out_h">74.73dp</dimen>
+    <dimen name="equip_detail_switch_button_w">56.04dp</dimen>
+    <dimen name="equip_detail_switch_button_h">34.07dp</dimen>
+
+    <!--empty_not_net_view-->
+    <dimen name="empty_mt">175.82dp</dimen>
+    <dimen name="empty_icon_w">126.92dp</dimen>
+    <dimen name="empty_icon_h">84.62dp</dimen>
+    <dimen name="empty_ref_bt_w">91.21dp</dimen>
+    <dimen name="empty_ref_bt_h">32.97dp</dimen>
+
+    <!-- MemberIntervalTimeDialog-->
+    <dimen name="member_interval_time_cl_height">260.44dp</dimen>
+    <dimen name="member_interval_time_title_cl_height">43.96dp</dimen>
+    <dimen name="fab_margin">8.79dp</dimen>
+
+    <!--ShopSelectListActivity-->
+    <dimen name="store_empty_mt">164.84dp</dimen>
+    <dimen name="store_empty_wh">85.71dp</dimen>
+    <dimen name="stall_empty_wh">101.10dp</dimen>
+
+   <!-- SalesManActivity-->
+    <dimen name="sales_head_img_bg">49.45dp</dimen>
+    <dimen name="sales_wall_bg">268.13dp</dimen>
+    <dimen name="sales_head_h_w">131.87dp</dimen>
+    <dimen name="sales_call_me_icon_w">104.40dp</dimen>
+    <dimen name="sales_call_me_icon_h">110.99dp</dimen>
+    <dimen name="sales_call_notice_h">36.26dp</dimen>
+    <dimen name="sales_call_notice_radius">17.31dp</dimen>
+    <dimen name="sales_fubei_icon_h">23.08dp</dimen>
+    <dimen name="sales_fubei_icon_w">60.44dp</dimen>
+    <dimen name="sales_owner_icon_h">29.67dp</dimen>
+    <dimen name="sales_owner_icon_w">93.41dp</dimen>
+
+
+
+</resources>

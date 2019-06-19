@@ -3,4 +3,74 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- common -->
+    <color name="common_white">#ffffff</color>
+    <color name="common_white_40">#40ffffff</color>
+    <color name="common_white_50">#50ffffff</color>
+    <color name="common_white_60">#60ffffff</color>
+    <color name="common_white_66">#66ffffff</color>
+    <color name="common_white_80">#CCffffff</color>
+    <color name="common_white_70">#BFffffff</color>
+    <color name="common_white_90">#99ffffff</color>
+    <color name="common_black">#000000</color>
+    <color name="common_black_30">#30000000</color>
+    <color name="common_black_50">#50000000</color>
+    <color name="common_black_60">#60000000</color>
+    <color name="common_black_80">#cc000000</color>
+    <color name="common_black_90">#E6000000</color>
+    <color name="common_background">#f6f6f6</color>
+    <color name="common_blue">#00a0e9</color>
+    <color name="common_green">#3ab034</color>
+    <color name="common_ripple_dark">#40000000</color>
+    <color name="common_ripple_light">#40ffffff</color>
+    <color name="common_transparent">#00000000</color>
+    <color name="common_blue_dark">#232736</color>
+    <color name="common_driver_bg">#e6e6e6</color>
+    <color name="common_toast_bg">#99000000</color>
+    <color name="common_line_bg">#e5e5e5</color>
+
+    <color name="color_red_f3866d">#f3866d</color>
+    <color name="color_black_666">#666666</color>
+    <color name="color_gray_ccc">#cccccc</color>
+    <color name="color_gray_e5e5e5">#e5e5e5</color>
+    <color name="color_black_333">#333333</color>
+    <color name="color_red_f04244">#f04244</color>
+    <color name="color_red_f04144">#f04144</color>
+    <color name="color_red_bf3436">#bf3436</color>
+    <color name="color_red_ed784b">#ED784B</color>
+    <color name="color_red_f4aeaf">#f4aeaf</color>
+    <color name="color_gray_d2d5db">#D2D5DB</color>
+    <color name="color_yellow_f8a544">#f8a544</color>
+    <color name="color_blue_369bf1">#369bf1</color>
+    <color name="color_gray_999">#999999</color>
+    <color name="color_red_FF432F">#FF432F</color>
+    <color name="color_gray_dddddd">#dddddd</color>
+    <color name="color_yellow_F9E8B9">#F9E8B9</color>
+    <color name="color_yellow_F7DB8A">#F7DB8A</color>
+    <color name="color_yellow_FFA744">#FFA744</color>
+
+
+    <color name="color_gray_eee">#eeeeee</color>
+    <color name="color_gray_f8f4f4">#F8F4F4</color>
+    <color name="color_red_EF3E43">#EF3E43</color>
+    <color name="color_red_BFEF3E43">#BFEF3E43</color>
+    <color name="color_red_ED794B">#ED794B</color>
+    <color name="color_red_BFED794B">#BFED794B</color>
+    <color name="color_red_F97679">#F97679</color>
+    <color name="color_red_F7A0A1">#F7A0A1</color>
+
+    <color name="color_scan_toolbar_bg">#96000000</color>
+    <color name="color_scan_content_bg">#80000000</color>
+    <color name="color_call_notice_bg">#FFF5F5</color>
+    <color name="color_payment_pay_title_bg">#F5F5F5</color>
+
+
+
+    <color name="color_payment_code_alipay_bg">#0F8CE6</color>
+    <color name="color_payment_code_wechatpay_bg">#37A555</color>
+
+
+
+
 </resources>

@@ -42,6 +42,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
+
     // 自建库maven 可删除
 //    implementation 'com.yf.android:yf-utils:0.1.1-dev-SNAPSHOT'
 

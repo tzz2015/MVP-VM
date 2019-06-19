@@ -6,7 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import com.example.mvp_vm.MainActivity
-import com.example.mvp_vm.WebActivity
+import com.example.mvp_vm.activity.CutImgActivity
 import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.view.HomeView
 import com.example.mvp_vm.viewmodel.HomeViewModel
@@ -44,7 +44,7 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 跳转webView
      */
     fun toWeb() {
-         val intent= Intent(getContext(), WebActivity::class.java)
+         val intent= Intent(getContext(), CutImgActivity::class.java)
          getContext()?.startActivity(intent)
     }
 

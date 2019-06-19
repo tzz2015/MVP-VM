@@ -1,10 +1,11 @@
-package com.example.mvp_vm
+package com.example.mvp_vm.activity
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.example.mvp_vm.R
 import kotlinx.android.synthetic.main.activity_web.*
 
 class WebActivity : AppCompatActivity() {
