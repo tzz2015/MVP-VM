@@ -11,10 +11,12 @@
             android:id="@+id/input_app_id"
             app:layout_constraintTop_toTopOf="parent"
             android:hint="appId"
+            android:text="membership-points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     <EditText
             android:hint="action"
+            android:text="my-points"
             android:id="@+id/input_action"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"

@@ -12,6 +12,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MainActivity">
+        <TextView
+                android:textSize="25sp"
+                android:onClick="@{v->mPresenter.toCutActivity()}"
+                android:layout_margin="@dimen/common_margin_25"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="图片裁剪"/>
 
         <TextView
                 android:id="@+id/tv_name_dse"
