@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 import com.example.mvp_vm.R;
 
 /**
@@ -40,7 +39,6 @@ public class CutScannerView extends View {
     private int mCornerLength;
     private int mCornerBorder;
     private int mRedLine;
-    private Toast mToast;
     /**
      * 是否为当前控件使用事件
      */
@@ -254,14 +252,15 @@ public class CutScannerView extends View {
     }
 
     /**
-     * 左右滑
+     * 左右滑改变截图的宫格
      *
      * @param offset
      */
     private void resetDraw(int offset) {
-
+        //最小宫格长度为1/4
+        int dive = 4;
         int mFrameWh = mFocusFrameWh - offset;
-        if (mFrameWh < mFocusFrameWh / 4) {
+        if (mFrameWh < mFocusFrameWh / dive) {
             return;
         }
         switch (mDrection) {
@@ -299,14 +298,14 @@ public class CutScannerView extends View {
 
         @Override
         public void run() {
-
+            int reduce = 10;
             if (mFocusFrameRect.left != mFocusFrameLt || mFocusFrameRect.top != mFocusFrameTp ||
                     mFocusFrameRect.right != mFocusFrameLt + mFocusFrameWh ||
                     mFocusFrameRect.bottom != mFocusFrameTp + mFocusFrameWh) {
-                mFocusFrameRect.left -= 15;
-                mFocusFrameRect.top -= 15;
-                mFocusFrameRect.right += 15;
-                mFocusFrameRect.bottom += 15;
+                mFocusFrameRect.left -= reduce;
+                mFocusFrameRect.top -= reduce;
+                mFocusFrameRect.right += reduce;
+                mFocusFrameRect.bottom += reduce;
                 if (mFocusFrameRect.left < mFocusFrameLt) {
                     mFocusFrameRect.left = mFocusFrameLt;
                 }
@@ -319,16 +318,16 @@ public class CutScannerView extends View {
                 if (mFocusFrameRect.bottom > mFocusFrameTp + mFocusFrameWh) {
                     mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameWh;
                 }
-                postDelayed(this, 16);
+                scaleBack(mDrection, reduce);
+                postDelayed(this, 10);
                 invalidate();
-                scaleBack(mDrection);
             }
 
         }
     }
 
-    private void scaleBack(Position mDrection) {
-        float scale = 1 - (float) (mFocusFrameRect.right - mFocusFrameRect.left) / mFocusFrameWh + 1;
+    private void scaleBack(Position mDrection, int reduce) {
+        float scale = 1 + (float) reduce / mFocusFrameWh;
         int x = mFocusFrameLt;
         int y = mFocusFrameTp;
         switch (mDrection) {
