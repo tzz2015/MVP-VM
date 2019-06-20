@@ -26,6 +26,8 @@ class CutImgActivity : BaseActivity() {
             drop_zv.setScale(sx, sy, px, py)
 
         }
+        scanner_sv.setFreeCut(false)
+        scanner_sv.setScaleOginal(true)
 
 
     }

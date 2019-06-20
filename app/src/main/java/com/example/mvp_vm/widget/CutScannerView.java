@@ -47,7 +47,19 @@ public class CutScannerView extends View {
      * 移动起始位置
      */
     private int mStartX = 0;
+    private int mStartY = 0;
+
+
     private PostScaleListener mScaleListener;
+    /**
+     * 手指松开后是否自动回退到原来位置
+     */
+    private boolean isScaleOriginal = true;
+
+    /**
+     * 是否为自由裁剪框
+     */
+    private boolean isFreeCut = false;
 
     enum Position {
         /**
@@ -106,6 +118,24 @@ public class CutScannerView extends View {
         drawGridLine(canvas);
 
 
+    }
+
+    /**
+     * 设置是否返回原点
+     *
+     * @param isScaleOriginal
+     */
+    public void setScaleOginal(boolean isScaleOriginal) {
+        this.isScaleOriginal = isScaleOriginal;
+    }
+
+    /**
+     * 设置是否自由裁剪
+     *
+     * @param isFreeCut
+     */
+    public void setFreeCut(boolean isFreeCut) {
+        this.isFreeCut = isFreeCut;
     }
 
 
@@ -186,54 +216,20 @@ public class CutScannerView extends View {
                 //获取屏幕上点击的坐标
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                //加大点击范围
-                int mAddClickSize = 120;
-                // 左上角
-                if (x < mFocusFrameRect.left + mAddClickSize &&
-                        y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
-                    Log.e(TAG, "左上角");
-                    isUse = true;
-                    mDrection = Position.LEFTTOP;
-                } else if (x > mFocusFrameRect.right - mAddClickSize &&
-                        y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
-                    Log.e(TAG, "右上角");
-                    isUse = true;
-                    mDrection = Position.RIGHTTOP;
-                } else if (x < mFocusFrameRect.left + mAddClickSize &&
-                        y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
-                    Log.e(TAG, "左下角");
-                    isUse = true;
-                    mDrection = Position.LEFTBOTTOM;
-                } else if (x > mFocusFrameRect.right - mAddClickSize &&
-                        y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
-                    Log.e(TAG, "右下角");
-                    isUse = true;
-                    mDrection = Position.RIGHTBOTTM;
-                }
-                mStartX = x;
-
-
+                downClick(x, y);
+                break;
             case MotionEvent.ACTION_MOVE:
                 if (isUse) {
-                    int endX = (int) event.getRawX();
-                    int offset = Math.abs(endX - mStartX);
-                    int move = 20;
-                    // 右滑
-                    if (offset > move) {
-                        Log.e(TAG, "移动：" + offset);
-                        resetDraw(offset);
-                        if (endX > mStartX) {
-                            Log.e(TAG, "右滑");
-                            // 左滑
-                        } else {
-                            Log.e(TAG, "左滑");
-                            resetDraw(offset);
-                        }
+                    int endX = (int) event.getX();
+                    int endY = (int) event.getY();
+                    int needMove = 10;
+                    if (Math.abs(endX - mStartX) > needMove || Math.abs(endY - mStartY) > needMove) {
+                        moveJude(endX, endY);
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (isUse) {
+                if (isUse && isScaleOriginal) {
                     postDelayed(new AutoScaleRunnable(mDrection), 16);
                 }
                 isUse = false;
@@ -251,34 +247,170 @@ public class CutScannerView extends View {
 
     }
 
+    private void moveJude(int endX, int endY) {
+        // 是否在左右拖动范围
+        int canMoveX = isCanDragLR(endX);
+        // 是否在上下拖动范围
+        if (isFreeCut) {
+            int canMoveY = isCanDragTB(endY);
+            resetDraw(canMoveX, canMoveY);
+        } else {
+            resetDraw(canMoveX, 0);
+        }
+
+    }
+
+    /**
+     * 左右是否可以在可拖动范围
+     *
+     * @param endX
+     */
+    private int isCanDragLR(int endX) {
+
+        //最小宫格长度为1/4 不能移动
+        int minWH = mFocusFrameWh / 4;
+        // 右滑
+        Log.e(TAG, "endX：" + endX);
+        switch (mDrection) {
+            //左侧
+            case LEFTTOP:
+            case LEFTBOTTOM:
+                if(Math.abs(mFocusFrameRect.left-mFocusFrameRect.right)<minWH){
+                    return mFocusFrameRect.left-1;
+                }
+                if (endX < mFocusFrameLt) {
+                    return mFocusFrameLt;
+                }
+                if (endX > mFocusFrameLt + mFocusFrameWh - minWH) {
+                    return mFocusFrameLt + mFocusFrameWh - minWH;
+                }
+                break;
+            //右侧
+            case RIGHTTOP:
+            case RIGHTBOTTM:
+                if(Math.abs(mFocusFrameRect.left-mFocusFrameRect.right)<minWH){
+                    return mFocusFrameRect.right+1;
+                }
+                if (endX < mFocusFrameLt + minWH) {
+                    return mFocusFrameLt + minWH;
+                }
+                if (endX > mFocusFrameLt + mFocusFrameWh) {
+                    return mFocusFrameLt + mFocusFrameWh;
+                }
+                break;
+            default:
+                break;
+        }
+        return endX;
+
+    }
+
+    /**
+     * 上下是否可以在可拖动范围
+     */
+    private int isCanDragTB(int endY) {
+
+        //最小宫格长度为1/4 不能移动
+        int minWH = mFocusFrameWh / 4;
+        // 右滑
+        Log.e(TAG, "endY：" + endY);
+        switch (mDrection) {
+            //上侧
+            case LEFTTOP:
+            case RIGHTTOP:
+                if(Math.abs(mFocusFrameRect.top-mFocusFrameRect.bottom)<minWH){
+                    return mFocusFrameRect.top-1;
+                }
+                if (endY < mFocusFrameTp) {
+                    return mFocusFrameTp;
+                }
+                if (endY > mFocusFrameTp + mFocusFrameWh - minWH) {
+                    return mFocusFrameTp + mFocusFrameWh - minWH;
+                }
+                break;
+            //下侧
+            case LEFTBOTTOM:
+            case RIGHTBOTTM:
+                if(Math.abs(mFocusFrameRect.top-mFocusFrameRect.bottom)<minWH){
+                    return mFocusFrameRect.bottom+1;
+                }
+                if (endY < mFocusFrameTp + minWH) {
+                    return mFocusFrameTp + minWH;
+                }
+                if (endY > mFocusFrameTp + mFocusFrameWh) {
+                    return mFocusFrameTp + mFocusFrameWh;
+                }
+                break;
+            default:
+                break;
+        }
+        return endY;
+    }
+
+
+    /**
+     * 四个角的点击判断
+     *
+     * @param x
+     * @param y
+     */
+    private void downClick(int x, int y) {
+        //加大点击范围
+        int mAddClickSize = 120;
+        // 左上角
+        if (x < mFocusFrameRect.left + mAddClickSize &&
+                y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
+            Log.e(TAG, "左上角");
+            isUse = true;
+            mDrection = Position.LEFTTOP;
+        } else if (x > mFocusFrameRect.right - mAddClickSize &&
+                y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
+            Log.e(TAG, "右上角");
+            isUse = true;
+            mDrection = Position.RIGHTTOP;
+        } else if (x < mFocusFrameRect.left + mAddClickSize &&
+                y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
+            Log.e(TAG, "左下角");
+            isUse = true;
+            mDrection = Position.LEFTBOTTOM;
+        } else if (x > mFocusFrameRect.right - mAddClickSize &&
+                y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
+            Log.e(TAG, "右下角");
+            isUse = true;
+            mDrection = Position.RIGHTBOTTM;
+        }
+        mStartX = x;
+        mStartY = y;
+    }
+
     /**
      * 左右滑改变截图的宫格
      *
-     * @param offset
+     * @param offsetX
+     * @param offsetY =0时候 等比例缩放
      */
-    private void resetDraw(int offset) {
-        //最小宫格长度为1/4
-        int dive = 4;
-        int mFrameWh = mFocusFrameWh - offset;
-        if (mFrameWh < mFocusFrameWh / dive) {
-            return;
-        }
+    private void resetDraw(int offsetX, int offsetY) {
+        int offset;
         switch (mDrection) {
             case LEFTTOP:
-                mFocusFrameRect.left = mFocusFrameLt + offset;
-                mFocusFrameRect.top = mFocusFrameTp + offset;
+                offset = offsetX - mFocusFrameRect.left;
+                mFocusFrameRect.left = offsetX;
+                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top + offset;
                 break;
             case RIGHTTOP:
-                mFocusFrameRect.right = mFocusFrameLt + mFocusFrameWh - offset;
-                mFocusFrameRect.top = mFocusFrameTp + offset;
+                offset = offsetX - mFocusFrameRect.right;
+                mFocusFrameRect.right = offsetX;
+                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top - offset;
                 break;
             case LEFTBOTTOM:
-                mFocusFrameRect.left = mFocusFrameLt + offset;
-                mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameWh - offset;
+                offset = offsetX - mFocusFrameRect.left;
+                mFocusFrameRect.left = offsetX;
+                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom - offset;
                 break;
             case RIGHTBOTTM:
-                mFocusFrameRect.right = mFocusFrameLt + mFocusFrameWh - offset;
-                mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameWh - offset;
+                offset = offsetX - mFocusFrameRect.right;
+                mFocusFrameRect.right = offsetX;
+                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom + offset;
                 break;
             default:
                 break;
@@ -359,7 +491,16 @@ public class CutScannerView extends View {
         this.mScaleListener = listener;
     }
 
+
     public interface PostScaleListener {
+        /**
+         * 扫码框还原监听
+         *
+         * @param sx
+         * @param sy
+         * @param px
+         * @param py
+         */
         void scaleListener(float sx, float sy, float px, float py);
     }
 }
