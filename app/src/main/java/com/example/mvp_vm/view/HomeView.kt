@@ -8,5 +8,4 @@ import com.example.mvp_vm.base.BaseView
 18 * @Author: lyf
 19 * @Date: 2019-05-27 23:47
 20 */
-interface HomeView : BaseView {
-}
+interface HomeView : BaseView

@@ -18,14 +18,11 @@ class CutImgActivity : BaseActivity() {
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
         toolbar.setOnClickListener { finish() }
-        /**
-         * 缩放监听
-         */
+        //缩放监听
         scanner_sv.setScaleListener { sx, sy, px, py ->
 
             Log.e(TAG, "scale:$sx--x:$px--Y:$py")
             drop_zv.setScale(sx, sy, px, py)
-
         }
         scanner_sv.setFreeCut(true)
         scanner_sv.setScaleOginal(false)

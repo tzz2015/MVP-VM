@@ -22,7 +22,7 @@ class WebActivity : AppCompatActivity() {
             try {
                 var url = "fubei://platformapi/startapp?appId=%s&action=%s"
                 val jumpUrl = String.format(url, input_app_id.text.toString(), input_action.text.toString())
-                Log.e("",jumpUrl)
+                Log.e("", jumpUrl)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(jumpUrl))
                 startActivity(intent)
             } catch (e: Exception) {
@@ -30,7 +30,5 @@ class WebActivity : AppCompatActivity() {
             }
 
         }
-
-
     }
 }

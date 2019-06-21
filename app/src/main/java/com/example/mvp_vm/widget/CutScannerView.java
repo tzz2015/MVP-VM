@@ -242,7 +242,7 @@ public class CutScannerView extends View {
             default:
                 break;
         }
-         // 消费此事件
+        // 消费此事件
         if (isUse) {
             return true;
         }
@@ -252,6 +252,7 @@ public class CutScannerView extends View {
 
     /**
      * 判断是否可以移动九宫格
+     *
      * @param endX
      * @param endY
      */
@@ -471,6 +472,7 @@ public class CutScannerView extends View {
 
     /**
      * 还原九宫格监听
+     *
      * @param mDrection
      * @param reduce
      */

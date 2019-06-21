@@ -1,8 +1,8 @@
 package com.example.mvp_vm.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
-import com.example.mvp_vm.model.TextModel
 import com.example.mvp_vm.base.BaseViewModel
+import com.example.mvp_vm.model.TextModel
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -25,7 +25,7 @@ class HomeViewModel : BaseViewModel() {
         GlobalScope.launch(Dispatchers.Main) {
             loadLiveData.value = true
             delay(1000)
-            val text = TextModel("来了,老弟" + random.nextInt(100))
+            val text = TextModel("随机数字：" + random.nextInt(100))
             textLiveData.value = text
             loadLiveData.value = false
         }
