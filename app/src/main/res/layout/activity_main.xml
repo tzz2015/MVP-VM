@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             tools:context=".MainActivity">
         <TextView
-                android:textSize="25sp"
+                android:textSize="@dimen/size_26"
                 android:onClick="@{v->mPresenter.toCutActivity()}"
                 android:layout_margin="@dimen/common_margin_25"
                 app:layout_constraintTop_toTopOf="parent"

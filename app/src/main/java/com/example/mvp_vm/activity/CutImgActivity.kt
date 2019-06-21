@@ -17,6 +17,7 @@ class CutImgActivity : BaseActivity() {
         StatusBarUtils.setStatusBarBackgroundColor(this, "#000000")
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
+        toolbar.setOnClickListener { finish() }
         /**
          * 缩放监听
          */
@@ -26,8 +27,8 @@ class CutImgActivity : BaseActivity() {
             drop_zv.setScale(sx, sy, px, py)
 
         }
-        scanner_sv.setFreeCut(false)
-        scanner_sv.setScaleOginal(true)
+        scanner_sv.setFreeCut(true)
+        scanner_sv.setScaleOginal(false)
 
 
     }

@@ -39,6 +39,8 @@ public class CutScannerView extends View {
     private int mCornerLength;
     private int mCornerBorder;
     private int mRedLine;
+    private int mGridLine;
+
     /**
      * 是否为当前控件使用事件
      */
@@ -95,7 +97,8 @@ public class CutScannerView extends View {
         mFocusFrameLt = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_margin_left);
         mCornerLength = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_width);
         mCornerBorder = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_thick);
-        mRedLine = resources.getDimensionPixelSize(R.dimen.common_line_height);
+        mRedLine = resources.getDimensionPixelSize(R.dimen.common_keyboard_line);
+        mGridLine = resources.getDimensionPixelSize(R.dimen.common_line_height);
         mFocusFrameRect = new Rect(mFocusFrameLt, mFocusFrameTp,
                 mFocusFrameLt + mFocusFrameWh, mFocusFrameTp + mFocusFrameWh);
 
@@ -199,13 +202,13 @@ public class CutScannerView extends View {
         // 横向
         int horPoint1 = mFocusFrameRect.top + (mFocusFrameRect.bottom - mFocusFrameRect.top) / 3;
         int horPoint2 = mFocusFrameRect.top + (mFocusFrameRect.bottom - mFocusFrameRect.top) / 3 * 2;
-        canvas.drawRect(mFocusFrameRect.left, horPoint1, mFocusFrameRect.right, horPoint1 + mRedLine, mCornerPaint);
-        canvas.drawRect(mFocusFrameRect.left, horPoint2, mFocusFrameRect.right, horPoint2 + mRedLine, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left, horPoint1, mFocusFrameRect.right, horPoint1 + mGridLine, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left, horPoint2, mFocusFrameRect.right, horPoint2 + mGridLine, mCornerPaint);
         // 纵向
         int verPoint1 = mFocusFrameRect.left + (mFocusFrameRect.right - mFocusFrameRect.left) / 3;
         int verPoint2 = mFocusFrameRect.left + (mFocusFrameRect.right - mFocusFrameRect.left) / 3 * 2;
-        canvas.drawRect(verPoint1, mFocusFrameRect.top, verPoint1 + mRedLine, mFocusFrameRect.bottom, mCornerPaint);
-        canvas.drawRect(verPoint2, mFocusFrameRect.top, verPoint2 + mRedLine, mFocusFrameRect.bottom, mCornerPaint);
+        canvas.drawRect(verPoint1, mFocusFrameRect.top, verPoint1 + mGridLine, mFocusFrameRect.bottom, mCornerPaint);
+        canvas.drawRect(verPoint2, mFocusFrameRect.top, verPoint2 + mGridLine, mFocusFrameRect.bottom, mCornerPaint);
     }
 
     @Override
@@ -266,17 +269,16 @@ public class CutScannerView extends View {
      * @param endX
      */
     private int isCanDragLR(int endX) {
-
+        Log.e(TAG, "endX：" + endX);
         //最小宫格长度为1/4 不能移动
         int minWH = mFocusFrameWh / 4;
-        // 右滑
-        Log.e(TAG, "endX：" + endX);
         switch (mDrection) {
             //左侧
             case LEFTTOP:
             case LEFTBOTTOM:
-                if(Math.abs(mFocusFrameRect.left-mFocusFrameRect.right)<minWH){
-                    return mFocusFrameRect.left-1;
+                if (Math.abs(endX - mFocusFrameRect.right) <= minWH
+                        || endX > mFocusFrameRect.right) {
+                    return mFocusFrameRect.left;
                 }
                 if (endX < mFocusFrameLt) {
                     return mFocusFrameLt;
@@ -288,8 +290,9 @@ public class CutScannerView extends View {
             //右侧
             case RIGHTTOP:
             case RIGHTBOTTM:
-                if(Math.abs(mFocusFrameRect.left-mFocusFrameRect.right)<minWH){
-                    return mFocusFrameRect.right+1;
+                if (Math.abs(endX - mFocusFrameRect.left) <= minWH
+                        || endX < mFocusFrameRect.left) {
+                    return mFocusFrameRect.right;
                 }
                 if (endX < mFocusFrameLt + minWH) {
                     return mFocusFrameLt + minWH;
@@ -318,8 +321,9 @@ public class CutScannerView extends View {
             //上侧
             case LEFTTOP:
             case RIGHTTOP:
-                if(Math.abs(mFocusFrameRect.top-mFocusFrameRect.bottom)<minWH){
-                    return mFocusFrameRect.top-1;
+                if (Math.abs(endY - mFocusFrameRect.bottom) <= minWH
+                        || endY > mFocusFrameRect.bottom) {
+                    return mFocusFrameRect.top;
                 }
                 if (endY < mFocusFrameTp) {
                     return mFocusFrameTp;
@@ -331,8 +335,9 @@ public class CutScannerView extends View {
             //下侧
             case LEFTBOTTOM:
             case RIGHTBOTTM:
-                if(Math.abs(mFocusFrameRect.top-mFocusFrameRect.bottom)<minWH){
-                    return mFocusFrameRect.bottom+1;
+                if (Math.abs(endY - mFocusFrameRect.top) <= minWH
+                        || endY < mFocusFrameRect.top) {
+                    return mFocusFrameRect.bottom;
                 }
                 if (endY < mFocusFrameTp + minWH) {
                     return mFocusFrameTp + minWH;

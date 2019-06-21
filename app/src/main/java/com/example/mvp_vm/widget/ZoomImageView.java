@@ -244,7 +244,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                  * 设置缩放(全图浏览模式,用最小的缩放比率去查看图片就好了)/移动位置
                  */
                 mMatrix.postTranslate(dx, dy);
-                mMatrix.postScale(scale, scale, width / 2, height / 2);
+                mMatrix.postScale(scale, scale, width >> 1, height >> 1);
             } else {
 
                 float scale = width * 1.0f / imageW;
