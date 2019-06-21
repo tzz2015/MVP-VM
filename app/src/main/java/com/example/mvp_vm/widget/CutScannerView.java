@@ -242,7 +242,7 @@ public class CutScannerView extends View {
             default:
                 break;
         }
-
+         // 消费此事件
         if (isUse) {
             return true;
         }
@@ -250,11 +250,17 @@ public class CutScannerView extends View {
 
     }
 
+    /**
+     * 判断是否可以移动九宫格
+     * @param endX
+     * @param endY
+     */
     private void moveJude(int endX, int endY) {
-        // 是否在左右拖动范围
+        // 左右拖动范围
         int canMoveX = isCanDragLR(endX);
-        // 是否在上下拖动范围
+
         if (isFreeCut) {
+            // 上下拖动范围
             int canMoveY = isCanDragTB(endY);
             resetDraw(canMoveX, canMoveY);
         } else {
@@ -264,7 +270,7 @@ public class CutScannerView extends View {
     }
 
     /**
-     * 左右是否可以在可拖动范围
+     * 左右可拖动范围
      *
      * @param endX
      */
@@ -309,7 +315,7 @@ public class CutScannerView extends View {
     }
 
     /**
-     * 上下是否可以在可拖动范围
+     * 上下可拖动范围
      */
     private int isCanDragTB(int endY) {
 
@@ -463,6 +469,11 @@ public class CutScannerView extends View {
         }
     }
 
+    /**
+     * 还原九宫格监听
+     * @param mDrection
+     * @param reduce
+     */
     private void scaleBack(Position mDrection, int reduce) {
         float scale = 1 + (float) reduce / mFocusFrameWh;
         int x = mFocusFrameLt;
@@ -501,10 +512,10 @@ public class CutScannerView extends View {
         /**
          * 扫码框还原监听
          *
-         * @param sx
-         * @param sy
-         * @param px
-         * @param py
+         * @param sx X轴缩放比例
+         * @param sy Y轴缩放比例
+         * @param px 起点X
+         * @param py 起点Y
          */
         void scaleListener(float sx, float sy, float px, float py);
     }
