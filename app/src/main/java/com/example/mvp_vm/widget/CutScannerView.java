@@ -50,6 +50,10 @@ public class CutScannerView extends View {
      */
     private int mStartX = 0;
     private int mStartY = 0;
+    /**
+     * 是否可以控制裁剪框大小
+     */
+    private boolean isCanDrag = true;
 
 
     private PostScaleListener mScaleListener;
@@ -141,6 +145,12 @@ public class CutScannerView extends View {
         this.isFreeCut = isFreeCut;
     }
 
+    /**
+     * 设置裁剪框区域是否可以被拖动修改
+     */
+    public void setCanDrag(boolean isCanDrag) {
+        this.isCanDrag = isCanDrag;
+    }
 
     /**
      * 绘制周边背景
@@ -367,32 +377,35 @@ public class CutScannerView extends View {
      * @param y
      */
     private void downClick(int x, int y) {
-        //加大点击范围
-        int mAddClickSize = 120;
-        // 左上角
-        if (x < mFocusFrameRect.left + mAddClickSize &&
-                y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
-            Log.e(TAG, "左上角");
-            isUse = true;
-            mDrection = Position.LEFTTOP;
-        } else if (x > mFocusFrameRect.right - mAddClickSize &&
-                y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
-            Log.e(TAG, "右上角");
-            isUse = true;
-            mDrection = Position.RIGHTTOP;
-        } else if (x < mFocusFrameRect.left + mAddClickSize &&
-                y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
-            Log.e(TAG, "左下角");
-            isUse = true;
-            mDrection = Position.LEFTBOTTOM;
-        } else if (x > mFocusFrameRect.right - mAddClickSize &&
-                y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
-            Log.e(TAG, "右下角");
-            isUse = true;
-            mDrection = Position.RIGHTBOTTM;
+        if (isCanDrag) {
+            //加大点击范围
+            int mAddClickSize = 120;
+            // 左上角
+            if (x < mFocusFrameRect.left + mAddClickSize &&
+                    y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
+                Log.e(TAG, "左上角");
+                isUse = true;
+                mDrection = Position.LEFTTOP;
+            } else if (x > mFocusFrameRect.right - mAddClickSize &&
+                    y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
+                Log.e(TAG, "右上角");
+                isUse = true;
+                mDrection = Position.RIGHTTOP;
+            } else if (x < mFocusFrameRect.left + mAddClickSize &&
+                    y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
+                Log.e(TAG, "左下角");
+                isUse = true;
+                mDrection = Position.LEFTBOTTOM;
+            } else if (x > mFocusFrameRect.right - mAddClickSize &&
+                    y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
+                Log.e(TAG, "右下角");
+                isUse = true;
+                mDrection = Position.RIGHTBOTTM;
+            }
+            mStartX = x;
+            mStartY = y;
         }
-        mStartX = x;
-        mStartY = y;
+
     }
 
     /**

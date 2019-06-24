@@ -26,6 +26,7 @@ class CutImgActivity : BaseActivity() {
         }
         scanner_sv.setFreeCut(true)
         scanner_sv.setScaleOginal(false)
+        scanner_sv.setCanDrag(false)
 
 
     }
