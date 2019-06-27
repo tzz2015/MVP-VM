@@ -2,9 +2,8 @@ package com.example.mvp_vm.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.content.res.TypedArray;
+import android.graphics.*;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -33,18 +32,19 @@ public class CutScannerView extends View {
     private Paint mCornerPaint;
     private Rect mFocusFrameRect;
     private int mWidth, mHeight;
-    private int mFocusFrameWh;
+    private int mFocusFrameWidth;
+    private int mFocusFrameHeight;
     private int mFocusFrameTp;
     private int mFocusFrameLt;
     private int mCornerLength;
     private int mCornerBorder;
-    private int mRedLine;
+    private int mBoundLine;
     private int mGridLine;
 
     /**
      * 是否为当前控件使用事件
      */
-    private boolean isUse = false;
+    private boolean isUseEven = false;
     /**
      * 移动起始位置
      */
@@ -67,6 +67,11 @@ public class CutScannerView extends View {
      */
     private boolean isFreeCut = false;
 
+    /**
+     * 宽高比 等比缩放裁剪框  =高/宽
+     */
+    private float mAspectRatio = 1.0f;
+
     enum Position {
         /**
          * 四个角方向
@@ -74,7 +79,7 @@ public class CutScannerView extends View {
         LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTM, DEFAULT
     }
 
-    private Position mDrection = Position.DEFAULT;
+    private Position mDirection = Position.DEFAULT;
 
     public CutScannerView(Context context) {
         this(context, null);
@@ -82,10 +87,10 @@ public class CutScannerView extends View {
 
     public CutScannerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initUI();
+        initUI(attrs);
     }
 
-    private void initUI() {
+    private void initUI(AttributeSet attrs) {
         mBgPaint = new Paint();
         mBgPaint.setColor(ContextCompat.getColor(getContext(), R.color.common_black_80));
         mBgPaint.setAntiAlias(true);
@@ -93,19 +98,24 @@ public class CutScannerView extends View {
         mCornerPaint = new Paint();
         mCornerPaint.setAntiAlias(true);
         mCornerPaint.setColor(ContextCompat.getColor(getContext(), R.color.common_white));
+        initAttributes(attrs);
+    }
 
-        Resources resources = getResources();
+    private void initAttributes(AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CutScannerView);
 
-        mFocusFrameWh = resources.getDimensionPixelSize(R.dimen.cut_scanner_iv_wh);
-        mFocusFrameTp = resources.getDimensionPixelSize(R.dimen.cut_scanner_iv_margin_top);
-        mFocusFrameLt = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_margin_left);
-        mCornerLength = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_width);
-        mCornerBorder = resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_thick);
-        mRedLine = resources.getDimensionPixelSize(R.dimen.common_keyboard_line);
-        mGridLine = resources.getDimensionPixelSize(R.dimen.common_line_height);
-        mFocusFrameRect = new Rect(mFocusFrameLt, mFocusFrameTp,
-                mFocusFrameLt + mFocusFrameWh, mFocusFrameTp + mFocusFrameWh);
-
+        try {
+            Resources resources = getResources();
+            mCornerBorder = (int) a.getDimension(R.styleable.CutScannerView_cut_scanner_sv_corner_thick, resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_thick));
+            mCornerLength = (int) a.getDimension(R.styleable.CutScannerView_cut_scanner_sv_corner_width, resources.getDimensionPixelSize(R.dimen.cut_scanner_sv_corner_width));
+            mFocusFrameTp = mCornerBorder / 2;
+            mFocusFrameLt = mCornerBorder / 2;
+            mBoundLine = (int) a.getDimension(R.styleable.CutScannerView_common_cut_scanner_line, resources.getDimensionPixelSize(R.dimen.common_cut_scanner_line));
+            mGridLine = (int) a.getDimension(R.styleable.CutScannerView_common_cut_grid_line, resources.getDimensionPixelSize(R.dimen.common_line_height));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        a.recycle();
     }
 
     @Override
@@ -116,15 +126,18 @@ public class CutScannerView extends View {
         if (mWidth == 0 || mHeight == 0) {
             return;
         }
+        if (mFocusFrameRect == null) {
+            mFocusFrameWidth = mWidth - mCornerBorder;
+            mFocusFrameHeight = mHeight - mCornerBorder;
+            mFocusFrameRect = new Rect(mFocusFrameLt, mFocusFrameTp, mFocusFrameLt + mFocusFrameWidth, mFocusFrameTp + mFocusFrameHeight);
+        }
         // 背景和四边
-        drawScannerBg(canvas);
+//        drawScannerBg(canvas);
         drawScannerCorner(canvas);
         //绘制边界红色线条
         drawAroundLine(canvas);
         //绘制宫格线
         drawGridLine(canvas);
-
-
     }
 
     /**
@@ -153,6 +166,18 @@ public class CutScannerView extends View {
     }
 
     /**
+     * 设置宽高比
+     */
+    public void setAspectRatio(float mAspectRatio) {
+        this.mAspectRatio = mAspectRatio;
+        if (mFocusFrameRect != null) {
+            mFocusFrameHeight = (int) (mFocusFrameWidth * mAspectRatio);
+            mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameHeight;
+            invalidate();
+        }
+    }
+
+    /**
      * 绘制周边背景
      *
      * @param canvas
@@ -170,22 +195,22 @@ public class CutScannerView extends View {
      * @param canvas
      */
     private void drawScannerCorner(Canvas canvas) {
-        int offsetBoder = mCornerBorder / 2;
+        int offsetBorder = mCornerBorder / 2;
         //绘制左上角
-        canvas.drawRect(mFocusFrameRect.left - offsetBoder, mFocusFrameRect.top - offsetBoder, mFocusFrameRect.left + mCornerLength, mFocusFrameRect.top + offsetBoder, mCornerPaint);
-        canvas.drawRect(mFocusFrameRect.left - offsetBoder, mFocusFrameRect.top, mFocusFrameRect.left + offsetBoder, mFocusFrameRect.top + mCornerLength, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left - offsetBorder, mFocusFrameRect.top - offsetBorder, mFocusFrameRect.left + mCornerLength, mFocusFrameRect.top + offsetBorder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left - offsetBorder, mFocusFrameRect.top, mFocusFrameRect.left + offsetBorder, mFocusFrameRect.top + mCornerLength, mCornerPaint);
 
         //绘制左下角
-        canvas.drawRect(mFocusFrameRect.left - offsetBoder, mFocusFrameRect.bottom - offsetBoder, mFocusFrameRect.left + mCornerLength, mFocusFrameRect.bottom + offsetBoder, mCornerPaint);
-        canvas.drawRect(mFocusFrameRect.left - offsetBoder, mFocusFrameRect.bottom - mCornerLength, mFocusFrameRect.left + offsetBoder, mFocusFrameRect.bottom + offsetBoder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left - offsetBorder, mFocusFrameRect.bottom - offsetBorder, mFocusFrameRect.left + mCornerLength, mFocusFrameRect.bottom + offsetBorder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left - offsetBorder, mFocusFrameRect.bottom - mCornerLength, mFocusFrameRect.left + offsetBorder, mFocusFrameRect.bottom + offsetBorder, mCornerPaint);
 
         //绘制右上角
-        canvas.drawRect(mFocusFrameRect.right - mCornerLength, mFocusFrameRect.top - offsetBoder, mFocusFrameRect.right + offsetBoder, mFocusFrameRect.top + offsetBoder, mCornerPaint);
-        canvas.drawRect(mFocusFrameRect.right - offsetBoder, mFocusFrameRect.top - offsetBoder, mFocusFrameRect.right + offsetBoder, mFocusFrameRect.top + mCornerLength, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.right - mCornerLength, mFocusFrameRect.top - offsetBorder, mFocusFrameRect.right + offsetBorder, mFocusFrameRect.top + offsetBorder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.right - offsetBorder, mFocusFrameRect.top - offsetBorder, mFocusFrameRect.right + offsetBorder, mFocusFrameRect.top + mCornerLength, mCornerPaint);
 
         //绘制右下角
-        canvas.drawRect(mFocusFrameRect.right - mCornerLength, mFocusFrameRect.bottom - offsetBoder, mFocusFrameRect.right + offsetBoder, mFocusFrameRect.bottom + offsetBoder, mCornerPaint);
-        canvas.drawRect(mFocusFrameRect.right - offsetBoder, mFocusFrameRect.bottom - mCornerLength, mFocusFrameRect.right + offsetBoder, mFocusFrameRect.bottom + offsetBoder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.right - mCornerLength, mFocusFrameRect.bottom - offsetBorder, mFocusFrameRect.right + offsetBorder, mFocusFrameRect.bottom + offsetBorder, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.right - offsetBorder, mFocusFrameRect.bottom - mCornerLength, mFocusFrameRect.right + offsetBorder, mFocusFrameRect.bottom + offsetBorder, mCornerPaint);
     }
 
     /**
@@ -193,13 +218,13 @@ public class CutScannerView extends View {
      */
     private void drawAroundLine(Canvas canvas) {
         // 上
-        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.top, mFocusFrameRect.right, mFocusFrameRect.top + mRedLine, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.top, mFocusFrameRect.right, mFocusFrameRect.top + mBoundLine, mCornerPaint);
         // 下
-        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.bottom - mRedLine, mFocusFrameRect.right, mFocusFrameRect.bottom, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.bottom - mBoundLine, mFocusFrameRect.right, mFocusFrameRect.bottom, mCornerPaint);
         // 左
-        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.top, mFocusFrameRect.left + mRedLine, mFocusFrameRect.bottom, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.left, mFocusFrameRect.top, mFocusFrameRect.left + mBoundLine, mFocusFrameRect.bottom, mCornerPaint);
         // 右
-        canvas.drawRect(mFocusFrameRect.right - mRedLine, mFocusFrameRect.top, mFocusFrameRect.right, mFocusFrameRect.bottom, mCornerPaint);
+        canvas.drawRect(mFocusFrameRect.right - mBoundLine, mFocusFrameRect.top, mFocusFrameRect.right, mFocusFrameRect.bottom, mCornerPaint);
 
     }
 
@@ -232,7 +257,7 @@ public class CutScannerView extends View {
                 downClick(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isUse) {
+                if (isUseEven) {
                     int endX = (int) event.getX();
                     int endY = (int) event.getY();
                     int needMove = 10;
@@ -242,18 +267,19 @@ public class CutScannerView extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (isUse && isScaleOriginal) {
-                    postDelayed(new AutoScaleRunnable(mDrection), 16);
+                if (isUseEven && isScaleOriginal) {
+                    postDelayed(new AutoScaleRunnable(mDirection), 16);
                 }
-                isUse = false;
-                mDrection = Position.DEFAULT;
+                isUseEven = false;
+                mDirection = Position.DEFAULT;
+                invalidate();
                 break;
 
             default:
                 break;
         }
         // 消费此事件
-        if (isUse) {
+        if (isUseEven) {
             return true;
         }
         return super.onTouchEvent(event);
@@ -288,8 +314,8 @@ public class CutScannerView extends View {
     private int isCanDragLR(int endX) {
         Log.e(TAG, "endX：" + endX);
         //最小宫格长度为1/4 不能移动
-        int minWH = mFocusFrameWh / 4;
-        switch (mDrection) {
+        int minWH = mFocusFrameWidth / 4;
+        switch (mDirection) {
             //左侧
             case LEFTTOP:
             case LEFTBOTTOM:
@@ -300,8 +326,8 @@ public class CutScannerView extends View {
                 if (endX < mFocusFrameLt) {
                     return mFocusFrameLt;
                 }
-                if (endX > mFocusFrameLt + mFocusFrameWh - minWH) {
-                    return mFocusFrameLt + mFocusFrameWh - minWH;
+                if (endX > mFocusFrameLt + mFocusFrameWidth - minWH) {
+                    return mFocusFrameLt + mFocusFrameWidth - minWH;
                 }
                 break;
             //右侧
@@ -314,8 +340,8 @@ public class CutScannerView extends View {
                 if (endX < mFocusFrameLt + minWH) {
                     return mFocusFrameLt + minWH;
                 }
-                if (endX > mFocusFrameLt + mFocusFrameWh) {
-                    return mFocusFrameLt + mFocusFrameWh;
+                if (endX > mFocusFrameLt + mFocusFrameWidth) {
+                    return mFocusFrameLt + mFocusFrameWidth;
                 }
                 break;
             default:
@@ -331,10 +357,10 @@ public class CutScannerView extends View {
     private int isCanDragTB(int endY) {
 
         //最小宫格长度为1/4 不能移动
-        int minWH = mFocusFrameWh / 4;
+        int minWH = mFocusFrameWidth / 4;
         // 右滑
         Log.e(TAG, "endY：" + endY);
-        switch (mDrection) {
+        switch (mDirection) {
             //上侧
             case LEFTTOP:
             case RIGHTTOP:
@@ -345,8 +371,8 @@ public class CutScannerView extends View {
                 if (endY < mFocusFrameTp) {
                     return mFocusFrameTp;
                 }
-                if (endY > mFocusFrameTp + mFocusFrameWh - minWH) {
-                    return mFocusFrameTp + mFocusFrameWh - minWH;
+                if (endY > mFocusFrameTp + mFocusFrameWidth - minWH) {
+                    return mFocusFrameTp + mFocusFrameWidth - minWH;
                 }
                 break;
             //下侧
@@ -359,8 +385,8 @@ public class CutScannerView extends View {
                 if (endY < mFocusFrameTp + minWH) {
                     return mFocusFrameTp + minWH;
                 }
-                if (endY > mFocusFrameTp + mFocusFrameWh) {
-                    return mFocusFrameTp + mFocusFrameWh;
+                if (endY > mFocusFrameTp + mFocusFrameWidth) {
+                    return mFocusFrameTp + mFocusFrameWidth;
                 }
                 break;
             default:
@@ -384,23 +410,23 @@ public class CutScannerView extends View {
             if (x < mFocusFrameRect.left + mAddClickSize &&
                     y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
                 Log.e(TAG, "左上角");
-                isUse = true;
-                mDrection = Position.LEFTTOP;
+                isUseEven = true;
+                mDirection = Position.LEFTTOP;
             } else if (x > mFocusFrameRect.right - mAddClickSize &&
                     y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
                 Log.e(TAG, "右上角");
-                isUse = true;
-                mDrection = Position.RIGHTTOP;
+                isUseEven = true;
+                mDirection = Position.RIGHTTOP;
             } else if (x < mFocusFrameRect.left + mAddClickSize &&
                     y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
                 Log.e(TAG, "左下角");
-                isUse = true;
-                mDrection = Position.LEFTBOTTOM;
+                isUseEven = true;
+                mDirection = Position.LEFTBOTTOM;
             } else if (x > mFocusFrameRect.right - mAddClickSize &&
                     y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
                 Log.e(TAG, "右下角");
-                isUse = true;
-                mDrection = Position.RIGHTBOTTM;
+                isUseEven = true;
+                mDirection = Position.RIGHTBOTTM;
             }
             mStartX = x;
             mStartY = y;
@@ -416,24 +442,24 @@ public class CutScannerView extends View {
      */
     private void resetDraw(int offsetX, int offsetY) {
         int offset;
-        switch (mDrection) {
+        switch (mDirection) {
             case LEFTTOP:
-                offset = offsetX - mFocusFrameRect.left;
+                offset = (int) ((offsetX - mFocusFrameRect.left) * mAspectRatio);
                 mFocusFrameRect.left = offsetX;
                 mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top + offset;
                 break;
             case RIGHTTOP:
-                offset = offsetX - mFocusFrameRect.right;
+                offset = (int) ((offsetX - mFocusFrameRect.right) * mAspectRatio);
                 mFocusFrameRect.right = offsetX;
                 mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top - offset;
                 break;
             case LEFTBOTTOM:
-                offset = offsetX - mFocusFrameRect.left;
+                offset = (int) ((offsetX - mFocusFrameRect.left) * mAspectRatio);
                 mFocusFrameRect.left = offsetX;
                 mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom - offset;
                 break;
             case RIGHTBOTTM:
-                offset = offsetX - mFocusFrameRect.right;
+                offset = (int) ((offsetX - mFocusFrameRect.right) * mAspectRatio);
                 mFocusFrameRect.right = offsetX;
                 mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom + offset;
                 break;
@@ -444,77 +470,124 @@ public class CutScannerView extends View {
     }
 
     /**
+     * 获取指定区域图片
+     *
+     * @return 截图
+     */
+    public Bitmap getBitmap(ZoomImageView imageView) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = imageView.getDrawingCache();
+            RectF imageRectF = imageView.getMatrixRectF();
+            RectF borderRectF = new RectF(mFocusFrameRect);
+            if (imageRectF == null) {
+                return null;
+            }
+            RectF finalRectF = new RectF();
+            if (finalRectF.setIntersect(imageRectF, borderRectF)) {
+                return Bitmap.createBitmap(bitmap, (int) getX(),
+                        (int) getY(),
+                        (int) finalRectF.width(),
+                        (int) finalRectF.height());
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bitmap != null) {
+                bitmap.recycle();
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * 自动还原
      */
     private class AutoScaleRunnable implements Runnable {
-        private Position mDrection;
+        private Position mDirection;
 
-        public AutoScaleRunnable(Position drection) {
-            this.mDrection = drection;
+        public AutoScaleRunnable(Position direction) {
+            this.mDirection = direction;
         }
 
         @Override
         public void run() {
             int reduce = 10;
+            int reduceX = 10;
+            int reduceY = 10;
             if (mFocusFrameRect.left != mFocusFrameLt || mFocusFrameRect.top != mFocusFrameTp ||
-                    mFocusFrameRect.right != mFocusFrameLt + mFocusFrameWh ||
-                    mFocusFrameRect.bottom != mFocusFrameTp + mFocusFrameWh) {
+                    mFocusFrameRect.right != mFocusFrameLt + mFocusFrameWidth ||
+                    mFocusFrameRect.bottom != mFocusFrameTp + mFocusFrameHeight) {
                 mFocusFrameRect.left -= reduce;
                 mFocusFrameRect.top -= reduce;
                 mFocusFrameRect.right += reduce;
                 mFocusFrameRect.bottom += reduce;
                 if (mFocusFrameRect.left < mFocusFrameLt) {
+                    if (mFocusFrameLt - mFocusFrameRect.left != reduce) {
+                        reduceX = reduce - (mFocusFrameLt - mFocusFrameRect.left);
+                    }
                     mFocusFrameRect.left = mFocusFrameLt;
                 }
                 if (mFocusFrameRect.top < mFocusFrameTp) {
+                    if (mFocusFrameTp - mFocusFrameRect.top != reduce) {
+                        reduceY = reduce - (mFocusFrameTp - mFocusFrameRect.top);
+                    }
                     mFocusFrameRect.top = mFocusFrameTp;
                 }
-                if (mFocusFrameRect.right > mFocusFrameLt + mFocusFrameWh) {
-                    mFocusFrameRect.right = mFocusFrameLt + mFocusFrameWh;
+                if (mFocusFrameRect.right > mFocusFrameLt + mFocusFrameWidth) {
+                    if (mFocusFrameRect.right - (mFocusFrameLt + mFocusFrameWidth) != reduce) {
+                        reduceX = reduce - (mFocusFrameRect.right - (mFocusFrameLt + mFocusFrameWidth));
+                    }
+                    mFocusFrameRect.right = mFocusFrameLt + mFocusFrameWidth;
                 }
-                if (mFocusFrameRect.bottom > mFocusFrameTp + mFocusFrameWh) {
-                    mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameWh;
+                if (mFocusFrameRect.bottom > mFocusFrameTp + mFocusFrameHeight) {
+                    if (mFocusFrameRect.bottom - (mFocusFrameTp + mFocusFrameHeight) != reduce) {
+                        reduceY = reduce - (mFocusFrameRect.bottom - (mFocusFrameTp + mFocusFrameHeight));
+                    }
+                    mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameHeight;
                 }
-                scaleBack(mDrection, reduce);
                 postDelayed(this, 10);
                 invalidate();
-            }
 
+            }
+            float scaleX = 1 + (float) reduceX / (float) (mFocusFrameRect.right-mFocusFrameRect.left);
+            float scaleY = 1 + (float) reduceY / (float) (mFocusFrameRect.bottom-mFocusFrameRect.top);
+            scaleBack(mDirection, scaleX, scaleY);
         }
     }
 
     /**
      * 还原九宫格监听
      *
-     * @param mDrection
-     * @param reduce
+     * @param direction
      */
-    private void scaleBack(Position mDrection, int reduce) {
-        float scale = 1 + (float) reduce / mFocusFrameWh;
-        int x = mFocusFrameLt;
-        int y = mFocusFrameTp;
-        switch (mDrection) {
+    private void scaleBack(Position direction, float scaleX, float scaleY) {
+        float x = mFocusFrameLt;
+        float y = mFocusFrameTp;
+        switch (direction) {
             case RIGHTBOTTM:
-                x = mFocusFrameLt;
-                y = mFocusFrameTp;
+                x = getLeft()+mFocusFrameLt;
+                y = getTop()-mFocusFrameTp;
                 break;
             case LEFTBOTTOM:
-                x = mFocusFrameLt + mFocusFrameWh;
-                y = mFocusFrameTp;
+                x = getRight()-mFocusFrameLt;
+                y = getTop()-mFocusFrameTp;
                 break;
             case RIGHTTOP:
-                x = mFocusFrameLt;
-                y = mFocusFrameTp + mFocusFrameWh;
+                x = getLeft()+mFocusFrameLt;
+                y = getBottom()-mFocusFrameTp;
                 break;
             case LEFTTOP:
-                x = mFocusFrameLt + mFocusFrameWh;
-                y = mFocusFrameTp + mFocusFrameWh;
+                x = getRight()-mFocusFrameLt;
+                y = getBottom()-mFocusFrameTp;
                 break;
             default:
                 break;
         }
         if (mScaleListener != null) {
-            mScaleListener.scaleListener(scale, scale, (float) x, (float) y);
+            mScaleListener.scaleListener(scaleX, scaleY, x, y);
         }
     }
 

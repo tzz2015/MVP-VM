@@ -227,8 +227,10 @@
     <dimen name="cut_scanner_iv_margin_top">55.77dp</dimen>
     <dimen name="cut_scanner_sv_margin_left">19.23dp</dimen>
     <dimen name="cut_scanner_sv_corner_width">17.31dp</dimen>
-    <dimen name="cut_scanner_sv_corner_thick">2.40dp</dimen>
+    <dimen name="cut_scanner_sv_corner_thick">2.88dp</dimen>
     <dimen name="cut_scanner_notice_margin_top">-32.69dp</dimen>
+    <dimen name="common_cut_scanner_line">0.72dp</dimen>
+
 
 
     <!--payment code activity-->
@@ -514,6 +516,10 @@
     <dimen name="sales_owner_icon_h">25.96dp</dimen>
     <dimen name="sales_owner_icon_w">81.73dp</dimen>
 
-
+    <!--OwnerCutActivity-->
+    <dimen name="owner_cut_scanner_margin_left">55.29dp</dimen>
+    <dimen name="owner_cut_scanner_wh">250.00dp</dimen>
+    <dimen name="owner_cut_scanner_margin_t">156.73dp</dimen>
+    <dimen name="owner_cut_scanner_bottom_rl_height">48.08dp</dimen>
 
 </resources>

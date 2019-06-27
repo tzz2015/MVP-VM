@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ProgressWheel">
+        <attr name="matProg_progressIndeterminate" format="boolean"/>
+        <attr name="matProg_barColor" format="color"/>
+        <attr name="matProg_rimColor" format="color"/>
+        <attr name="matProg_rimWidth" format="dimension"/>
+        <attr name="matProg_spinSpeed" format="float"/>
+        <attr name="matProg_barSpinCycleTime" format="integer"/>
+        <attr name="matProg_circleRadius" format="dimension"/>
+        <attr name="matProg_fillRadius" format="boolean"/>
+        <attr name="matProg_barWidth" format="dimension"/>
+        <attr name="matProg_linearProgress" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="WheelView">
+        <attr name="WheelView_gravity">
+            <enum name="center" value="17"/>
+            <enum name="left" value="3"/>
+            <enum name="right" value="5"/>
+        </attr>
+        <attr name="WheelView_textSize" format="dimension"/>
+        <attr name="WheelView_textColorOut" format="color"/>
+        <attr name="WheelView_textColorCenter" format="color"/>
+        <attr name="WheelView_dividerColor" format="color"/>
+        <attr name="WheelView_lineSpacingMultiplier" format="float"/>
+        <attr name="WheelView_bgColorCenter" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="FsRecyclerView">
+        <attr name="pull_refresh_enabled" format="boolean"/>
+        <attr name="loading_more_enabled" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CommonSelectBarMenuView">
+        <attr name="left_title_value" format="string"/>
+        <attr name="right_title_hide_value" format="string"/>
+        <attr name="right_title_value" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="CommonFailReasonItemView">
+        <attr name="title_value" format="string"/>
+    </declare-styleable>
+
+    <!--自定义阴影-->
+    <declare-styleable name="ShadowContainer">
+        <!--设置阴影颜色-->
+        <attr name="containerShadowColor" format="color"/>
+        <!--设置阴影的扩展距离-->
+        <attr name="containerShadowRadius" format="dimension"/>
+        <!--设置子View到ShadowContainer的距离-->
+        <attr name="containerDeltaLength" format="dimension"/>
+        <!--设置子View背景的圆角大小-->
+        <attr name="containerCornerRadius" format="dimension"/>
+        <attr name="deltaX" format="dimension"/>
+        <attr name="deltaY" format="dimension"/>
+        <attr name="enable" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CutScannerView">
+        <!--修饰边长-->
+        <attr name="cut_scanner_sv_corner_width" format="integer"/>
+        <!--修饰边厚度-->
+        <attr name="cut_scanner_sv_corner_thick" format="integer"/>
+        <!--四周线的厚度-->
+        <attr name="common_cut_scanner_line" format="integer"/>
+        <!--宫格线宽度-->
+        <attr name="common_cut_grid_line" format="integer"/>
+    </declare-styleable>
+
+</resources>

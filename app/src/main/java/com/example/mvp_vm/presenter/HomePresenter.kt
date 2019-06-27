@@ -53,7 +53,7 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      */
     fun toCutActivity() {
         val intent= Intent(getContext(), CutImgActivity::class.java)
-        getContext()?.startActivity(intent)
+        getContext()?.startActivityForResult(intent, 1)
     }
 
 

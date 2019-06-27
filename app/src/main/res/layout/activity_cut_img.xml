@@ -49,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:ellipsize="end"
-                    android:maxLines="1"
                     android:maxWidth="@dimen/common_toolbar_title_tv_max_width"
+                    android:maxLines="1"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/size_36" />
 
@@ -68,60 +68,57 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-
-    <com.example.mvp_vm.widget.ZoomImageView
-            android:id="@+id/drop_zv"
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/ab"
-            android:layout_below="@+id/toolbar"
-            android:layout_centerHorizontal="true"/>
+            android:layout_above="@+id/owner_cut_scanner_bottom_rl"
+            android:layout_below="@+id/toolbar">
+
+        <com.example.mvp_vm.widget.ZoomImageView
+                android:id="@+id/drop_zv"
+                android:src="@mipmap/ab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true" />
 
 
-    <com.example.mvp_vm.widget.CutScannerView
-            android:id="@+id/scanner_sv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_centerHorizontal="true" />
+        <com.example.mvp_vm.widget.CutScannerView
+                android:id="@+id/scanner_sv"
+                android:layout_width="@dimen/cut_scanner_iv_wh"
+                android:layout_height="@dimen/cut_scanner_iv_wh"
+                android:layout_centerInParent="true"/>
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/drop_zv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/cut_scanner_notice_margin_top"
-            android:text="@string/suggest_save_code"
-            android:textColor="@color/common_white"
-            android:textSize="@dimen/size_28" />
+    </RelativeLayout>
 
-    <TextView
-            android:id="@+id/finish_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="@dimen/common_margin_25"
-            android:paddingLeft="@dimen/common_margin_40"
-            android:paddingRight="@dimen/common_margin_40"
-            android:paddingTop="@dimen/common_margin_40"
-            android:text="@string/common_finish"
-            android:textColor="@color/common_white"
-            android:textSize="@dimen/size_36" />
 
-    <TextView
-            android:id="@+id/cancel_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:paddingBottom="@dimen/common_margin_25"
-            android:paddingLeft="@dimen/common_margin_40"
-            android:paddingRight="@dimen/common_margin_40"
-            android:paddingTop="@dimen/common_margin_40"
-            android:text="@string/common_cancel"
-            android:textColor="@color/common_white"
-            android:textSize="@dimen/size_36" />
+    <RelativeLayout
+            android:id="@+id/owner_cut_scanner_bottom_rl"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/owner_cut_scanner_bottom_rl_height"
+            android:layout_alignParentBottom="true">
 
+        <TextView
+                android:id="@+id/change_one_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_margin_30"
+                android:text="@string/owner_cut_change_one_pic"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/size_36" />
+
+        <TextView
+                android:id="@+id/finish_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/common_margin_30"
+                android:text="@string/common_confirm"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/size_36" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -1,11 +1,17 @@
 package com.example.mvp_vm
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Environment
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.databinding.ActivityMainBinding
 import com.example.mvp_vm.presenter.HomePresenter
 import com.example.mvp_vm.view.HomeView
+import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.io.FileInputStream
 
 class MainActivity : BaseActivity(), HomeView {
 
@@ -25,6 +31,20 @@ class MainActivity : BaseActivity(), HomeView {
     override fun onDestroy() {
         super.onDestroy()
         mPresenter.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+        if (outFile.exists()) {
+            try {
+                val fileInputStream = FileInputStream(outFile)
+                val bitmap = BitmapFactory.decodeStream(fileInputStream)
+                iv_show.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
 }
