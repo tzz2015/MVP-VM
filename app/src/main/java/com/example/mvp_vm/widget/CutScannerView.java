@@ -485,8 +485,12 @@ public class CutScannerView extends View {
             }
             RectF finalRectF = new RectF();
             if (finalRectF.setIntersect(imageRectF, borderRectF)) {
-                return Bitmap.createBitmap(bitmap, (int) getX(),
-                        (int) getY(),
+                Log.e(TAG, "finalRectF___left:" + finalRectF.left + "--:" + finalRectF.top);
+                Log.e(TAG, "finalRectF___XY:" + getX() + "--:" + getY());
+
+                return Bitmap.createBitmap(bitmap,
+                        (int) finalRectF.left > (int) getX() ? (int) finalRectF.left : (int) getX(),
+                        (int) finalRectF.top > (int) getY() ? (int) finalRectF.top : (int) getY(),
                         (int) finalRectF.width(),
                         (int) finalRectF.height());
             }
@@ -552,8 +556,8 @@ public class CutScannerView extends View {
                 invalidate();
 
             }
-            float scaleX = 1 + (float) reduceX / (float) (mFocusFrameRect.right-mFocusFrameRect.left);
-            float scaleY = 1 + (float) reduceY / (float) (mFocusFrameRect.bottom-mFocusFrameRect.top);
+            float scaleX = 1 + (float) reduceX / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
+            float scaleY = 1 + (float) reduceY / (float) (mFocusFrameRect.bottom - mFocusFrameRect.top);
             scaleBack(mDirection, scaleX, scaleY);
         }
     }
@@ -568,20 +572,20 @@ public class CutScannerView extends View {
         float y = mFocusFrameTp;
         switch (direction) {
             case RIGHTBOTTM:
-                x = getLeft()+mFocusFrameLt;
-                y = getTop()-mFocusFrameTp;
+                x = getLeft() + mFocusFrameLt;
+                y = getTop() - mFocusFrameTp;
                 break;
             case LEFTBOTTOM:
-                x = getRight()-mFocusFrameLt;
-                y = getTop()-mFocusFrameTp;
+                x = getRight() - mFocusFrameLt;
+                y = getTop() - mFocusFrameTp;
                 break;
             case RIGHTTOP:
-                x = getLeft()+mFocusFrameLt;
-                y = getBottom()-mFocusFrameTp;
+                x = getLeft() + mFocusFrameLt;
+                y = getBottom() - mFocusFrameTp;
                 break;
             case LEFTTOP:
-                x = getRight()-mFocusFrameLt;
-                y = getBottom()-mFocusFrameTp;
+                x = getRight() - mFocusFrameLt;
+                y = getBottom() - mFocusFrameTp;
                 break;
             default:
                 break;
