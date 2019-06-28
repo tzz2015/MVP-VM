@@ -33,6 +33,7 @@ class CutImgActivity : BaseActivity() {
         finish_tv.setOnClickListener {
             saveBitmap()
         }
+        scanner_sv.setAspectRatio(0.8f)
 
 
     }
@@ -71,6 +72,9 @@ class CutImgActivity : BaseActivity() {
             val outFile = File(URI(mOutFileUri.toString()))
             fileOutputStream = FileOutputStream(outFile)
             bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            val width = bitmap.width
+            val height = bitmap.height
+            Log.e(TAG, "width:$width ----height:$height")
             fileOutputStream.flush()
             fileOutputStream.close()
         } catch (e: Exception) {
