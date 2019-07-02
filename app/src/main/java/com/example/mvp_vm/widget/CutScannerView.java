@@ -71,6 +71,7 @@ public class CutScannerView extends View {
      * 宽高比 等比缩放裁剪框  =高/宽
      */
     private float mAspectRatio = 1.0f;
+    private Rect mViewRect;
 
     enum Position {
         /**
@@ -450,24 +451,24 @@ public class CutScannerView extends View {
         int offset;
         switch (mDirection) {
             case LEFTTOP:
-                offset = (int) ((offsetX - mFocusFrameRect.left) * mAspectRatio + 0.5);
+                offset = (int) ((offsetX - mFocusFrameLt) * mAspectRatio + 0.5);
                 mFocusFrameRect.left = offsetX;
-                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top + offset;
+                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameTp + offset;
                 break;
             case RIGHTTOP:
-                offset = (int) ((offsetX - mFocusFrameRect.right) * mAspectRatio + 0.5);
+                offset = (int) ((offsetX - mFocusFrameLt - mFocusFrameWidth) * mAspectRatio + 0.5);
                 mFocusFrameRect.right = offsetX;
-                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameRect.top - offset;
+                mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameTp - offset;
                 break;
             case LEFTBOTTOM:
-                offset = (int) ((offsetX - mFocusFrameRect.left) * mAspectRatio + 0.5);
+                offset = (int) ((offsetX - mFocusFrameLt) * mAspectRatio + 0.5);
                 mFocusFrameRect.left = offsetX;
-                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom - offset;
+                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameTp + mFocusFrameHeight - offset;
                 break;
             case RIGHTBOTTM:
-                offset = (int) ((offsetX - mFocusFrameRect.right) * mAspectRatio + 0.5);
+                offset = (int) ((offsetX - mFocusFrameLt - mFocusFrameWidth) * mAspectRatio + 0.5);
                 mFocusFrameRect.right = offsetX;
-                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameRect.bottom + offset;
+                mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameTp + mFocusFrameHeight + offset;
                 break;
             default:
                 break;
@@ -491,8 +492,6 @@ public class CutScannerView extends View {
             }
             RectF finalRectF = new RectF();
             if (finalRectF.setIntersect(imageRectF, borderRectF)) {
-                Log.e(TAG, "cut_width:" + getWidth() + "----cut_height:" + getHeight());
-                Log.e(TAG, "RectF_width:" + finalRectF.width() + "----RectF_height:" + finalRectF.height());
                 return Bitmap.createBitmap(bitmap,
                         (int) finalRectF.left > (int) getX() ? (int) finalRectF.left : (int) getX(),
                         (int) finalRectF.top > (int) getY() ? (int) finalRectF.top : (int) getY(),
@@ -588,6 +587,32 @@ public class CutScannerView extends View {
             mScaleListener.scaleListener(scaleX, scaleY, x, y);
         }
     }
+
+    /**
+     * 将该view的位置信息提供出去
+     * 改方法最view绘制完成后获取
+     */
+    public Rect getViewRect() {
+        if (mViewRect == null) {
+            mViewRect = new Rect();
+        }
+        if (isScaleOriginal) {
+            mViewRect.left = getLeft() + mFocusFrameLt;
+            mViewRect.top = getTop() + mFocusFrameTp;
+            mViewRect.right = getRight() - mFocusFrameLt;
+            mViewRect.bottom = getBottom() - mFocusFrameTp;
+        } else {
+            if (mFocusFrameRect != null) {
+                mViewRect.left = getLeft() + mFocusFrameRect.left;
+                mViewRect.top = getTop() + mFocusFrameRect.top;
+                mViewRect.right = getLeft() + (mFocusFrameRect.right - mFocusFrameRect.left);
+                mViewRect.bottom = getTop() + (mFocusFrameRect.bottom - mFocusFrameRect.top);
+            }
+        }
+
+        return mViewRect;
+    }
+
 
     public void setScaleListener(PostScaleListener listener) {
         this.mScaleListener = listener;

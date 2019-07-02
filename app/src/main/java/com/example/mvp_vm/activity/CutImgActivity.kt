@@ -33,7 +33,10 @@ class CutImgActivity : BaseActivity() {
         finish_tv.setOnClickListener {
             saveBitmap()
         }
-        scanner_sv.setAspectRatio(0.8f)
+        scanner_sv.postDelayed({
+            val viewRect = scanner_sv.viewRect
+            drop_zv.setControlRect(viewRect)
+        }, 100)
 
 
     }

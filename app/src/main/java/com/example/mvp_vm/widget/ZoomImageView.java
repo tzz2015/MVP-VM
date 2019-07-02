@@ -4,12 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.*;
 import com.example.mvp_vm.R;
+import com.example.mvp_vm.utils.Utils;
 
 /**
  * @author lyf
@@ -17,6 +22,7 @@ import com.example.mvp_vm.R;
 public class ZoomImageView extends AppCompatImageView implements ViewTreeObserver.OnGlobalLayoutListener
         , View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
 
+    private static final String TAG = "ZoomImageView";
     private boolean isInit;
 
 
@@ -61,11 +67,9 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     private boolean isCheckTopAndBottom;
 
     /**
-     * 实现双击放大与缩小
-     * */
-    private GestureDetector mGestureDetector;
-    private boolean isScaling;
-    private OnClickListener onClickListener;
+     * 限定图片显示的区域
+     */
+    private Rect mControlRect;
 
 
     public ZoomImageView(Context context) {
@@ -90,34 +94,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         setBackgroundResource(R.color.common_transparent);
         mMatrix = new Matrix();
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
-        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                if (isScaling || getScale() >= mMaxScale) {
-                    return true;
-                }
-                isScaling = true;
-                float x = e.getX();
-                float y = e.getY();
-
-                if (getScale() < mMidScale) {
-                    postDelayed(new AutoScaleRunnable(mMidScale, x, y), 16);
-                } else {
-                    postDelayed(new AutoScaleRunnable(mMinScale, x, y), 16);
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (onClickListener != null) {
-                    onClickListener.onClick(ZoomImageView.this);
-                    return true;
-                }
-                return false;
-            }
-        });
         setOnTouchListener(this);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
@@ -170,9 +146,44 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 mMatrix.postScale(scale, scale, x, y);
                 checkBorderAndCenterWhenScale();
                 setImageMatrix(mMatrix);
-                isScaling = false;
+
             }
         }
+    }
+
+    private class AutoTranslateRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            if (mControlRect == null) {
+                return;
+            }
+            RectF matrixRectF = getMatrixRectF();
+            float dx = 0;
+            float dy = 0;
+            if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
+                dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -5 : -1;
+            }
+            if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
+                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -5 : -1;
+            }
+            if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
+                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? 5 : 1;
+            }
+            if (Utils.intToFloat(matrixRectF.bottom) < mControlRect.bottom) {
+                dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? 5 : 1;
+            }
+            mMatrix.postTranslate(dx, dy);
+            setImageMatrix(mMatrix);
+            if (dx != 0 || dy != 0) {
+                Log.e(TAG, "dx:" + dx + "--dy:" + dy);
+                postDelayed(this, 16);
+            }
+        }
+    }
+
+    private boolean isMinReduce(float x, float y) {
+        return Math.abs(x - y) > 5;
     }
 
 
@@ -196,72 +207,126 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             return;
         }
         if (!isInit) {
-            int width = getWidth();
-            int height = getHeight();
-            float screenWeight = height * 1.0f / width;
-            // 图片高度
-            int imageH = getDrawable().getIntrinsicHeight();
-            // 图片宽度
-            int imageW = getDrawable().getIntrinsicWidth();
-            float imageWeight = imageH * 1.0f / imageW;
-            //如果当前屏幕高宽比 大于等于 图片高宽比,就缩放图片
-            if (screenWeight >= imageWeight) {
-                float scale = 1.0f;
-                //图片比当前View宽,但是比当前View矮
-                if (imageW > width && imageH < height) {
-                    // 图片宽度
-                    scale = width * 1.0f / imageW;
-                }
+            toCenter();
+            if (mControlRect != null) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        correctOverBorder();
+                    }
+                }, 100);
+            }
 
-                //图片比当前View窄,但是比当前View高
-                if (imageH > height && imageW < width) {
-                    //根据高度缩放
-                    scale = height * 1.0f / imageH;
-                }
 
-                //图片高宽都大于当前View,那么就根据最小的缩放值来缩放
-                if (imageH > height && imageW > width) {
-                    scale = Math.min(width * 1.0f / imageW, height * 1.0f / imageH);
-                }
+        }
+    }
 
-                if (imageH < height && imageW < width) {
-                    scale = Math.min(width * 1.0f / imageW, height * 1.0f / imageH);
-                }
+    /**
+     * 将图片居中显示
+     * 原有逻辑
+     */
+    private void toCenter() {
+        int width = getWidth();
+        int height = getHeight();
+        float screenWeight = height * 1.0f / width;
+        // 图片高度
+        int imageH = getDrawable().getIntrinsicHeight();
+        // 图片宽度
+        int imageW = getDrawable().getIntrinsicWidth();
+        float imageWeight = imageH * 1.0f / imageW;
+        //如果当前屏幕高宽比 大于等于 图片高宽比,就缩放图片
+        if (screenWeight >= imageWeight) {
+            float scale = 1.0f;
+            //图片比当前View宽,但是比当前View矮
+            if (imageW > width && imageH < height) {
+                // 图片宽度
+                scale = width * 1.0f / imageW;
+            }
 
-                /**
-                 * 设置缩放比率
-                 */
+            //图片比当前View窄,但是比当前View高
+            if (imageH > height && imageW < width) {
+                //根据高度缩放
+                scale = height * 1.0f / imageH;
+            }
+
+            //图片高宽都大于当前View,那么就根据最小的缩放值来缩放
+            if (imageH > height && imageW > width) {
+                scale = Math.min(width * 1.0f / imageW, height * 1.0f / imageH);
+            }
+
+            if (imageH < height && imageW < width) {
+                scale = Math.min(width * 1.0f / imageW, height * 1.0f / imageH);
+            }
+
+            /**
+             * 设置缩放比率
+             */
                /* mMinScale = scale;
                 mMidScale = mMinScale * 2;
                 mMaxScale = mMinScale * 4;*/
-                /**
-                 * 把图片移动到中心点去
-                 */
-                int dx = getWidth() / 2 - imageW / 2;
-                int dy = getHeight() / 2 - imageH / 2;
+            /**
+             * 把图片移动到中心点去
+             */
+            int dx = getWidth() / 2 - imageW / 2;
+            int dy = getHeight() / 2 - imageH / 2;
 
-                /**
-                 * 设置缩放(全图浏览模式,用最小的缩放比率去查看图片就好了)/移动位置
-                 */
-                mMatrix.postTranslate(dx, dy);
-                mMatrix.postScale(scale, scale, width >> 1, height >> 1);
-            } else {
+            /**
+             * 设置缩放(全图浏览模式,用最小的缩放比率去查看图片就好了)/移动位置
+             */
+            mMatrix.postTranslate(dx, dy);
+            mMatrix.postScale(scale, scale, width >> 1, height >> 1);
+        } else {
 
-                float scale = width * 1.0f / imageW;
-                /**
-                 * 设置缩放比率
-                 */
-                mMaxScale = scale;
-                mMidScale = mMaxScale / 2;
-                mMinScale = mMaxScale / 4;
+            float scale = width * 1.0f / imageW;
+            /**
+             * 设置缩放比率
+             */
+            mMaxScale = scale;
+            mMidScale = mMaxScale / 2;
+            mMinScale = mMaxScale / 4;
 
-                //因为是长图浏览,所以用最大的缩放比率去加载长图
-                mMatrix.postScale(mMaxScale, mMaxScale, 0, 0);
-            }
-
-            setImageMatrix(mMatrix);
-            isInit = true;
+            //因为是长图浏览,所以用最大的缩放比率去加载长图
+            mMatrix.postScale(mMaxScale, mMaxScale, 0, 0);
         }
+        setImageMatrix(mMatrix);
+        isInit = true;
+    }
+
+    /**
+     * 溢出边界修正
+     */
+    private void correctOverBorder() {
+        if (mControlRect == null) {
+            return;
+        }
+        // 指定边界宽高
+        int controlWidth = mControlRect.right - mControlRect.left;
+        int controlHeight = mControlRect.bottom - mControlRect.top;
+        RectF matrixRectF = getMatrixRectF();
+        // 图片高度
+        int imageHeight = (int) (matrixRectF.height() + 0.5);
+        // 图片宽度
+        int imageWidth = (int) (matrixRectF.width() + 0.5);
+
+        float scale = 0;
+
+        if (controlHeight > imageHeight && controlWidth < imageWidth) {
+            // 指定边界高度大于当前图片高度 放大图片高度
+            scale = controlHeight * 1.0f / imageHeight;
+        } else if (controlWidth > imageWidth && controlHeight < imageHeight) {
+            // 指定边界宽度大于当前图片宽度 放大图片宽度
+            scale = controlWidth * 1.0f / controlWidth;
+        } else if (controlHeight > imageHeight && controlWidth > imageWidth) {
+            // 宽高均大于图片
+            scale = Math.max(controlHeight * 1.0f / imageHeight, controlWidth * 1.0f / controlWidth);
+        }
+        if (scale != 0) {
+            mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);
+            setImageMatrix(mMatrix);
+            float afterScale = getScale();
+        }
+        postDelayed(new AutoTranslateRunnable(), 16);
+
     }
 
     /**
@@ -269,25 +334,22 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      */
     public void reSetState() {
         isInit = false;
-        setTag(null);
         mMatrix.reset();
     }
 
     /**
      * 设置缩放
      */
-    public void setScale(float sx, float sy, float px, float py){
-        if(mMatrix!=null){
-            mMatrix.postScale(sx,sy,px,py);
+    public void setScale(float sx, float sy, float px, float py) {
+        if (mMatrix != null) {
+            mMatrix.postScale(sx, sy, px, py);
             setImageMatrix(mMatrix);
         }
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (mGestureDetector.onTouchEvent(motionEvent)) {
-            return true;
-        }
+
 
         //将触摸事件传递给ScaleGestureDetector
         if (motionEvent.getPointerCount() > 1) {
@@ -383,6 +445,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
                 mLastPointerCount = 0;
+                correctOverBorder();
                 break;
             }
             default:
@@ -469,6 +532,9 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      * 在缩放的时候进行边界,位置 检查
      */
     private void checkBorderAndCenterWhenScale() {
+        if (!isCheckBorder) {
+            return;
+        }
         RectF rectF = getMatrixRectF();
 
         float deltaX = 0;
@@ -558,8 +624,13 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     }
 
     @Override
+    public void setImageURI(@Nullable Uri uri) {
+        reSetState();
+        super.setImageURI(uri);
+    }
+
+    @Override
     public void setOnClickListener(OnClickListener l) {
-        this.onClickListener = l;
     }
 
 
@@ -571,6 +642,11 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         mMinScale = scale;
         mMidScale = scale * 4;
         mMaxScale = scale * 8;
+    }
+
+    public void setControlRect(Rect mControlRect) {
+        this.mControlRect = mControlRect;
+        correctOverBorder();
     }
 
 }
