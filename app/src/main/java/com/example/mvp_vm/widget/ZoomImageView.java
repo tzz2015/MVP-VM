@@ -13,6 +13,8 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import com.example.mvp_vm.R;
 
 /**
@@ -158,24 +160,44 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             RectF matrixRectF = getMatrixRectF();
             float dx = 0;
             float dy = 0;
+            // 图片脱离左边的距离
+            float distanceLeft = 0;
+            // 图片脱离右边的距离
+            float distanceLeRight = 0;
+            // 图片脱离上边的距离
+            float distanceLeTop = 0;
+            // 图片脱离下边的距离
+            float distanceLeBottom = 0;
             if (matrixRectF.left > mControlRect.left) {
+                distanceLeft = matrixRectF.left - mControlRect.left;
                 dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -10 : -(matrixRectF.left - mControlRect.left);
             }
-            if (matrixRectF.top > mControlRect.top) {
-                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -10 : -(matrixRectF.top - mControlRect.top);
-            }
             if (matrixRectF.right < mControlRect.right) {
+                distanceLeRight = mControlRect.right - matrixRectF.right;
                 dx = isMinReduce(matrixRectF.right, mControlRect.right) ? 10 : (mControlRect.right - matrixRectF.right);
             }
+            if (matrixRectF.top > mControlRect.top) {
+                distanceLeTop = matrixRectF.top - mControlRect.top;
+                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -10 : -(matrixRectF.top - mControlRect.top);
+            }
             if (matrixRectF.bottom < mControlRect.bottom) {
+                distanceLeBottom = mControlRect.bottom - matrixRectF.bottom;
                 dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? 10 : mControlRect.bottom - matrixRectF.bottom;
+            }
+            float minMove = 0.5f;
+            if (Math.abs(dy) > minMove) {
+                float maxDx = Math.max(distanceLeft, distanceLeRight);
+                if (maxDx > minMove) {
+                    float maxDy = Math.max(distanceLeTop, distanceLeBottom);
+                    dy = maxDy / maxDx * dy;
+                }
             }
             mMatrix.postTranslate(dx, dy);
             setImageMatrix(mMatrix);
-            float minMove = 0.5f;
+
             if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
                 Log.e(TAG, "dx:" + dx + "--dy:" + dy);
-                postDelayed(this, 16);
+                postDelayed(this, 10);
             }
         }
     }
@@ -327,10 +349,40 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         if (scale != 0) {
             mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);
             setImageMatrix(mMatrix);
-            Log.e(TAG, "scale:" + scale + "--getScale:" + getScale());
+//           startScaleAnimation(scale);
         }
         postDelayed(new AutoTranslateRunnable(), 16);
 
+
+    }
+
+    private void startScaleAnimation(final float scale) {
+        ScaleAnimation animation = new ScaleAnimation(
+                getScaleX(), scale, getScaleY(), scale,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        animation.setDuration(300);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);
+                setImageMatrix(mMatrix);
+                clearAnimation();
+                postDelayed(new AutoTranslateRunnable(), 16);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animation.setFillAfter(true);
+        startAnimation(animation);
     }
 
     /**
@@ -447,6 +499,8 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 break;
             }
             case MotionEvent.ACTION_CANCEL:
+                mLastPointerCount = 0;
+                break;
             case MotionEvent.ACTION_UP: {
                 mLastPointerCount = 0;
                 correctOverBorder();

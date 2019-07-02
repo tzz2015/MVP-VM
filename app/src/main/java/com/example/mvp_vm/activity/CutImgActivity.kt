@@ -23,7 +23,7 @@ class CutImgActivity : BaseActivity() {
         StatusBarUtils.setStatusBarBackgroundColor(this, "#000000")
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
-        scanner_sv.setAspectRatio(0.8f)
+//        scanner_sv.setAspectRatio(0.8f)
         toolbar.setOnClickListener { finish() }
         //缩放监听
         scanner_sv.setScaleListener { sx, sy, px, py ->
