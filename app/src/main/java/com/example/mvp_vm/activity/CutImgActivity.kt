@@ -23,6 +23,7 @@ class CutImgActivity : BaseActivity() {
         StatusBarUtils.setStatusBarBackgroundColor(this, "#000000")
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
+        scanner_sv.setAspectRatio(0.8f)
         toolbar.setOnClickListener { finish() }
         //缩放监听
         scanner_sv.setScaleListener { sx, sy, px, py ->
@@ -33,10 +34,7 @@ class CutImgActivity : BaseActivity() {
         finish_tv.setOnClickListener {
             saveBitmap()
         }
-        scanner_sv.postDelayed({
-            val viewRect = scanner_sv.viewRect
-            drop_zv.setControlRect(viewRect)
-        }, 100)
+        drop_zv.binScannerView(scanner_sv)
 
 
     }

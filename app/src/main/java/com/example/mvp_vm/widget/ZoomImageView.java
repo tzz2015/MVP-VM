@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
 import com.example.mvp_vm.R;
-import com.example.mvp_vm.utils.Utils;
 
 /**
  * @author lyf
@@ -52,6 +51,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      * 记录上一次多点触控的数量
      */
     private int mLastPointerCount;
+    private CutScannerView mCutScannerView;
 
 
     /**
@@ -65,11 +65,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     private boolean isCanDrag;
     private boolean isCheckLeftAndRight;
     private boolean isCheckTopAndBottom;
-
-    /**
-     * 限定图片显示的区域
-     */
-    private Rect mControlRect;
+    private ViewTreeObserver.OnGlobalLayoutListener mScannerGlobalListener;
 
 
     public ZoomImageView(Context context) {
@@ -155,27 +151,29 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
         @Override
         public void run() {
-            if (mControlRect == null) {
+            if (getControlRect() == null) {
                 return;
             }
+            Rect mControlRect = getControlRect();
             RectF matrixRectF = getMatrixRectF();
             float dx = 0;
             float dy = 0;
-            if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
-                dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -5 : -1;
+            if (matrixRectF.left > mControlRect.left) {
+                dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -10 : -(matrixRectF.left - mControlRect.left);
             }
-            if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
-                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -5 : -1;
+            if (matrixRectF.top > mControlRect.top) {
+                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -10 : -(matrixRectF.top - mControlRect.top);
             }
-            if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
-                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? 5 : 1;
+            if (matrixRectF.right < mControlRect.right) {
+                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? 10 : (mControlRect.right - matrixRectF.right);
             }
-            if (Utils.intToFloat(matrixRectF.bottom) < mControlRect.bottom) {
-                dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? 5 : 1;
+            if (matrixRectF.bottom < mControlRect.bottom) {
+                dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? 10 : mControlRect.bottom - matrixRectF.bottom;
             }
             mMatrix.postTranslate(dx, dy);
             setImageMatrix(mMatrix);
-            if (dx != 0 || dy != 0) {
+            float minMove = 0.5f;
+            if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
                 Log.e(TAG, "dx:" + dx + "--dy:" + dy);
                 postDelayed(this, 16);
             }
@@ -183,7 +181,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     }
 
     private boolean isMinReduce(float x, float y) {
-        return Math.abs(x - y) > 5;
+        return Math.abs(x - y) > 10;
     }
 
 
@@ -198,6 +196,11 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     @SuppressWarnings("deprecation")
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if (mCutScannerView != null) {
+            mCutScannerView.getViewTreeObserver().removeOnGlobalLayoutListener(mScannerGlobalListener);
+            mCutScannerView = null;
+        }
+
         getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 
@@ -208,7 +211,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         }
         if (!isInit) {
             toCenter();
-            if (mControlRect != null) {
+            if (getControlRect() != null) {
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -296,9 +299,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      * 溢出边界修正
      */
     private void correctOverBorder() {
-        if (mControlRect == null) {
+        if (getControlRect() == null) {
             return;
         }
+        Rect mControlRect = getControlRect();
         // 指定边界宽高
         int controlWidth = mControlRect.right - mControlRect.left;
         int controlHeight = mControlRect.bottom - mControlRect.top;
@@ -323,7 +327,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         if (scale != 0) {
             mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);
             setImageMatrix(mMatrix);
-            float afterScale = getScale();
+            Log.e(TAG, "scale:" + scale + "--getScale:" + getScale());
         }
         postDelayed(new AutoTranslateRunnable(), 16);
 
@@ -644,9 +648,25 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         mMaxScale = scale * 8;
     }
 
-    public void setControlRect(Rect mControlRect) {
-        this.mControlRect = mControlRect;
-        correctOverBorder();
+    public void binScannerView(CutScannerView cutScannerView) {
+        this.mCutScannerView = cutScannerView;
+        mScannerGlobalListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                correctOverBorder();
+            }
+        };
+        mCutScannerView.getViewTreeObserver().addOnGlobalLayoutListener(mScannerGlobalListener);
+
+    }
+
+
+    private Rect getControlRect() {
+        Rect controlRect = null;
+        if (mCutScannerView != null) {
+            controlRect = mCutScannerView.getViewRect();
+        }
+        return controlRect;
     }
 
 }

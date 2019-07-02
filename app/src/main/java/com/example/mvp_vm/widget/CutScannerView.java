@@ -130,6 +130,9 @@ public class CutScannerView extends View {
         if (mFocusFrameRect == null) {
             mFocusFrameWidth = mWidth - mCornerBorder;
             mFocusFrameHeight = mHeight - mCornerBorder;
+            if (mAspectRatio != 1.0) {
+                mFocusFrameHeight = (int) (mFocusFrameWidth * mAspectRatio + 0.5);
+            }
             mFocusFrameRect = new Rect(mFocusFrameLt, mFocusFrameTp, mFocusFrameLt + mFocusFrameWidth, mFocusFrameTp + mFocusFrameHeight);
         }
         // 背景和四边
@@ -171,17 +174,6 @@ public class CutScannerView extends View {
      */
     public void setAspectRatio(final float mAspectRatio) {
         this.mAspectRatio = mAspectRatio;
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mFocusFrameRect != null) {
-                    mFocusFrameHeight = (int) (mFocusFrameWidth * mAspectRatio + 0.5);
-                    mFocusFrameRect.bottom = mFocusFrameTp + mFocusFrameHeight;
-                    invalidate();
-                }
-            }
-        }, 300);
-
     }
 
     /**
@@ -593,22 +585,18 @@ public class CutScannerView extends View {
      * 改方法最view绘制完成后获取
      */
     public Rect getViewRect() {
+
+        if (mFocusFrameRect == null) {
+            return null;
+        }
         if (mViewRect == null) {
             mViewRect = new Rect();
         }
-        if (isScaleOriginal) {
-            mViewRect.left = getLeft() + mFocusFrameLt;
-            mViewRect.top = getTop() + mFocusFrameTp;
-            mViewRect.right = getRight() - mFocusFrameLt;
-            mViewRect.bottom = getBottom() - mFocusFrameTp;
-        } else {
-            if (mFocusFrameRect != null) {
-                mViewRect.left = getLeft() + mFocusFrameRect.left;
-                mViewRect.top = getTop() + mFocusFrameRect.top;
-                mViewRect.right = getLeft() + (mFocusFrameRect.right - mFocusFrameRect.left);
-                mViewRect.bottom = getTop() + (mFocusFrameRect.bottom - mFocusFrameRect.top);
-            }
-        }
+        mViewRect.left = getLeft() + mFocusFrameLt;
+        mViewRect.top = getTop() + mFocusFrameTp;
+        mViewRect.right = mViewRect.left + (mFocusFrameRect.right - mFocusFrameRect.left);
+        mViewRect.bottom = mViewRect.top + (mFocusFrameRect.bottom - mFocusFrameRect.top);
+
 
         return mViewRect;
     }
