@@ -650,12 +650,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
     public void binScannerView(CutScannerView cutScannerView) {
         this.mCutScannerView = cutScannerView;
-        mScannerGlobalListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                correctOverBorder();
-            }
-        };
+        mScannerGlobalListener = this::correctOverBorder;
         mCutScannerView.getViewTreeObserver().addOnGlobalLayoutListener(mScannerGlobalListener);
 
     }
