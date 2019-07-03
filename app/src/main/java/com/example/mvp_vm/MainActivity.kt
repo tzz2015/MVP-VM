@@ -26,6 +26,14 @@ class MainActivity : BaseActivity(), HomeView {
         mBinding.mViewModel = mPresenter.mHomeModel
         // 底部布局逻辑由底部的presenter实现
         mPresenter.binBottom(mBinding.inBottom.root)
+        initView()
+    }
+
+    private fun initView() {
+        val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+        if (outFile.exists()) {
+            outFile.delete()
+        }
     }
 
     override fun onDestroy() {

@@ -135,7 +135,6 @@ public class UserDefineScrollView extends ScrollView {
     }
 
     @Override
-
     protected void onFinishInflate() {
         super.onFinishInflate();
         if (getChildCount() > 0) {

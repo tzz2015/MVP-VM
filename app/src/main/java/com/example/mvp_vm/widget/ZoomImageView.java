@@ -55,6 +55,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      */
     private int mLastPointerCount;
     private CutScannerView mCutScannerView;
+    /**
+     * 是否需要平移
+     */
+    private boolean isTranslateToBorder = false;
 
 
     /**
@@ -69,6 +73,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     private boolean isCheckLeftAndRight;
     private boolean isCheckTopAndBottom;
     private ViewTreeObserver.OnGlobalLayoutListener mScannerGlobalListener;
+    /**
+     * CutScannerView是否可以拖曳
+     */
+    private boolean isScannerCanDrag = false;
 
 
     public ZoomImageView(Context context) {
@@ -176,7 +184,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             }
             if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
                 distanceLeRight = mControlRect.right - matrixRectF.right;
-                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? maxMove : (mControlRect.right - matrixRectF.right);
+                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? maxMove : mControlRect.right - matrixRectF.right;
             }
             if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
                 distanceLeTop = matrixRectF.top - mControlRect.top;
@@ -187,7 +195,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
             }
             // 按比例平移回到边界
-            float minMove = 0.5f;
+            float minMove = 1.0f;
             if (Math.abs(dy) > minMove && Math.abs(dx) > minMove) {
                 float maxDx = Math.max(Math.abs(distanceLeft), Math.abs(distanceLeRight));
                 float maxDy = Math.max(Math.abs(distanceLeTop), Math.abs(distanceLeBottom));
@@ -209,7 +217,9 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
             if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
                 Log.e(TAG, "dx:" + dx + "--dy:" + dy);
-                postDelayed(this, 10);
+                if (isTranslateToBorder) {
+                    postDelayed(this, 10);
+                }
             }
         }
     }
@@ -356,7 +366,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         }
         postDelayed(new AutoTranslateRunnable(), 16);
 
-
     }
 
     private void startScaleAnimation(final float scale) {
@@ -449,10 +458,12 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                         }
                     }
                 }
+                prohibitDrag(false);
+                isTranslateToBorder = false;
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-
+                prohibitDrag(false);
                 float dx = x - mLastX;
                 float dy = y - mLastY;
 
@@ -502,10 +513,13 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 break;
             }
             case MotionEvent.ACTION_CANCEL:
+                prohibitDrag(true);
                 mLastPointerCount = 0;
                 break;
             case MotionEvent.ACTION_UP: {
+                prohibitDrag(true);
                 mLastPointerCount = 0;
+                isTranslateToBorder = true;
                 correctOverBorder();
                 break;
             }
@@ -705,14 +719,34 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         mMaxScale = scale * 8;
     }
 
+    /**
+     * 绑定 ScannerView
+     *
+     * @param cutScannerView
+     */
     public void binScannerView(CutScannerView cutScannerView) {
         this.mCutScannerView = cutScannerView;
-        mScannerGlobalListener = this::correctOverBorder;
+        mScannerGlobalListener = () -> {
+            correctOverBorder();
+            isScannerCanDrag = mCutScannerView.isCanDrag();
+        };
         mCutScannerView.getViewTreeObserver().addOnGlobalLayoutListener(mScannerGlobalListener);
-
     }
 
+    /**
+     * 禁用和启用ScannerView拖曳
+     */
+    private void prohibitDrag(boolean isCanDrag) {
+        if (mCutScannerView != null && isScannerCanDrag) {
+            mCutScannerView.setCanDrag(isCanDrag);
+        }
+    }
 
+    /**
+     * 获取ScannerView位置信息
+     *
+     * @return
+     */
     private Rect getControlRect() {
         Rect controlRect = null;
         if (mCutScannerView != null) {
@@ -720,5 +754,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         }
         return controlRect;
     }
+
 
 }

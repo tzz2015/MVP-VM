@@ -169,6 +169,10 @@ public class CutScannerView extends View {
         this.isCanDrag = isCanDrag;
     }
 
+    public boolean isCanDrag() {
+        return isCanDrag;
+    }
+
     /**
      * 设置宽高比
      */
