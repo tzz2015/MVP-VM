@@ -186,17 +186,23 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 distanceLeBottom = mControlRect.bottom - matrixRectF.bottom;
                 dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
             }
-            // 按比例缩放Y轴
+            // 按比例平移回到边界
             float minMove = 0.5f;
-            if (Math.abs(dy) > minMove) {
-                float maxDx = Math.max(distanceLeft, distanceLeRight);
-                if (maxDx > minMove) {
-                    float maxDy = Math.max(distanceLeTop, distanceLeBottom);
+            if (Math.abs(dy) > minMove && Math.abs(dx) > minMove) {
+                float maxDx = Math.max(Math.abs(distanceLeft), Math.abs(distanceLeRight));
+                float maxDy = Math.max(Math.abs(distanceLeTop), Math.abs(distanceLeBottom));
+                if (maxDx > maxDy) {
                     dy = maxDy / maxDx * dy;
+                    if (Math.abs(dy) > maxDy) {
+                        dy = dy > 0 ? maxDy : -maxDy;
+                    }
+                } else {
+                    dx = maxDx / maxDy * dx;
+                    if (Math.abs(dx) > maxDx) {
+                        dx = dx > 0 ? maxDx : -maxDx;
+                    }
                 }
-                if (dy > maxMove) {
-                    dy = maxMove;
-                }
+
             }
             mMatrix.postTranslate(dx, dy);
             setImageMatrix(mMatrix);
@@ -239,11 +245,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         }
         if (!isInit) {
             toCenter();
-            if (getControlRect() != null) {
-                postDelayed(() -> correctOverBorder(), 100);
-            }
-
-
+            postDelayed(this::correctOverBorder, 100);
         }
     }
 
