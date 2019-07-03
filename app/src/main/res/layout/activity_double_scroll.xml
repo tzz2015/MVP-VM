@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.mvp_vm.widget.OutScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+            android:background="@color/color_payment_code_alipay_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/common_white"
+                android:text="我的外部ScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <com.example.mvp_vm.widget.UserDefineScrollView
+                android:layout_marginTop="250dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".activity.DoubleScrollActivity">
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <ImageView
+                        android:background="@color/color_red_f3866d"
+                        android:layout_width="match_parent"
+                        android:layout_height="1000dp"/>
+                <ImageView
+                        android:background="@color/color_red_f04144"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"/>
+                <TextView
+                        android:layout_marginTop="30dp"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/common_white"
+                        android:text="我的内部ScrollView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+
+        </com.example.mvp_vm.widget.UserDefineScrollView>
+    </RelativeLayout>
+</com.example.mvp_vm.widget.OutScrollView>

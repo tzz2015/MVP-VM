@@ -22,6 +22,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="图片裁剪"/>
+        <TextView
+                app:layout_constraintLeft_toRightOf="@+id/tv_cut"
+                android:id="@+id/tv_scroll_view"
+                android:textSize="@dimen/size_26"
+                android:onClick="@{v->mPresenter.toDoubleScrollView()}"
+                android:layout_margin="@dimen/common_margin_25"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="双层滚动View"/>
 
         <TextView
                 android:id="@+id/tv_name_dse"
