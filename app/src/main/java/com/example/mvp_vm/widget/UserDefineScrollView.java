@@ -63,8 +63,9 @@ public class UserDefineScrollView extends ScrollView {
                 float endY = ev.getY();
                 int deltaY = (int) ((endY - mStartY) * 0.5);
                 if (getScrollY() == 0 && deltaY > 0) {
-                    if (deltaY > 150) {
-                        deltaY = 150;
+                    int maxMove = 150;
+                    if (deltaY > maxMove) {
+                        deltaY = maxMove;
                     }
                     Log.e(TAG, "deltaY:" + deltaY);
                     Log.e(TAG, "我需要消费move事件");
@@ -98,8 +99,7 @@ public class UserDefineScrollView extends ScrollView {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mContentView.clearAnimation();
-                mContentView.layout(mOriginalRect.left, mOriginalRect.top, mOriginalRect.right, mOriginalRect.bottom);
+                clearTranslateAnimation();
 
             }
 
@@ -111,6 +111,12 @@ public class UserDefineScrollView extends ScrollView {
         mContentView.startAnimation(anim);
     }
 
+    private void clearTranslateAnimation() {
+        if (mContentView != null) {
+            mContentView.clearAnimation();
+            mContentView.layout(mOriginalRect.left, mOriginalRect.top, mOriginalRect.right, mOriginalRect.bottom);
+        }
+    }
 
 
     @Override
@@ -136,8 +142,6 @@ public class UserDefineScrollView extends ScrollView {
             mContentView = getChildAt(0);
         }
     }
-
-
 
 
 }
