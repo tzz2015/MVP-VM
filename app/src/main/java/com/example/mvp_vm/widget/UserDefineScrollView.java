@@ -19,7 +19,6 @@ public class UserDefineScrollView extends ScrollView {
 
     private static final String TAG = "UserDefineScrollView ";
     private float mStartY;
-    private float mInterStartY;
 
     /**
      * 用于记录正常的布局位置
