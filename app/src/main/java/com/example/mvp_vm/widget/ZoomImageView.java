@@ -195,7 +195,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
             }
             // 按比例平移回到边界
-            float minMove = 1.0f;
+            float minMove = 0.5f;
             if (Math.abs(dy) > minMove && Math.abs(dx) > minMove) {
                 float maxDx = Math.max(Math.abs(distanceLeft), Math.abs(distanceLeRight));
                 float maxDy = Math.max(Math.abs(distanceLeTop), Math.abs(distanceLeBottom));
