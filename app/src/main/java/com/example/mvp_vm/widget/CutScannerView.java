@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.example.mvp_vm.R;
 
+
 /**
  * 创建者：刘宇飞
  * 时间：2019/5/1 16:41
@@ -55,7 +56,6 @@ public class CutScannerView extends View {
      */
     private boolean isCanDrag = true;
 
-
     private PostScaleListener mScaleListener;
     /**
      * 手指松开后是否自动回退到原来位置
@@ -71,13 +71,16 @@ public class CutScannerView extends View {
      * 宽高比 等比缩放裁剪框  =高/宽
      */
     private float mAspectRatio = 1.0f;
+    /**
+     * 对外提供出裁剪框的位置范围
+     */
     private Rect mViewRect;
 
     enum Position {
         /**
          * 四个角方向
          */
-        LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTM, DEFAULT
+        LEFT_TOP, LEFT_BOTTOM, RIGHT_TOP, RIGHT_BOTTOM, DEFAULT
     }
 
     private Position mDirection = Position.DEFAULT;
@@ -130,6 +133,7 @@ public class CutScannerView extends View {
         if (mFocusFrameRect == null) {
             mFocusFrameWidth = mWidth - mCornerBorder;
             mFocusFrameHeight = mHeight - mCornerBorder;
+            // 重新赋值高度=宽度*mAspectRatio
             if (mAspectRatio != 1.0) {
                 mFocusFrameHeight = (int) (mFocusFrameWidth * mAspectRatio + 0.5);
             }
@@ -257,7 +261,7 @@ public class CutScannerView extends View {
                 //获取屏幕上点击的坐标
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                downClick(x, y);
+                pointCheck(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (isUseEven) {
@@ -302,9 +306,9 @@ public class CutScannerView extends View {
         if (isFreeCut) {
             // 上下拖动范围
             int canMoveY = isCanDragTB(endY);
-            resetDraw(canMoveX, canMoveY);
+            resetCutView(canMoveX, canMoveY);
         } else {
-            resetDraw(canMoveX, 0);
+            resetCutView(canMoveX, 0);
         }
 
     }
@@ -320,8 +324,8 @@ public class CutScannerView extends View {
         int minWH = mFocusFrameWidth / 4;
         switch (mDirection) {
             //左侧
-            case LEFTTOP:
-            case LEFTBOTTOM:
+            case LEFT_TOP:
+            case LEFT_BOTTOM:
                 if (Math.abs(endX - mFocusFrameRect.right) <= minWH
                         || endX > mFocusFrameRect.right) {
                     return mFocusFrameRect.left;
@@ -334,8 +338,8 @@ public class CutScannerView extends View {
                 }
                 break;
             //右侧
-            case RIGHTTOP:
-            case RIGHTBOTTM:
+            case RIGHT_TOP:
+            case RIGHT_BOTTOM:
                 if (Math.abs(endX - mFocusFrameRect.left) <= minWH
                         || endX < mFocusFrameRect.left) {
                     return mFocusFrameRect.right;
@@ -365,8 +369,8 @@ public class CutScannerView extends View {
         Log.e(TAG, "endY：" + endY);
         switch (mDirection) {
             //上侧
-            case LEFTTOP:
-            case RIGHTTOP:
+            case LEFT_TOP:
+            case RIGHT_TOP:
                 if (Math.abs(endY - mFocusFrameRect.bottom) <= minWH
                         || endY > mFocusFrameRect.bottom) {
                     return mFocusFrameRect.top;
@@ -379,8 +383,8 @@ public class CutScannerView extends View {
                 }
                 break;
             //下侧
-            case LEFTBOTTOM:
-            case RIGHTBOTTM:
+            case LEFT_BOTTOM:
+            case RIGHT_BOTTOM:
                 if (Math.abs(endY - mFocusFrameRect.top) <= minWH
                         || endY < mFocusFrameRect.top) {
                     return mFocusFrameRect.bottom;
@@ -400,12 +404,12 @@ public class CutScannerView extends View {
 
 
     /**
-     * 四个角的点击判断
+     * 判断点击的时候 ACTION_DOWN是否落到四个角的区域
      *
      * @param x
      * @param y
      */
-    private void downClick(int x, int y) {
+    private void pointCheck(int x, int y) {
         if (isCanDrag) {
             //加大点击范围
             int mAddClickSize = 120;
@@ -414,22 +418,22 @@ public class CutScannerView extends View {
                     y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
                 Log.e(TAG, "左上角");
                 isUseEven = true;
-                mDirection = Position.LEFTTOP;
+                mDirection = Position.LEFT_TOP;
             } else if (x > mFocusFrameRect.right - mAddClickSize &&
                     y > mFocusFrameRect.top - mAddClickSize && y < mFocusFrameRect.top + mAddClickSize) {
                 Log.e(TAG, "右上角");
                 isUseEven = true;
-                mDirection = Position.RIGHTTOP;
+                mDirection = Position.RIGHT_TOP;
             } else if (x < mFocusFrameRect.left + mAddClickSize &&
                     y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
                 Log.e(TAG, "左下角");
                 isUseEven = true;
-                mDirection = Position.LEFTBOTTOM;
+                mDirection = Position.LEFT_BOTTOM;
             } else if (x > mFocusFrameRect.right - mAddClickSize &&
                     y > mFocusFrameRect.bottom - mAddClickSize && y < mFocusFrameRect.bottom + mAddClickSize) {
                 Log.e(TAG, "右下角");
                 isUseEven = true;
-                mDirection = Position.RIGHTBOTTM;
+                mDirection = Position.RIGHT_BOTTOM;
             }
             mStartX = x;
             mStartY = y;
@@ -443,25 +447,25 @@ public class CutScannerView extends View {
      * @param offsetX
      * @param offsetY =0时候 等比例缩放
      */
-    private void resetDraw(int offsetX, int offsetY) {
+    private void resetCutView(int offsetX, int offsetY) {
         int offset;
         switch (mDirection) {
-            case LEFTTOP:
+            case LEFT_TOP:
                 offset = (int) ((offsetX - mFocusFrameLt) * mAspectRatio + 0.5);
                 mFocusFrameRect.left = offsetX;
                 mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameTp + offset;
                 break;
-            case RIGHTTOP:
+            case RIGHT_TOP:
                 offset = (int) ((offsetX - mFocusFrameLt - mFocusFrameWidth) * mAspectRatio + 0.5);
                 mFocusFrameRect.right = offsetX;
                 mFocusFrameRect.top = offsetY > 0 ? offsetY : mFocusFrameTp - offset;
                 break;
-            case LEFTBOTTOM:
+            case LEFT_BOTTOM:
                 offset = (int) ((offsetX - mFocusFrameLt) * mAspectRatio + 0.5);
                 mFocusFrameRect.left = offsetX;
                 mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameTp + mFocusFrameHeight - offset;
                 break;
-            case RIGHTBOTTM:
+            case RIGHT_BOTTOM:
                 offset = (int) ((offsetX - mFocusFrameLt - mFocusFrameWidth) * mAspectRatio + 0.5);
                 mFocusFrameRect.right = offsetX;
                 mFocusFrameRect.bottom = offsetY > 0 ? offsetY : mFocusFrameTp + mFocusFrameHeight + offset;
@@ -482,7 +486,7 @@ public class CutScannerView extends View {
         try {
             bitmap = imageView.getDrawingCache();
             RectF imageRectF = imageView.getMatrixRectF();
-            RectF borderRectF = new RectF(getLeft(), getTop(), getLeft() + mFocusFrameWidth, getTop() + mFocusFrameHeight);
+            RectF borderRectF = new RectF(getLeft(), getTop(), getLeft() + (mFocusFrameRect.right - mFocusFrameRect.left), getTop() + (mFocusFrameRect.bottom - mFocusFrameRect.top));
             if (imageRectF == null) {
                 return null;
             }
@@ -544,8 +548,8 @@ public class CutScannerView extends View {
                 }
                 postDelayed(this, 16);
                 invalidate();
-                float scale = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
-                scaleBack(mDirection, scale, scale);
+                float scaleX = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
+                scaleBack(mDirection, scaleX, scaleX);
             }
 
         }
@@ -560,19 +564,19 @@ public class CutScannerView extends View {
         float x = mFocusFrameLt;
         float y = mFocusFrameTp;
         switch (direction) {
-            case RIGHTBOTTM:
+            case RIGHT_BOTTOM:
                 x = getLeft() + mFocusFrameLt;
                 y = getTop() - mFocusFrameTp;
                 break;
-            case LEFTBOTTOM:
+            case LEFT_BOTTOM:
                 x = getRight() - mFocusFrameLt;
                 y = getTop() - mFocusFrameTp;
                 break;
-            case RIGHTTOP:
+            case RIGHT_TOP:
                 x = getLeft() + mFocusFrameLt;
                 y = getTop() + mFocusFrameHeight;
                 break;
-            case LEFTTOP:
+            case LEFT_TOP:
                 x = getRight() - mFocusFrameLt;
                 y = getTop() + mFocusFrameHeight;
                 break;

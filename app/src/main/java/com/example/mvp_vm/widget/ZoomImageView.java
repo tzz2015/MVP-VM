@@ -29,7 +29,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     /**
      * 脱离裁剪框偏移量
      */
-    private float[] mDxy = new float[]{0, 0};
+    private float[] mOffsetDxy = new float[]{0, 0};
 
     /**
      * 缩放工具
@@ -57,11 +57,12 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      * 记录上一次多点触控的数量
      */
     private int mLastPointerCount;
+
     private CutScannerView mCutScannerView;
     /**
      * 是否需要平移
      */
-    private boolean isTranslateToBorder = false;
+    private boolean isNeedTranslateToBorder = false;
 
 
     /**
@@ -109,58 +110,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     }
 
 
-    private class AutoScaleRunnable implements Runnable {
-        /**
-         * 要缩放的目标值
-         */
-        private float mTargetScale;
-        /**
-         * 缩放的中心点x
-         */
-        private float x;
-        /**
-         * 缩放的中心点y
-         */
-        private float y;
-        private float tmpScale;
-
-        private final float BIGGER = 1.07f;
-        private final float SMALL = 0.93f;
-
-        public AutoScaleRunnable(float mTargetScale, float x, float y) {
-            this.mTargetScale = mTargetScale;
-            this.x = x;
-            this.y = y;
-
-            if (getScale() < mTargetScale) {
-                tmpScale = BIGGER;
-            } else {
-                tmpScale = SMALL;
-            }
-        }
-
-        @Override
-        public void run() {
-            mMatrix.postScale(tmpScale, tmpScale, x, y);
-            checkBorderAndCenterWhenScale();
-            setImageMatrix(mMatrix);
-
-
-            float currentScale = getScale();
-            boolean isScale = (tmpScale > 1.0f && currentScale < mTargetScale)
-                    || (tmpScale < 1.0f && currentScale > mTargetScale);
-            if (isScale) {
-                postDelayed(this, 16);
-            } else {
-                float scale = mTargetScale / currentScale;
-                mMatrix.postScale(scale, scale, x, y);
-                checkBorderAndCenterWhenScale();
-                setImageMatrix(mMatrix);
-
-            }
-        }
-    }
-
     private class AutoTranslateRunnable implements Runnable {
 
         @Override
@@ -172,7 +121,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                 float dy = translateXy[1];
                 if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
                     Log.e(TAG, "dx:" + dx + "--dy:" + dy);
-                    if (isTranslateToBorder) {
+                    if (isNeedTranslateToBorder) {
                         postDelayed(this, 10);
                     }
                 }
@@ -201,6 +150,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         float distanceLeTop = 0;
         // 图片脱离下边的距离
         float distanceLeBottom = 0;
+        //最大移动量
         float maxMove = 10;
         if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
             distanceLeft = matrixRectF.left - mControlRect.left;
@@ -240,13 +190,20 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             setImageMatrix(mMatrix);
         }
 
-        mDxy[0] = dx;
-        mDxy[1] = dy;
-        return mDxy;
+        mOffsetDxy[0] = dx;
+        mOffsetDxy[1] = dy;
+        return mOffsetDxy;
     }
 
-    private boolean isMinReduce(float x, float y) {
-        return Math.abs(x - y) > 10;
+    /**
+     * 判断脱离边界是否大于10
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    private boolean isMinReduce(float start, float end) {
+        return Math.abs(start - end) > 10;
     }
 
 
@@ -282,7 +239,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
     /**
      * 将图片居中显示
-     * 原有逻辑
+     * 原有逻辑不做改变
      */
     private void toCenter() {
         int width = getWidth();
@@ -316,13 +273,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             if (imageH < height && imageW < width) {
                 scale = Math.min(width * 1.0f / imageW, height * 1.0f / imageH);
             }
-
-            /**
-             * 设置缩放比率
-             */
-               /* mMinScale = scale;
-                mMidScale = mMinScale * 2;
-                mMaxScale = mMinScale * 4;*/
             /**
              * 把图片移动到中心点去
              */
@@ -352,7 +302,8 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     }
 
     /**
-     * 溢出边界修正
+     * 检查缩放后的图片高宽是否小于裁剪框
+     * 若小于裁剪框，需要等比例放大图片的宽高
      */
     public void correctOverBorder() {
         if (getControlRect() == null) {
@@ -438,14 +389,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-
-
         //将触摸事件传递给ScaleGestureDetector
         if (motionEvent.getPointerCount() > 1) {
             mScaleGestureDetector.onTouchEvent(motionEvent);
         }
-
-
         float x = 0;
         float y = 0;
 
@@ -464,9 +411,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             mLastX = x;
             mLastY = y;
         }
-
         mLastPointerCount = pointerCount;
-
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 RectF rectF = getMatrixRectF();
@@ -480,7 +425,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
                     }
                 }
                 prohibitDrag(false);
-                isTranslateToBorder = false;
+                isNeedTranslateToBorder = false;
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -540,7 +485,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             case MotionEvent.ACTION_UP: {
                 prohibitDrag(true);
                 mLastPointerCount = 0;
-                isTranslateToBorder = true;
+                isNeedTranslateToBorder = true;
                 correctOverBorder();
                 break;
             }
@@ -599,10 +544,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         //获取用户手势判断出来的缩放值
         float scaleFactor = detector.getScaleFactor();
         float scale = getScale();
-
-        /**
-         * 没有图片
-         */
+        //没有图片
         if (getDrawable() == null) {
             return true;
         }
@@ -625,7 +567,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     }
 
     /**
-     * 在缩放的时候进行边界,位置 检查
+     * 在缩放的时候进行边界的位置 检查
      */
     private void checkBorderAndCenterWhenScale() {
         if (!isCheckBorder) {
@@ -747,6 +689,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      */
     public void binScannerView(CutScannerView cutScannerView) {
         this.mCutScannerView = cutScannerView;
+        // 等待ScannerView绘制完成后执行边界检查
         mScannerGlobalListener = () -> {
             correctOverBorder();
             isScannerCanDrag = mCutScannerView.isCanDrag();
