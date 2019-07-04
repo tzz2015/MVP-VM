@@ -544,12 +544,8 @@ public class CutScannerView extends View {
                 }
                 postDelayed(this, 16);
                 invalidate();
-                float scaleX = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
-                scaleBack(mDirection, scaleX, scaleX);
-            }else {
-                if (mScaleListener != null) {
-                    mScaleListener.finishScale();
-                }
+                float scale = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
+                scaleBack(mDirection, scale, scale);
             }
 
         }

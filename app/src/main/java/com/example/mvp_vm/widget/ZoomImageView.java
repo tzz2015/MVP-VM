@@ -26,6 +26,9 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
     private static final String TAG = "ZoomImageView";
     private boolean isInit;
+    /**
+     * 脱离裁剪框偏移量
+     */
     private float[] mDxy = new float[]{0, 0};
 
     /**
