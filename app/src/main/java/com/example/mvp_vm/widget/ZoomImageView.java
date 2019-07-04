@@ -354,10 +354,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
             scale = controlHeight * 1.0f / imageHeight;
         } else if (controlWidth > imageWidth && controlHeight < imageHeight) {
             // 指定边界宽度大于当前图片宽度 放大图片宽度
-            scale = controlWidth * 1.0f / controlWidth;
+            scale = controlWidth * 1.0f / imageWidth;
         } else if (controlHeight > imageHeight && controlWidth > imageWidth) {
             // 宽高均大于图片
-            scale = Math.max(controlHeight * 1.0f / imageHeight, controlWidth * 1.0f / controlWidth);
+            scale = Math.max(controlHeight * 1.0f / imageHeight, controlWidth * 1.0f / imageWidth);
         }
         if (scale != 0) {
             mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);

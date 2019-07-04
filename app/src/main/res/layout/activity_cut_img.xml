@@ -76,7 +76,7 @@
 
         <com.example.mvp_vm.widget.ZoomImageView
                 android:id="@+id/drop_zv"
-                android:src="@mipmap/ab"
+                android:src="@mipmap/adc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true" />
