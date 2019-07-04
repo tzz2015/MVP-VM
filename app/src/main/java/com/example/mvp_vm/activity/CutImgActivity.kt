@@ -27,9 +27,9 @@ class CutImgActivity : BaseActivity() {
         toolbar.setOnClickListener { finish() }
         //缩放监听
         scanner_sv.setScaleListener { sx, sy, px, py ->
-
             Log.e(TAG, "scaleX:$sx--scaleY:$sy--x:$px--Y:$py")
             drop_zv.setScale(sx, sy, px, py)
+            drop_zv.tryTranslateXy(0.5f)
         }
         finish_tv.setOnClickListener {
             saveBitmap()

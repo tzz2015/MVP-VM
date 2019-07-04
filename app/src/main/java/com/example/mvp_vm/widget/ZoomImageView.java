@@ -26,7 +26,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
     private static final String TAG = "ZoomImageView";
     private boolean isInit;
-
+    private float[] mDxy = new float[]{0, 0};
 
     /**
      * 缩放工具
@@ -162,66 +162,84 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 
         @Override
         public void run() {
-            if (getControlRect() == null) {
-                return;
-            }
-            Rect mControlRect = getControlRect();
-            RectF matrixRectF = getMatrixRectF();
-            float dx = 0;
-            float dy = 0;
-            // 图片脱离左边的距离
-            float distanceLeft = 0;
-            // 图片脱离右边的距离
-            float distanceLeRight = 0;
-            // 图片脱离上边的距离
-            float distanceLeTop = 0;
-            // 图片脱离下边的距离
-            float distanceLeBottom = 0;
-            float maxMove = 10;
-            if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
-                distanceLeft = matrixRectF.left - mControlRect.left;
-                dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -maxMove : -(matrixRectF.left - mControlRect.left);
-            }
-            if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
-                distanceLeRight = mControlRect.right - matrixRectF.right;
-                dx = isMinReduce(matrixRectF.right, mControlRect.right) ? maxMove : mControlRect.right - matrixRectF.right;
-            }
-            if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
-                distanceLeTop = matrixRectF.top - mControlRect.top;
-                dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -maxMove : -(matrixRectF.top - mControlRect.top);
-            }
-            if (Utils.intToFloat(matrixRectF.bottom) < mControlRect.bottom) {
-                distanceLeBottom = mControlRect.bottom - matrixRectF.bottom;
-                dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
-            }
-            // 按比例平移回到边界
             float minMove = 0.5f;
-            if (Math.abs(dy) > minMove && Math.abs(dx) > minMove) {
-                float maxDx = Math.max(Math.abs(distanceLeft), Math.abs(distanceLeRight));
-                float maxDy = Math.max(Math.abs(distanceLeTop), Math.abs(distanceLeBottom));
-                if (maxDx > maxDy) {
-                    dy = maxDy / maxDx * dy;
-                    if (Math.abs(dy) > maxDy) {
-                        dy = dy > 0 ? maxDy : -maxDy;
-                    }
-                } else {
-                    dx = maxDx / maxDy * dx;
-                    if (Math.abs(dx) > maxDx) {
-                        dx = dx > 0 ? maxDx : -maxDx;
+            float[] translateXy = tryTranslateXy(minMove);
+            if (translateXy != null) {
+                float dx = translateXy[0];
+                float dy = translateXy[1];
+                if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
+                    Log.e(TAG, "dx:" + dx + "--dy:" + dy);
+                    if (isTranslateToBorder) {
+                        postDelayed(this, 10);
                     }
                 }
-
             }
+
+        }
+    }
+
+
+    /**
+     * 检查偏离并修正
+     */
+    public float[] tryTranslateXy(float minMove) {
+        if (getControlRect() == null) {
+            return null;
+        }
+        Rect mControlRect = getControlRect();
+        RectF matrixRectF = getMatrixRectF();
+        float dx = 0;
+        float dy = 0;
+        // 图片脱离左边的距离
+        float distanceLeft = 0;
+        // 图片脱离右边的距离
+        float distanceLeRight = 0;
+        // 图片脱离上边的距离
+        float distanceLeTop = 0;
+        // 图片脱离下边的距离
+        float distanceLeBottom = 0;
+        float maxMove = 10;
+        if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
+            distanceLeft = matrixRectF.left - mControlRect.left;
+            dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -maxMove : -(matrixRectF.left - mControlRect.left);
+        }
+        if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
+            distanceLeRight = mControlRect.right - matrixRectF.right;
+            dx = isMinReduce(matrixRectF.right, mControlRect.right) ? maxMove : mControlRect.right - matrixRectF.right;
+        }
+        if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
+            distanceLeTop = matrixRectF.top - mControlRect.top;
+            dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -maxMove : -(matrixRectF.top - mControlRect.top);
+        }
+        if (Utils.intToFloat(matrixRectF.bottom) < mControlRect.bottom) {
+            distanceLeBottom = mControlRect.bottom - matrixRectF.bottom;
+            dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
+        }
+        // 按比例平移回到边界
+        if (Math.abs(dy) > minMove && Math.abs(dx) > minMove) {
+            float maxDx = Math.max(Math.abs(distanceLeft), Math.abs(distanceLeRight));
+            float maxDy = Math.max(Math.abs(distanceLeTop), Math.abs(distanceLeBottom));
+            if (maxDx > maxDy) {
+                dy = maxDy / maxDx * dy;
+                if (Math.abs(dy) > maxDy) {
+                    dy = dy > 0 ? maxDy : -maxDy;
+                }
+            } else {
+                dx = maxDx / maxDy * dx;
+                if (Math.abs(dx) > maxDx) {
+                    dx = dx > 0 ? maxDx : -maxDx;
+                }
+            }
+
+        }
+        if (dx != 0 || dy != 0) {
             mMatrix.postTranslate(dx, dy);
             setImageMatrix(mMatrix);
-
-            if (Math.abs(dx) > minMove || Math.abs(dy) > minMove) {
-                Log.e(TAG, "dx:" + dx + "--dy:" + dy);
-                if (isTranslateToBorder) {
-                    postDelayed(this, 10);
-                }
-            }
         }
+
+        mDxy[0] = dx;
+        mDxy[1] = dy;
+        return mDxy;
     }
 
     private boolean isMinReduce(float x, float y) {
@@ -333,7 +351,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
     /**
      * 溢出边界修正
      */
-    private void correctOverBorder() {
+    public void correctOverBorder() {
         if (getControlRect() == null) {
             return;
         }
