@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.mvp_vm.R;
+import com.example.mvp_vm.widget.ZoomImageView;
 
 
 /**
@@ -548,8 +549,8 @@ public class CutScannerView extends View {
                 }
                 postDelayed(this, 16);
                 invalidate();
-                float scaleX = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
-                scaleBack(mDirection, scaleX, scaleX);
+                float scale = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
+                scaleBack(mDirection, scale);
             }
 
         }
@@ -560,7 +561,7 @@ public class CutScannerView extends View {
      *
      * @param direction
      */
-    private void scaleBack(Position direction, float scaleX, float scaleY) {
+    private void scaleBack(Position direction, float scale) {
         float x = mFocusFrameLt;
         float y = mFocusFrameTp;
         switch (direction) {
@@ -584,7 +585,7 @@ public class CutScannerView extends View {
                 break;
         }
         if (mScaleListener != null) {
-            mScaleListener.scaleListener(scaleX, scaleY, x, y);
+            mScaleListener.scaleListener(scale, scale, x, y);
         }
     }
 

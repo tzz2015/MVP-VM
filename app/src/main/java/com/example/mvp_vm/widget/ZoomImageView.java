@@ -18,6 +18,7 @@ import android.view.animation.ScaleAnimation;
 import com.example.mvp_vm.R;
 import com.example.mvp_vm.utils.Utils;
 
+
 /**
  * @author lyf
  */
@@ -306,10 +307,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      * 若小于裁剪框，需要等比例放大图片的宽高
      */
     public void correctOverBorder() {
-        if (getControlRect() == null) {
+        Rect mControlRect = getControlRect();
+        if (mControlRect == null) {
             return;
         }
-        Rect mControlRect = getControlRect();
         // 指定边界宽高
         int controlWidth = mControlRect.right - mControlRect.left;
         int controlHeight = mControlRect.bottom - mControlRect.top;
@@ -384,6 +385,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         if (mMatrix != null) {
             mMatrix.postScale(sx, sy, px, py);
             setImageMatrix(mMatrix);
+            tryTranslateXy(0.5f);
         }
     }
 
