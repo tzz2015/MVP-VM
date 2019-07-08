@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="files_root"
+        path="Android/data/${applicationId}/" />
+    <external-path
+        name="external_storage_root"
+        path="." />
+    <root-path name="root_path"
+        path="."/>
+
+    <external-path
+        name="camera_photos"
+        path="." />
+    <external-path
+        name="cache"
+        path="Android/data/${applicationId}/cache" />
+    <external-path
+        name="images"
+        path="Pictures/" />
+    <external-path
+        name="dcim"
+        path="DCIM/" />
+</paths>
