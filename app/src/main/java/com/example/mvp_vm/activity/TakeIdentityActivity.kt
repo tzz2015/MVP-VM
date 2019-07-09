@@ -37,6 +37,9 @@ class TakeIdentityActivity : BaseActivity() {
 
     }
 
+    /**
+     * 拍照
+     */
     private fun takePhoto() {
         camera_preview?.takePhoto { data, camera ->
             run {
@@ -58,11 +61,12 @@ class TakeIdentityActivity : BaseActivity() {
 
     }
 
+    /**
+     * 裁剪框内的图片
+     */
     private fun curBitMap(bitmap: Bitmap): Bitmap {
         val widthScale = bitmap.width.toFloat() / camera_preview?.width!!.toFloat()
         val heightScale = bitmap.height.toFloat() / camera_preview?.height!!.toFloat()
-
-
         val curBitmap = Bitmap.createBitmap(
             bitmap,
             (iv_clip_frame.left * widthScale).toInt(),
@@ -73,6 +77,9 @@ class TakeIdentityActivity : BaseActivity() {
         return rotateBitmapByDegree(curBitmap, 270)
     }
 
+    /**
+     * 存储到本地
+     */
     private fun saveToLocal(bitmap: Bitmap?) {
         val outFile =
             File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
