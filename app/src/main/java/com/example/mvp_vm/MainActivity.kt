@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.databinding.ActivityMainBinding
 import com.example.mvp_vm.presenter.HomePresenter
@@ -30,10 +31,10 @@ class MainActivity : BaseActivity(), HomeView {
     }
 
     private fun initView() {
-        val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+       /* val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
         if (outFile.exists()) {
             outFile.delete()
-        }
+        }*/
     }
 
     override fun onDestroy() {
@@ -50,7 +51,7 @@ class MainActivity : BaseActivity(), HomeView {
                 val bitmap = BitmapFactory.decodeStream(fileInputStream)
                 iv_show.setImageBitmap(bitmap)
             } catch (e: Exception) {
-
+                Log.e("MainActivity", e.message)
             }
         }
     }

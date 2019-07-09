@@ -1,17 +1,14 @@
 package com.example.mvp_vm.activity
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import com.example.mvp_vm.R
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.utils.StatusBarUtils
+import com.example.mvp_vm.utils.Utils
 import kotlinx.android.synthetic.main.activity_cut_img.*
 import java.io.File
-import java.io.FileOutputStream
-import java.net.URI
 
 class CutImgActivity : BaseActivity() {
     private val TAG = CutImgActivity::class.java.simpleName
@@ -53,7 +50,7 @@ class CutImgActivity : BaseActivity() {
             } else {
                 outFile.delete()
             }
-            saveBitmap(bitmap, Uri.fromFile(outFile))
+            Utils.saveBitmap(bitmap, outFile.path)
             setResult(1)
             finish()
         } catch (e: Exception) {
@@ -64,26 +61,7 @@ class CutImgActivity : BaseActivity() {
         }
     }
 
-    /**
-     * 获取bitmap
-     */
-    fun saveBitmap(bitmap: Bitmap?, mOutFileUri: Uri) {
-        var fileOutputStream: FileOutputStream? = null
-        try {
-            val outFile = File(URI(mOutFileUri.toString()))
-            fileOutputStream = FileOutputStream(outFile)
-            bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-            val width = bitmap.width
-            val height = bitmap.height
-            Log.e(TAG, "width:$width ----height:$height")
-            fileOutputStream.flush()
-            fileOutputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            bitmap?.recycle()
-        }
-    }
+
 
 
 }

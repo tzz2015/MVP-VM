@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.TakeIdentityActivity">
+    <View
+            android:id="@+id/view_top"
+            android:background="@color/common_black_80"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/owner_cut_scanner_margin_t"/>
+    <ImageView
+            android:id="@+id/iv_clip_frame"
+            app:layout_constraintTop_toBottomOf="@id/view_top"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="220dp"
+            android:layout_height="300dp"/>
+    <View
+            android:background="@color/common_black_60"
+            app:layout_constraintRight_toLeftOf="@+id/iv_clip_frame"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_top"
+            android:layout_width="0dp"
+            android:layout_height="300dp"/>
+    <View
+            android:background="@color/common_black_60"
+            app:layout_constraintLeft_toRightOf="@+id/iv_clip_frame"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_top"
+            android:layout_width="0dp"
+            android:layout_height="300dp"/>
+    <TextView
+            android:ems="1"
+            app:layout_constraintTop_toBottomOf="@id/view_top"
+            android:layout_marginRight="@dimen/common_margin_25"
+            app:layout_constraintRight_toLeftOf="@+id/iv_clip_frame"
+            android:textColor="@color/common_white"
+            android:text="请保持身份证整体在区域内，并对齐线框边缘"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <View
+            android:id="@+id/view_bottom"
+            android:background="@color/common_black_60"
+            app:layout_constraintTop_toBottomOf="@id/iv_clip_frame"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/connect_yun_box_voice_again_hint_cl_margin_top"/>
+    <View
+            android:background="@color/common_black_80"
+            app:layout_constraintTop_toBottomOf="@id/view_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.view.View
 import com.example.mvp_vm.MainActivity
 import com.example.mvp_vm.activity.CutImgActivity
 import com.example.mvp_vm.activity.DoubleScrollActivity
+import com.example.mvp_vm.activity.TakeIdentityActivity
 import com.example.mvp_vm.activity.WebActivity
 import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.view.HomeView
@@ -46,22 +47,32 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 跳转webView
      */
     fun toWeb() {
-         val intent= Intent(getContext(), WebActivity::class.java)
-         getContext()?.startActivity(intent)
+        val intent = Intent(getContext(), WebActivity::class.java)
+        getContext()?.startActivity(intent)
     }
+
     /**
      * 跳转裁剪界面
      */
     fun toCutActivity() {
-        val intent= Intent(getContext(), CutImgActivity::class.java)
+        val intent = Intent(getContext(), CutImgActivity::class.java)
         getContext()?.startActivityForResult(intent, 1)
     }
+
     /**
      * 跳转到双scrollView的activity
      */
-    fun toDoubleScrollView(){
-        val intent= Intent(getContext(), DoubleScrollActivity::class.java)
+    fun toDoubleScrollView() {
+        val intent = Intent(getContext(), DoubleScrollActivity::class.java)
         getContext()?.startActivity(intent)
+    }
+
+    /**
+     * 身份证拍照
+     */
+    fun toTakeIdentity() {
+        val intent = Intent(getContext(), TakeIdentityActivity::class.java)
+        getContext()?.startActivityForResult(intent, 1)
     }
 
 
