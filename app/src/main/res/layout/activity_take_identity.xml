@@ -22,21 +22,21 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="250dp"
-            android:layout_height="350dp"/>
+            android:layout_height="375dp"/>
     <View
             android:background="@color/common_black_80"
             app:layout_constraintRight_toLeftOf="@+id/iv_clip_frame"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_top"
             android:layout_width="0dp"
-            android:layout_height="350dp"/>
+            android:layout_height="375dp"/>
     <View
             android:background="@color/common_black_80"
             app:layout_constraintLeft_toRightOf="@+id/iv_clip_frame"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_top"
             android:layout_width="0dp"
-            android:layout_height="350dp"/>
+            android:layout_height="375dp"/>
     <TextView
             android:id="@+id/tv_left"
             app:layout_constraintTop_toBottomOf="@id/view_top"
@@ -62,7 +62,7 @@
             android:background="@color/common_black_80"
             app:layout_constraintTop_toBottomOf="@id/iv_clip_frame"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/owner_cut_scanner_margin_t"/>
+            android:layout_height="@dimen/sales_call_me_icon_w"/>
     <View
             android:id="@+id/view_take"
             android:background="@color/common_black"
