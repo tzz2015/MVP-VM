@@ -12,7 +12,7 @@
             android:layout_height="match_parent"/>
     <View
             android:id="@+id/view_top"
-            android:background="@color/common_black_80"
+            android:background="@color/common_toast_bg"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/wifi_list_empty_iv_width"/>
@@ -24,14 +24,14 @@
             android:layout_width="250dp"
             android:layout_height="375dp"/>
     <View
-            android:background="@color/common_black_80"
+            android:background="@color/common_toast_bg"
             app:layout_constraintRight_toLeftOf="@+id/iv_clip_frame"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_top"
             android:layout_width="0dp"
             android:layout_height="375dp"/>
     <View
-            android:background="@color/common_black_80"
+            android:background="@color/common_toast_bg"
             app:layout_constraintLeft_toRightOf="@+id/iv_clip_frame"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_top"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"/>
     <View
             android:id="@+id/view_bottom"
-            android:background="@color/common_black_80"
+            android:background="@color/common_toast_bg"
             app:layout_constraintTop_toBottomOf="@id/iv_clip_frame"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sales_call_me_icon_w"/>

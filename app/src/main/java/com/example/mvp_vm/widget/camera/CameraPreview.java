@@ -44,12 +44,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         surfaceHolder.setKeepScreenOn(true);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         mSensorControl = SensorControl.getInstance(context);
-        mSensorControl.setCameraFocusListener(new SensorControl.CameraFocusListener() {
-            @Override
-            public void onFocus() {
-                focus();
-            }
-        });
+        mSensorControl.setCameraFocusListener(() -> focus());
     }
 
     @Override

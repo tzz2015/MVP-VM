@@ -2,15 +2,16 @@ package com.example.mvp_vm.activity
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.os.Bundle
 import android.os.Environment
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.example.mvp_vm.R
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
+import com.example.mvp_vm.utils.Utils.rotateBitmapByDegree
 import kotlinx.android.synthetic.main.activity_take_identity.*
 import java.io.File
 
@@ -34,7 +35,17 @@ class TakeIdentityActivity : BaseActivity() {
             camera_preview?.isEnabled = false
             takePhoto()
         }
+        initCameraLayoutParams()
 
+    }
+
+    private fun initCameraLayoutParams() {
+        //获取屏幕最小边，设置为cameraPreview较窄的一边
+        val screenMinSize = Math.min(resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
+        //根据screenMinSize，计算出cameraPreview的较宽的一边，长宽比为标准的16:9
+        val maxSize = screenMinSize / 9.0f * 16.0f
+        val layoutParams = ConstraintLayout.LayoutParams(screenMinSize, maxSize.toInt())
+        camera_preview?.layoutParams = layoutParams
     }
 
     /**
@@ -51,8 +62,9 @@ class TakeIdentityActivity : BaseActivity() {
                             //处理手机拍出来的图片旋转了
                             bitmap = rotateBitmapByDegree(bitmap, 90)
                         }
-                        bitmap = curBitMap(bitmap)
-                        saveToLocal(bitmap)
+                        // 缩放图片 减少内存
+                        bitmap = Utils.compressBitmapByScale(bitmap, 0.5f)
+                        saveToLocal(curBitMap(bitmap))
                     }
 
                 }).start()
@@ -123,39 +135,6 @@ class TakeIdentityActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
         camera_preview?.onStop()
-    }
-
-    /**
-     * 将图片按照某个角度进行旋转
-     *
-     * @param bm
-     * 需要旋转的图片
-     * @param degree
-     * 旋转角度
-     * @return 旋转后的图片
-     */
-    private fun rotateBitmapByDegree(bm: Bitmap, degree: Int): Bitmap {
-        var returnBm: Bitmap? = null
-
-        // 根据旋转角度，生成旋转矩阵
-        val matrix = Matrix()
-        matrix.postRotate(degree.toFloat())
-        try {
-            // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
-            returnBm = Bitmap.createBitmap(
-                bm, 0, 0, bm.width,
-                bm.height, matrix, true
-            )
-        } catch (e: OutOfMemoryError) {
-        }
-
-        if (returnBm == null) {
-            returnBm = bm
-        }
-        if (bm != returnBm) {
-            bm.recycle()
-        }
-        return returnBm
     }
 
 
