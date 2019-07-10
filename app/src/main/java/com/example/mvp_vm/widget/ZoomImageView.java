@@ -234,7 +234,10 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         }
         if (!isInit) {
             toCenter();
-            postDelayed(this::correctOverBorder, 100);
+            postDelayed(() -> {
+                narrowInnerCutFrame();
+                correctOverBorder();
+            }, 100);
         }
     }
 
@@ -338,6 +341,33 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
 //           startScaleAnimation(scale);
         }
         postDelayed(new AutoTranslateRunnable(), 16);
+    }
+
+    /**
+     * 第一次展示图片
+     * 等待裁剪框初始化 等比例缩小到裁剪框内
+     */
+    private void narrowInnerCutFrame() {
+        Rect mControlRect = getControlRect();
+        if (mControlRect == null) {
+            return;
+        }
+        // 指定边界宽高
+        int controlWidth = mControlRect.right - mControlRect.left;
+        int controlHeight = mControlRect.bottom - mControlRect.top;
+        RectF matrixRectF = getMatrixRectF();
+        // 图片高度
+        int imageHeight = (int) (matrixRectF.height() + 0.5);
+        // 图片宽度
+        int imageWidth = (int) (matrixRectF.width() + 0.5);
+        float scale = 0;
+        if (controlWidth < imageWidth || controlHeight < imageHeight) {
+            scale = Math.max(controlWidth * 1.0f / imageWidth, controlHeight * 1.0f / imageHeight);
+        }
+        if (scale != 0) {
+            mMatrix.postScale(scale, scale, getWidth() >> 1, getHeight() >> 1);
+            setImageMatrix(mMatrix);
+        }
 
     }
 
@@ -693,6 +723,7 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         this.mCutScannerView = cutScannerView;
         // 等待ScannerView绘制完成后执行边界检查
         mScannerGlobalListener = () -> {
+            narrowInnerCutFrame();
             correctOverBorder();
             isScannerCanDrag = mCutScannerView.isCanDrag();
         };
