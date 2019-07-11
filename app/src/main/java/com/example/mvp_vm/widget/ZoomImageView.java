@@ -153,19 +153,19 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         float distanceLeBottom = 0;
         //最大移动量
         float maxMove = 10;
-        if (Utils.intToFloat(matrixRectF.left) > mControlRect.left) {
+        if (Utils.floatToInt(matrixRectF.left) > mControlRect.left) {
             distanceLeft = matrixRectF.left - mControlRect.left;
             dx = isMinReduce(matrixRectF.left, mControlRect.left) ? -maxMove : -(matrixRectF.left - mControlRect.left);
         }
-        if (Utils.intToFloat(matrixRectF.right) < mControlRect.right) {
+        if (Utils.floatToInt(matrixRectF.right) < mControlRect.right) {
             distanceLeRight = mControlRect.right - matrixRectF.right;
             dx = isMinReduce(matrixRectF.right, mControlRect.right) ? maxMove : mControlRect.right - matrixRectF.right;
         }
-        if (Utils.intToFloat(matrixRectF.top) > mControlRect.top) {
+        if (Utils.floatToInt(matrixRectF.top) > mControlRect.top) {
             distanceLeTop = matrixRectF.top - mControlRect.top;
             dy = isMinReduce(matrixRectF.top, mControlRect.top) ? -maxMove : -(matrixRectF.top - mControlRect.top);
         }
-        if (Utils.intToFloat(matrixRectF.bottom) < mControlRect.bottom) {
+        if (Utils.floatToInt(matrixRectF.bottom) < mControlRect.bottom) {
             distanceLeBottom = mControlRect.bottom - matrixRectF.bottom;
             dy = isMinReduce(matrixRectF.bottom, mControlRect.bottom) ? maxMove : mControlRect.bottom - matrixRectF.bottom;
         }

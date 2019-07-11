@@ -17,7 +17,7 @@ import static com.example.mvp_vm.widget.camera.SensorControl.TAG;
  * 20
  */
 public class Utils {
-    public static int intToFloat(float value) {
+    public static int floatToInt(float value) {
         return (int) (value + 0.5);
     }
 

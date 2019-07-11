@@ -137,10 +137,10 @@ public class CutScannerView extends View {
             // 重新赋值高度=宽度*mAspectRatio
             if (mAspectRatio != 1.0) {
                 if (mAspectRatio < 1.0) {
-                    mFocusFrameHeight = Utils.intToFloat(mFocusFrameWidth * mAspectRatio);
+                    mFocusFrameHeight = Utils.floatToInt(mFocusFrameWidth * mAspectRatio);
                     mFocusFrameTp = mFocusFrameTp + (mFocusFrameWidth - mFocusFrameHeight) / 2;
                 } else {
-                    mFocusFrameWidth = Utils.intToFloat(mFocusFrameHeight / mAspectRatio);
+                    mFocusFrameWidth = Utils.floatToInt(mFocusFrameHeight / mAspectRatio);
                     mFocusFrameLt = mFocusFrameLt + (mFocusFrameHeight - mFocusFrameWidth) / 2;
                 }
 
