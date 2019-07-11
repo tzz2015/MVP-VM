@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.mvp_vm.R;
-import com.example.mvp_vm.widget.ZoomImageView;
+import com.example.mvp_vm.utils.Utils;
 
 
 /**
@@ -136,7 +136,14 @@ public class CutScannerView extends View {
             mFocusFrameHeight = mHeight - mCornerBorder;
             // 重新赋值高度=宽度*mAspectRatio
             if (mAspectRatio != 1.0) {
-                mFocusFrameHeight = (int) (mFocusFrameWidth * mAspectRatio + 0.5);
+                if (mAspectRatio < 1.0) {
+                    mFocusFrameHeight = Utils.intToFloat(mFocusFrameWidth * mAspectRatio);
+                    mFocusFrameTp = mFocusFrameTp + (mFocusFrameWidth - mFocusFrameHeight) / 2;
+                } else {
+                    mFocusFrameWidth = Utils.intToFloat(mFocusFrameHeight / mAspectRatio);
+                    mFocusFrameLt = mFocusFrameLt + (mFocusFrameHeight - mFocusFrameWidth) / 2;
+                }
+
             }
             mFocusFrameRect = new Rect(mFocusFrameLt, mFocusFrameTp, mFocusFrameLt + mFocusFrameWidth, mFocusFrameTp + mFocusFrameHeight);
         }
