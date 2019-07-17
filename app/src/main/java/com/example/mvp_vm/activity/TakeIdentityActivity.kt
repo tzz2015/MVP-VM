@@ -13,10 +13,9 @@ import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
 import com.example.mvp_vm.utils.Utils.rotateBitmapByDegree
 import kotlinx.android.synthetic.main.activity_take_identity.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.File
+import java.lang.Runnable
 
 class TakeIdentityActivity : BaseActivity() {
     val TAG: String = "TakeIdentityActivity"
@@ -55,7 +54,7 @@ class TakeIdentityActivity : BaseActivity() {
      * 拍照
      */
     private fun takePhoto() {
-        val startTime=System.currentTimeMillis()
+        val startTime = System.currentTimeMillis()
         camera_preview?.takePhoto { data, camera ->
             run {
                 camera.stopPreview()
@@ -70,8 +69,8 @@ class TakeIdentityActivity : BaseActivity() {
                         // 缩放图片 减少内存
                         bitmap = Utils.compressBitmapByScale(bitmap, scale)
                         saveToLocal(curBitMap(bitmap))
-                        val endTime=System.currentTimeMillis()
-                        Log.e(TAG,"运行时间:"+(endTime-startTime))
+                        val endTime = System.currentTimeMillis()
+                        Log.e(TAG, "运行时间:" + (endTime - startTime))
                     }
 
                 }).start()
@@ -84,27 +83,49 @@ class TakeIdentityActivity : BaseActivity() {
      * 拍照
      */
     private fun takePhoto2() {
-        val startTime=System.currentTimeMillis()
         camera_preview?.takePhoto { data, camera ->
             run {
                 camera.stopPreview()
-                GlobalScope.launch(Dispatchers.IO) {
-                    var bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                    if (bitmap != null) {
-                        if (bitmap.width > bitmap.height) {
-                            //处理手机拍出来的图片旋转了
-                            bitmap = rotateBitmapByDegree(bitmap, 90)
-                        }
-                        val scale: Float = resources.displayMetrics.widthPixels.toFloat() / 2 / bitmap.width
-                        bitmap = Utils.compressBitmapByScale(bitmap, scale)
-                        val resultBitmap = curBitMap(bitmap)
-                        bitmap.recycle()
-                        saveToLocal2(resultBitmap)
-                        val endTime=System.currentTimeMillis()
-                        Log.e(TAG,"运行时间:"+(endTime-startTime))
-                    }
-                }
+                saveAsync(data)
+
             }
+        }
+
+    }
+
+    private fun saveAsync(data: ByteArray) = runBlocking {
+        val getBitmapTask = async(Dispatchers.IO) {
+            var bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+            if (bitmap != null) {
+                if (bitmap.width > bitmap.height) {
+                    //处理手机拍出来的图片旋转了
+                    bitmap = rotateBitmapByDegree(bitmap, 90)
+                }
+                val scale: Float = resources.displayMetrics.widthPixels.toFloat() / 2 / bitmap.width
+                // 缩放图片 减少内存
+                bitmap = Utils.compressBitmapByScale(bitmap, scale)
+                val curBitMap = curBitMap(bitmap)
+                bitmap.recycle()
+                return@async curBitMap
+            }
+            return@async null
+        }
+        val bitmap = getBitmapTask.await()
+        if(bitmap!=null){
+            val saveTask = async(Dispatchers.IO) {
+                val outFile =
+                    File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+                if (!outFile.exists()) {
+                    outFile.mkdir()
+                } else {
+                    outFile.delete()
+                }
+                Utils.saveBitmap(bitmap, outFile.path)
+            }
+            saveTask.await()
+            setResult(1)
+            finish()
+            Log.e(TAG, "销毁页面")
         }
 
     }
@@ -157,9 +178,10 @@ class TakeIdentityActivity : BaseActivity() {
         } else {
             outFile.delete()
         }
-        Utils.saveBitmap(bitmap, outFile.path)
         Log.e(TAG, "执行完成")
+        Utils.saveBitmap(bitmap, outFile.path)
         GlobalScope.launch(Dispatchers.Main) {
+            //            Utils.saveBitmap(bitmap, outFile.path)
             setResult(1)
             finish()
             Log.e(TAG, "销毁页面")
