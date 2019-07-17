@@ -13,6 +13,9 @@ import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
 import com.example.mvp_vm.utils.Utils.rotateBitmapByDegree
 import kotlinx.android.synthetic.main.activity_take_identity.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 class TakeIdentityActivity : BaseActivity() {
@@ -33,7 +36,7 @@ class TakeIdentityActivity : BaseActivity() {
         }
         iv_take_photo?.setOnClickListener {
             camera_preview?.isEnabled = false
-            takePhoto()
+            takePhoto2()
         }
         initCameraLayoutParams()
 
@@ -52,6 +55,7 @@ class TakeIdentityActivity : BaseActivity() {
      * 拍照
      */
     private fun takePhoto() {
+        val startTime=System.currentTimeMillis()
         camera_preview?.takePhoto { data, camera ->
             run {
                 camera.stopPreview()
@@ -62,9 +66,12 @@ class TakeIdentityActivity : BaseActivity() {
                             //处理手机拍出来的图片旋转了
                             bitmap = rotateBitmapByDegree(bitmap, 90)
                         }
+                        val scale: Float = resources.displayMetrics.widthPixels.toFloat() / 2 / bitmap.width
                         // 缩放图片 减少内存
-                        bitmap = Utils.compressBitmapByScale(bitmap, 0.5f)
+                        bitmap = Utils.compressBitmapByScale(bitmap, scale)
                         saveToLocal(curBitMap(bitmap))
+                        val endTime=System.currentTimeMillis()
+                        Log.e(TAG,"运行时间:"+(endTime-startTime))
                     }
 
                 }).start()
@@ -72,6 +79,36 @@ class TakeIdentityActivity : BaseActivity() {
         }
 
     }
+
+    /**
+     * 拍照
+     */
+    private fun takePhoto2() {
+        val startTime=System.currentTimeMillis()
+        camera_preview?.takePhoto { data, camera ->
+            run {
+                camera.stopPreview()
+                GlobalScope.launch(Dispatchers.IO) {
+                    var bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+                    if (bitmap != null) {
+                        if (bitmap.width > bitmap.height) {
+                            //处理手机拍出来的图片旋转了
+                            bitmap = rotateBitmapByDegree(bitmap, 90)
+                        }
+                        val scale: Float = resources.displayMetrics.widthPixels.toFloat() / 2 / bitmap.width
+                        bitmap = Utils.compressBitmapByScale(bitmap, scale)
+                        val resultBitmap = curBitMap(bitmap)
+                        bitmap.recycle()
+                        saveToLocal2(resultBitmap)
+                        val endTime=System.currentTimeMillis()
+                        Log.e(TAG,"运行时间:"+(endTime-startTime))
+                    }
+                }
+            }
+        }
+
+    }
+
 
     /**
      * 裁剪框内的图片
@@ -107,6 +144,27 @@ class TakeIdentityActivity : BaseActivity() {
             finish()
             Log.e(TAG, "销毁页面")
         }
+    }
+
+    /**
+     * 存储到本地
+     */
+    private fun saveToLocal2(bitmap: Bitmap?) {
+        val outFile =
+            File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+        if (!outFile.exists()) {
+            outFile.mkdir()
+        } else {
+            outFile.delete()
+        }
+        Utils.saveBitmap(bitmap, outFile.path)
+        Log.e(TAG, "执行完成")
+        GlobalScope.launch(Dispatchers.Main) {
+            setResult(1)
+            finish()
+            Log.e(TAG, "销毁页面")
+        }
+
     }
 
     /**

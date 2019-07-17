@@ -494,7 +494,7 @@ public class CutScannerView extends View {
         try {
             bitmap = imageView.getDrawingCache();
             RectF imageRectF = imageView.getMatrixRectF();
-            RectF borderRectF = new RectF(getLeft(), getTop(), getLeft() + (mFocusFrameRect.right - mFocusFrameRect.left), getTop() + (mFocusFrameRect.bottom - mFocusFrameRect.top));
+            RectF borderRectF = new RectF(getLeft() + mFocusFrameRect.left, getTop() + mFocusFrameRect.top, getLeft() + mFocusFrameRect.right, getTop() + mFocusFrameRect.bottom);
             if (imageRectF == null) {
                 return null;
             }
