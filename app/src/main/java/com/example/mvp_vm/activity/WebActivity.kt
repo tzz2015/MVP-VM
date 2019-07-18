@@ -77,7 +77,7 @@ class WebActivity : AppCompatActivity() {
                     view.loadUrl(url)
                     return true
                 }
-                if (url.startsWith("taobao://")) {
+                if (url.startsWith("taobao://")||url.startsWith("fubei://")) {
                     try {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
