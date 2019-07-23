@@ -3,6 +3,7 @@ package com.example.mvp_vm.activity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.RelativeLayout
 import com.example.mvp_vm.R
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.utils.StatusBarUtils
@@ -16,8 +17,9 @@ class CutImgActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarUtils.hideNavigation(this)
         setContentView(R.layout.activity_cut_img)
-        StatusBarUtils.setStatusBarBackgroundColor(this, "#000000")
+        initBar()
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
         scanner_sv.setAspectRatio(0.6f)
@@ -33,6 +35,16 @@ class CutImgActivity : BaseActivity() {
         }
         drop_zv.binScannerView(scanner_sv)
 
+
+    }
+
+    private fun initBar() {
+        if (StatusBarUtils.getNavigationBarHeight(this) > 0) {
+            val layoutParams = toolbar.layoutParams as RelativeLayout.LayoutParams
+            layoutParams.topMargin = StatusBarUtils.getStatusBarHeight(this)
+            StatusBarUtils.hideNavigation(this)
+        }
+        StatusBarUtils.setStatusBarBackgroundColor(this, "#000000")
 
     }
 
@@ -60,8 +72,6 @@ class CutImgActivity : BaseActivity() {
 
         }
     }
-
-
 
 
 }

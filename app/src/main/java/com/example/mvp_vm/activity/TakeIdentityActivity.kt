@@ -23,6 +23,7 @@ class TakeIdentityActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_take_identity)
+        StatusBarUtils.hideNavigation(this)
         StatusBarUtils.hideStatusLan(this)
         StatusBarUtils.setStatusBarBackgroundColor(this, ContextCompat.getColor(this, R.color.common_transparent))
         rotationTextView()
