@@ -1,8 +1,8 @@
 package com.example.mvp_vm.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
-import com.example.mvp_vm.model.TextModel
 import com.example.mvp_vm.base.BaseViewModel
+import com.example.mvp_vm.model.TextModel
 import kotlinx.coroutines.*
 
 /**
@@ -14,6 +14,8 @@ import kotlinx.coroutines.*
 class BottomViewModel : BaseViewModel() {
     private val random by lazy { java.util.Random() }
     val colorLiveData by lazy { MutableLiveData<TextModel>() }
+
+
 
     /**
      * 模拟获取网络数据

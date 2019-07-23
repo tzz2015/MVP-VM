@@ -31,15 +31,10 @@ class MainActivity : BaseActivity(), HomeView {
     }
 
     private fun initView() {
-       /* val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
+        val outFile = File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
         if (outFile.exists()) {
             outFile.delete()
-        }*/
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mPresenter.onDestroy()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

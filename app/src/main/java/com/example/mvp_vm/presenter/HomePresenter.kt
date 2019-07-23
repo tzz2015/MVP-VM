@@ -1,7 +1,6 @@
 package com.example.mvp_vm.presenter
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -23,12 +22,11 @@ import com.example.mvp_vm.viewmodel.HomeViewModel
 20 */
 class HomePresenter(mContext: MainActivity, mView: HomeView) :
     BasePresenter<MainActivity, HomeView>(mContext, mView) {
-    val mHomeModel by lazy { ViewModelProviders.of(mContext).get(HomeViewModel::class.java) }
+    val mHomeModel by lazy { vmProviders(HomeViewModel::class.java) }
     private var mBottomPresenter: BottomPresenter? = null
 
     init {
-        initCommon(mHomeModel)
-        mHomeModel.textLiveData.observe(mContext, Observer {
+        mHomeModel?.textLiveData!!.observe(mContext, Observer {
             it?.let { data ->
                 Log.e("HomePresenter", data.text)
             }
@@ -40,39 +38,39 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 点击按钮
      */
     fun clickChange() {
-        mHomeModel.getTextData()
+        mHomeModel?.getTextData()
     }
 
     /**
      * 跳转webView
      */
     fun toWeb() {
-        val intent = Intent(getContext(), WebActivity::class.java)
-        getContext()?.startActivity(intent)
+        val intent = Intent(mContext, WebActivity::class.java)
+        mContext?.startActivity(intent)
     }
 
     /**
      * 跳转裁剪界面
      */
     fun toCutActivity() {
-        val intent = Intent(getContext(), CutImgActivity::class.java)
-        getContext()?.startActivityForResult(intent, 1)
+        val intent = Intent(mContext, CutImgActivity::class.java)
+        mContext?.startActivityForResult(intent, 1)
     }
 
     /**
      * 跳转到双scrollView的activity
      */
     fun toDoubleScrollView() {
-        val intent = Intent(getContext(), DoubleScrollActivity::class.java)
-        getContext()?.startActivity(intent)
+        val intent = Intent(mContext, DoubleScrollActivity::class.java)
+        mContext?.startActivity(intent)
     }
 
     /**
      * 身份证拍照
      */
     fun toTakeIdentity() {
-        val intent = Intent(getContext(), TakeIdentityActivity::class.java)
-        getContext()?.startActivityForResult(intent, 1)
+        val intent = Intent(mContext, TakeIdentityActivity::class.java)
+        mContext?.startActivityForResult(intent, 1)
     }
 
 
@@ -80,14 +78,9 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 绑定底部view 底部布局逻辑由BottomPresenter去完成
      */
     fun binBottom(view: View) {
-        getContext()?.let {
-            mBottomPresenter = BottomPresenter(it, getView(), view)
+        mContext?.let {
+            mBottomPresenter = BottomPresenter(it, mView, view)
         }
     }
-
-    override fun onDestroy() {
-        mBottomPresenter?.onDestroy()
-    }
-
 
 }

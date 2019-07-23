@@ -12,9 +12,19 @@ import android.util.Log
 20 */
 abstract class BaseViewModel : ViewModel() {
     val loadLiveData by lazy { MutableLiveData<Boolean>() }
+    private var clearedListener: ViewModelClearedListener? =null
+    fun setClearedListener(clearedListener: ViewModelClearedListener){
+        this.clearedListener=clearedListener
+    }
 
     public override fun onCleared() {
         super.onCleared()
+        clearedListener?.onCleared()
         Log.e("BaseViewModel", "onCleared")
     }
+    
+    interface ViewModelClearedListener{
+        fun onCleared()
+    }
+
 }

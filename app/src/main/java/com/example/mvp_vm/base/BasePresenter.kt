@@ -1,10 +1,8 @@
 package com.example.mvp_vm.base
 
-import android.app.Activity
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
-import android.support.v4.app.FragmentActivity
-import java.lang.ref.WeakReference
+import android.arch.lifecycle.ViewModelProviders
+import android.util.Log
 
 /**
 16 * @ClassName: BasePresenter
@@ -12,44 +10,48 @@ import java.lang.ref.WeakReference
 18 * @Author: lyf
 19 * @Date: 2019-05-27 16:46
 20 */
-abstract class BasePresenter< MC : BaseActivity,V : BaseView?>(mContext: MC, mView: V?) {
-    private  val mViewRef: WeakReference<V?> = WeakReference(mView)
-    private  val mContextRef: WeakReference<MC> = WeakReference(mContext)
+abstract class BasePresenter<MC : BaseActivity, V : BaseView?>( var mContext: MC?,  var mView: V?) {
 
-
-    fun getContext():MC?{
-        return mContextRef.get()
+    protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T? {
+        val viewModel = mContext?.let { ViewModelProviders.of(it).get(modelClass) }
+        viewModel?.setClearedListener(object :BaseViewModel.ViewModelClearedListener{
+            override fun onCleared() {
+                onDestroy()
+            }
+        })
+        viewModel?.let { initCommon(it) }
+        return viewModel
     }
 
-    /**
-     * 获取View
-     */
-    fun getView(): V? {
-        return mViewRef.get()
-    }
+
 
 
 
     /**
      * 统一显示加载框
      */
-    fun initCommon(viewModel: BaseViewModel) {
-        viewModel.loadLiveData.observe(mContextRef.get()!!.getLifecycleOwner(), Observer {
-            when (it) {
-                true -> {
-                    getView()?.showLoading()
+    private fun initCommon(viewModel: BaseViewModel) {
+        mContext?.getLifecycleOwner()?.let { it ->
+            viewModel.loadLiveData.observe(it, Observer {
+                when (it) {
+                    true -> {
+                        mContext?.showLoading()
+                    }
+                    else -> {
+                        mContext?.hideLoading()
+                    }
                 }
-                else -> {
-                    getView()?.hideLoading()
-                }
-            }
-        })
+            })
+        }
+
     }
 
 
     open fun onDestroy() {
-        mViewRef.clear()
-        mContextRef.clear()
+        mContext=null
+        mView=null
+        Log.e("BasePresenter", "onDestroy")
+
     }
 }
 

@@ -42,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+
         <TextView
                 android:id="@+id/tv_name_dse"
                 android:textSize="25sp"
