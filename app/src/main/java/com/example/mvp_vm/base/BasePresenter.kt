@@ -1,8 +1,13 @@
 package com.example.mvp_vm.base
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.util.Log
+import com.example.mvp_vm.App
 
 /**
 16 * @ClassName: BasePresenter
@@ -10,46 +15,62 @@ import android.util.Log
 18 * @Author: lyf
 19 * @Date: 2019-05-27 16:46
 20 */
-abstract class BasePresenter<MC : BaseActivity, V : BaseView?>( var mContext: MC?,  var mView: V?) {
+abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var mView: V?) {
 
-    protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T? {
-        val viewModel = mContext?.let { ViewModelProviders.of(it).get(modelClass) }
-        viewModel?.setClearedListener(object :BaseViewModel.ViewModelClearedListener{
+    protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T {
+        val viewModel: BaseViewModel
+        if (mContext is FragmentActivity || mContext is Fragment) {
+            viewModel = if (mContext is BaseActivity) {
+                ViewModelProviders.of(mContext as FragmentActivity).get(modelClass)
+            } else {
+                ViewModelProviders.of(mContext as Fragment).get(modelClass)
+            }
+        } else {
+            viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(App.getInstance()).create(modelClass)
+        }
+        viewModel.setClearedListener(object : BaseViewModel.ViewModelClearedListener {
             override fun onCleared() {
                 onDestroy()
             }
         })
-        viewModel?.let { initCommon(it) }
+        initCommon(viewModel)
         return viewModel
     }
-
-
-
 
 
     /**
      * 统一显示加载框
      */
     private fun initCommon(viewModel: BaseViewModel) {
-        mContext?.getLifecycleOwner()?.let { it ->
-            viewModel.loadLiveData.observe(it, Observer {
+        if (mContext is BaseActivity || isBaseActivity()) {
+            val activity = mContext as BaseActivity
+            viewModel.loadLiveData.observe(activity.getLifecycleOwner(), Observer {
                 when (it) {
                     true -> {
-                        mContext?.showLoading()
+                        activity.showLoading()
                     }
                     else -> {
-                        mContext?.hideLoading()
+                        activity.hideLoading()
                     }
                 }
             })
         }
+    }
 
+    private fun isBaseActivity(): Boolean {
+        if (mContext is Fragment) {
+            val fragment = mContext as Fragment
+            if (fragment.activity is BaseActivity) {
+                return true
+            }
+        }
+        return false
     }
 
 
     open fun onDestroy() {
-        mContext=null
-        mView=null
+        mContext = null
+        mView = null
         Log.e("BasePresenter", "onDestroy")
 
     }

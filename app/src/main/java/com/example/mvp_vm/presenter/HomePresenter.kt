@@ -4,11 +4,11 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.example.mvp_vm.MainActivity
 import com.example.mvp_vm.activity.CutImgActivity
 import com.example.mvp_vm.activity.DoubleScrollActivity
 import com.example.mvp_vm.activity.TakeIdentityActivity
 import com.example.mvp_vm.activity.WebActivity
+import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.view.HomeView
 import com.example.mvp_vm.viewmodel.HomeViewModel
@@ -20,13 +20,13 @@ import com.example.mvp_vm.viewmodel.HomeViewModel
 18 * @Author: lyf
 19 * @Date: 2019-05-27 23:46
 20 */
-class HomePresenter(mContext: MainActivity, mView: HomeView) :
-    BasePresenter<MainActivity, HomeView>(mContext, mView) {
+class HomePresenter(mContext: BaseActivity, mView: HomeView) :
+    BasePresenter<BaseActivity, HomeView>(mContext, mView) {
     val mHomeModel by lazy { vmProviders(HomeViewModel::class.java) }
     private var mBottomPresenter: BottomPresenter? = null
 
     init {
-        mHomeModel?.textLiveData!!.observe(mContext, Observer {
+        mHomeModel.textLiveData.observe(mContext, Observer {
             it?.let { data ->
                 Log.e("HomePresenter", data.text)
             }
@@ -38,7 +38,7 @@ class HomePresenter(mContext: MainActivity, mView: HomeView) :
      * 点击按钮
      */
     fun clickChange() {
-        mHomeModel?.getTextData()
+        mHomeModel.getTextData()
     }
 
     /**
