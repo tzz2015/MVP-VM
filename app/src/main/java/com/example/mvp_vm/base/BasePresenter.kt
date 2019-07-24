@@ -16,7 +16,9 @@ import com.example.mvp_vm.App
 19 * @Date: 2019-05-27 16:46
 20 */
 abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var mView: V?) {
-
+    /**
+     * 生成viewModel
+     */
     protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T {
         val viewModel: BaseViewModel
         if (mContext is FragmentActivity || mContext is Fragment) {

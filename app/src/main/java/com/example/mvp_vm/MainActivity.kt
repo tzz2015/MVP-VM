@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import com.example.mvp_vm.base.BaseActivity
+import com.example.mvp_vm.contact.HomeContact
 import com.example.mvp_vm.databinding.ActivityMainBinding
 import com.example.mvp_vm.presenter.HomePresenter
-import com.example.mvp_vm.view.HomeView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileInputStream
 
-class MainActivity : BaseActivity(), HomeView {
+class MainActivity : BaseActivity(), HomeContact.View {
 
 
     private lateinit var mBinding: ActivityMainBinding

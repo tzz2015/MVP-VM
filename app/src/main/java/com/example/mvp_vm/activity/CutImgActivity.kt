@@ -6,14 +6,14 @@ import android.util.Log
 import android.widget.RelativeLayout
 import com.example.mvp_vm.R
 import com.example.mvp_vm.base.BaseActivity
+import com.example.mvp_vm.contact.HomeContact
 import com.example.mvp_vm.presenter.HomePresenter
 import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
-import com.example.mvp_vm.view.HomeView
 import kotlinx.android.synthetic.main.activity_cut_img.*
 import java.io.File
 
-class CutImgActivity : BaseActivity(), HomeView {
+class CutImgActivity : BaseActivity(), HomeContact.View {
     private val TAG = CutImgActivity::class.java.simpleName
     private val mPresenter by lazy { HomePresenter(this, this) }
 
