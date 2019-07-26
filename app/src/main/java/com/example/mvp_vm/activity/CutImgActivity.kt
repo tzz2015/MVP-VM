@@ -19,7 +19,7 @@ class CutImgActivity : BaseActivity(), HomeContact.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtils.hideNavigation(this)
+//        StatusBarUtils.hideNavigation(this)
         setContentView(R.layout.activity_cut_img)
         initBar()
         toolbar_title_tv.text = "裁剪"
