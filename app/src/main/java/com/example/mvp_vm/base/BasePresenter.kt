@@ -21,7 +21,7 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
     protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T {
         val viewModel: BaseViewModel
         if (mContext is FragmentActivity) {
-            viewModel =   ViewModelProviders.of(mContext as FragmentActivity).get(modelClass)
+            viewModel = ViewModelProviders.of(mContext as FragmentActivity).get(modelClass)
         } else {
             viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(App.getInstance()).create(modelClass)
         }
