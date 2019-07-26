@@ -50,10 +50,10 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
             viewModel.loadLiveData.observe(activity.getLifecycleOwner(), Observer {
                 when (it) {
                     true -> {
-                        activity.showLoading()
+                        mView?.showLoading()
                     }
                     else -> {
-                        activity.hideLoading()
+                        mView?.hideLoading()
                     }
                 }
             })
