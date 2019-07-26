@@ -7,7 +7,6 @@ import android.widget.RelativeLayout
 import com.example.mvp_vm.R
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.contact.HomeContact
-import com.example.mvp_vm.presenter.HomePresenter
 import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
 import kotlinx.android.synthetic.main.activity_cut_img.*
@@ -15,7 +14,7 @@ import java.io.File
 
 class CutImgActivity : BaseActivity(), HomeContact.View {
     private val TAG = CutImgActivity::class.java.simpleName
-    private val mPresenter by lazy { HomePresenter(this, this) }
+//    private val mPresenter by lazy { HomePresenter(this, this) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +24,9 @@ class CutImgActivity : BaseActivity(), HomeContact.View {
         initBar()
         toolbar_title_tv.text = "裁剪"
         drop_zv.setCheckBorder(false)
-        scanner_sv.setAspectRatio(0.6f)
+//        scanner_sv.setAspectRatio(0.6f)
+//        scanner_sv.setFreeCut(true)
+//        scanner_sv.setScaleOginal(false)
         toolbar.setOnClickListener { finish() }
         //缩放监听
         scanner_sv.setScaleListener { sx, sy, px, py ->
@@ -38,7 +39,7 @@ class CutImgActivity : BaseActivity(), HomeContact.View {
         }
         drop_zv.binScannerView(scanner_sv)
 
-        mPresenter.clickChange()
+//        mPresenter.clickChange()
 
 
     }

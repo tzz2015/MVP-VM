@@ -30,6 +30,7 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
         } else {
             viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(App.getInstance()).create(modelClass)
         }
+        // 监听viewModel被销毁时 也销毁presenter
         viewModel.setClearedListener(object : BaseViewModel.ViewModelClearedListener {
             override fun onCleared() {
                 onDestroy()
@@ -59,6 +60,9 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
         }
     }
 
+    /**
+     * 判断是否为BaseActivity
+     */
     private fun isBaseActivity(): Boolean {
         if (mContext is Fragment) {
             val fragment = mContext as Fragment
