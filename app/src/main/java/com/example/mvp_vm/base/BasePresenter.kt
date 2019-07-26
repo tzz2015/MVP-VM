@@ -1,9 +1,10 @@
 package com.example.mvp_vm.base
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.example.mvp_vm.App
@@ -14,14 +15,18 @@ import com.example.mvp_vm.App
 18 * @Author: lyf
 19 * @Date: 2019-05-27 16:46
 20 */
-abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var mView: V?) {
+abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?) {
     /**
      * 生成viewModel
      */
     protected fun <T : BaseViewModel> vmProviders(modelClass: Class<T>): T {
         val viewModel: BaseViewModel
-        if (mContext is FragmentActivity) {
-            viewModel = ViewModelProviders.of(mContext as FragmentActivity).get(modelClass)
+        if (mContext is FragmentActivity || mContext is Fragment) {
+            viewModel = if (mContext is BaseActivity) {
+                ViewModelProviders.of(mContext as FragmentActivity).get(modelClass)
+            } else {
+                ViewModelProviders.of(mContext as Fragment).get(modelClass)
+            }
         } else {
             viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(App.getInstance()).create(modelClass)
         }
@@ -40,9 +45,8 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
      * 统一显示加载框
      */
     private fun initCommon(viewModel: BaseViewModel) {
-        if (mContext is BaseActivity) {
-            val activity = mContext as BaseActivity
-            viewModel.loadLiveData.observe(activity.getLifecycleOwner(), Observer {
+        if (mContext is FragmentActivity || mContext is Fragment) {
+            viewModel.loadLiveData.observe(mContext as LifecycleOwner, Observer {
                 when (it) {
                     true -> {
                         mView?.showLoading()
@@ -54,6 +58,7 @@ abstract class BasePresenter<MC : Context, V : BaseView?>(var mContext: MC?, var
             })
         }
     }
+
 
     open fun onDestroy() {
         mContext = null

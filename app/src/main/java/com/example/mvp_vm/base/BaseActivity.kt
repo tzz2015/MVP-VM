@@ -1,6 +1,5 @@
 package com.example.mvp_vm.base
 
-import android.arch.lifecycle.LifecycleOwner
 import android.support.v4.app.FragmentActivity
 import com.kaopiz.kprogresshud.KProgressHUD
 
@@ -18,10 +17,6 @@ abstract class BaseActivity : FragmentActivity(), BaseView {
 
     override fun showLoading() {
         mDialog.show()
-    }
-
-    fun getLifecycleOwner(): LifecycleOwner {
-        return this
     }
 
     override fun onDestroy() {
