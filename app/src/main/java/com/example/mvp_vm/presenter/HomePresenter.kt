@@ -45,7 +45,7 @@ class HomePresenter(mContext: BaseActivity, mView: HomeContact.View) :
     /**
      * 跳转webView
      */
-    override  fun toWeb() {
+    override fun toWeb() {
         val intent = Intent(mContext, WebActivity::class.java)
         mContext?.startActivity(intent)
     }

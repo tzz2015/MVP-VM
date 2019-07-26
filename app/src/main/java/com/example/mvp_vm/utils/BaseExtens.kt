@@ -19,25 +19,25 @@ private var toast: Toast? = null
 fun Context.getCompactColor(@ColorRes colorRes: Int): Int = ContextCompat.getColor(this, colorRes)
 
 fun Context.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-	toast ?: let {
-		toast = Toast.makeText(this.applicationContext, null, duration)
-	}
-	toast?.apply {
-		setText(msg)
-		show()
-	}
+    toast ?: let {
+        toast = Toast.makeText(this.applicationContext, null, duration)
+    }
+    toast?.apply {
+        setText(msg)
+        show()
+    }
 }
 
 @SuppressLint("ShowToast")
 fun <T : Fragment> T.toast(text: CharSequence) {
-	context?.toast(text)
+    context?.toast(text)
 }
 
 /**
  * @param resId 字符串资源
  */
 fun <T : Fragment> T.toast(@StringRes resId: Int) {
-	toast(getString(resId))
+    toast(getString(resId))
 }
 
 

@@ -42,10 +42,10 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
         FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_MACRO);
     }
 
-    private final boolean            useAutoFocus;
+    private final boolean useAutoFocus;
     private final Camera camera;
-    private       boolean            stopped;
-    private       boolean            focusing;
+    private boolean stopped;
+    private boolean focusing;
     private AsyncTask<?, ?, ?> outstandingTask;
 
     public AutoFocusManager(Camera camera) {

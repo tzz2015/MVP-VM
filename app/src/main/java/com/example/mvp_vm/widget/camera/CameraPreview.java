@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @author lijie 2018/9/14
- *         相机预览
+ * 相机预览
  */
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {

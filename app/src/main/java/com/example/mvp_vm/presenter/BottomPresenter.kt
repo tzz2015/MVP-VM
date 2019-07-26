@@ -30,7 +30,7 @@ class BottomPresenter(mContext: BaseActivity, mIView: HomeContact.View?, mView: 
         mBinding?.mViewModel = mBottomModel
         mBottomModel.colorLiveData.observe(mContext, Observer {
             it?.let { data ->
-                Log.e("color:", ""+data.text)
+                Log.e("color:", "" + data.text)
             }
         })
     }

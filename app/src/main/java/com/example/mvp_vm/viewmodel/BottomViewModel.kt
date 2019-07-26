@@ -16,7 +16,6 @@ class BottomViewModel : BaseViewModel() {
     val colorLiveData by lazy { MutableLiveData<TextModel>() }
 
 
-
     /**
      * 模拟获取网络数据
      */
@@ -40,7 +39,7 @@ class BottomViewModel : BaseViewModel() {
                 //随机生成0-15的数值并转换成16进制
                 result.append(Integer.toHexString(random.nextInt(16)))
             }
-            "#"+result.toString().toUpperCase()
+            "#" + result.toString().toUpperCase()
         } catch (e: Exception) {
             "#00CCCC"
         }

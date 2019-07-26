@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 /**
  * @author lijie 2018/9/14
- *
+ * <p>
  * 加速度控制器，用来控制对焦
  */
 

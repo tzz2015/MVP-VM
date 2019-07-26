@@ -112,7 +112,7 @@ class TakeIdentityActivity : BaseActivity() {
             return@async null
         }
         val bitmap = getBitmapTask.await()
-        if(bitmap!=null){
+        if (bitmap != null) {
             val saveTask = async(Dispatchers.IO) {
                 val outFile =
                     File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")

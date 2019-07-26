@@ -8,9 +8,7 @@ import com.example.mvp_vm.base.BaseView
  * @version HomeContact.java, v 0.1 2019-07-24 11:31 lyf
  */
 interface HomeContact {
-    interface View : BaseView {
-
-    }
+    interface View : BaseView
 
     interface Presenter {
         fun clickChange()

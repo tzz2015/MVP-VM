@@ -46,9 +46,9 @@ public class StatusBarFontHelper {
                 result = MIUI;
             } else if (new FlymeHelper().setStatusBarLightMode(activity, isFontColorDark)) {
                 result = FLYME;
-            }else if (new ColorOSHelper().setStatusBarLightMode(activity, isFontColorDark)) {
+            } else if (new ColorOSHelper().setStatusBarLightMode(activity, isFontColorDark)) {
                 result = ColorOS;
-            }  else if (new AndroidMHelper().setStatusBarLightMode(activity, isFontColorDark)) {
+            } else if (new AndroidMHelper().setStatusBarLightMode(activity, isFontColorDark)) {
                 result = ANDROID_M;
             }
         }

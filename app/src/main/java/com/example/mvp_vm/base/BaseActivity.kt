@@ -10,7 +10,7 @@ import com.kaopiz.kprogresshud.KProgressHUD
 18 * @Author: lyf
 19 * @Date: 2019-06-08 09:30
 20 */
-abstract class BaseActivity: FragmentActivity(),BaseView {
+abstract class BaseActivity : FragmentActivity(), BaseView {
     private val mDialog by lazy { KProgressHUD.create(this).setLabel("加载中").setCancellable(true).setSize(160, 120) }
     override fun hideLoading() {
         mDialog.dismiss()

@@ -188,7 +188,7 @@ public class StatusBarUtils {
             View v = activity.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if(getNavigationBarHeight(activity)>0){
+            if (getNavigationBarHeight(activity) > 0) {
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             }
             WindowManager.LayoutParams params = window.getAttributes();
