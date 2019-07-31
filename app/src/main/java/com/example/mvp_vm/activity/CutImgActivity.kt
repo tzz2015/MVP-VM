@@ -1,5 +1,6 @@
 package com.example.mvp_vm.activity
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -9,6 +10,7 @@ import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.contact.HomeContact
 import com.example.mvp_vm.utils.StatusBarUtils
 import com.example.mvp_vm.utils.Utils
+import com.example.mvp_vm.utils.toast
 import kotlinx.android.synthetic.main.activity_cut_img.*
 import java.io.File
 
@@ -40,7 +42,17 @@ class CutImgActivity : BaseActivity(), HomeContact.View {
         drop_zv.binScannerView(scanner_sv)
 
 //        mPresenter.clickChange()
+        initView()
 
+
+    }
+
+    private fun initView() {
+        scanner_sv.scalingLiveData.observe(this, Observer {
+            it.let { b ->
+                 finish_tv.isClickable = !b!!
+            }
+        })
 
     }
 
@@ -61,6 +73,10 @@ class CutImgActivity : BaseActivity(), HomeContact.View {
         try {
             drop_zv.isDrawingCacheEnabled = true
             val bitmap = scanner_sv.getBitmap(drop_zv)
+            if (bitmap == null) {
+                toast("获取截图失败")
+                return
+            }
             val outFile =
                 File(Environment.getExternalStorageDirectory().path + File.separator, "temp_clip_image.jpg")
             if (!outFile.exists()) {

@@ -1,5 +1,6 @@
 package com.example.mvp_vm.widget;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.mvp_vm.R;
+import com.example.mvp_vm.model.TextModel;
 import com.example.mvp_vm.utils.Utils;
 
 
@@ -76,6 +78,10 @@ public class CutScannerView extends View {
      * 对外提供出裁剪框的位置范围
      */
     private Rect mViewRect;
+    /**
+     * 是否在拖动
+     */
+    private MutableLiveData<Boolean> scalingLiveData = new MutableLiveData<>();
 
     enum Position {
         /**
@@ -282,6 +288,7 @@ public class CutScannerView extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                scalingLiveData.postValue(false);
                 if (isUseEven && isScaleOriginal) {
                     postDelayed(new AutoScaleRunnable(mDirection), 16);
                 }
@@ -445,6 +452,7 @@ public class CutScannerView extends View {
             }
             mStartX = x;
             mStartY = y;
+            scalingLiveData.postValue(isUseEven);
         }
 
     }
@@ -490,6 +498,10 @@ public class CutScannerView extends View {
      * @return 截图
      */
     public Bitmap getBitmap(ZoomImageView imageView) {
+        Boolean dataValue = scalingLiveData.getValue();
+        if(dataValue!=null&&dataValue){
+            return null;
+        }
         Bitmap bitmap = null;
         try {
             bitmap = imageView.getDrawingCache();
@@ -558,6 +570,9 @@ public class CutScannerView extends View {
                 invalidate();
                 float scale = 1 + (float) (reduceL + reduceR) / (float) (mFocusFrameRect.right - mFocusFrameRect.left);
                 scaleBack(mDirection, scale);
+                scalingLiveData.postValue(true);
+            } else {
+                scalingLiveData.postValue(false);
             }
 
         }
@@ -633,6 +648,10 @@ public class CutScannerView extends View {
          * @param py 起点Y
          */
         void scaleListener(float sx, float sy, float px, float py);
+    }
+
+    public MutableLiveData<Boolean> getScalingLiveData() {
+        return scalingLiveData;
     }
 
 
