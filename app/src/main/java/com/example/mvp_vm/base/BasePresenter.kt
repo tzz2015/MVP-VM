@@ -36,7 +36,7 @@ abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?
                 onDestroy()
             }
         })
-        initCommon(viewModel)
+        initObserve(viewModel)
         return viewModel
     }
 
@@ -44,7 +44,7 @@ abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?
     /**
      * 统一显示加载框
      */
-    private fun initCommon(viewModel: BaseViewModel) {
+    private fun initObserve(viewModel: BaseViewModel) {
         if (mContext is FragmentActivity || mContext is Fragment) {
             viewModel.loadLiveData.observe(mContext as LifecycleOwner, Observer {
                 when (it) {
