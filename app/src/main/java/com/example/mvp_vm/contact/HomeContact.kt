@@ -17,6 +17,7 @@ interface HomeContact {
         fun toDoubleScrollView()
         fun toTakeIdentity()
         fun binBottom(view: android.view.View)
+        fun schemeTest()
     }
 
 }
