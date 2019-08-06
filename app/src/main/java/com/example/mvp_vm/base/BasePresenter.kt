@@ -15,7 +15,7 @@ import com.example.mvp_vm.App
 18 * @Author: lyf
 19 * @Date: 2019-05-27 16:46
 20 */
-abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?) {
+abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?):Presenter {
     /**
      * 生成viewModel
      */
@@ -60,7 +60,7 @@ abstract class BasePresenter<MC, V : BaseView?>(var mContext: MC?, var mView: V?
     }
 
 
-    open fun onDestroy() {
+    override fun onDestroy() {
         mContext = null
         mView = null
         Log.e("BasePresenter", "onDestroy")
