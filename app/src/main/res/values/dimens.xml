@@ -522,4 +522,13 @@
     <dimen name="owner_cut_scanner_margin_t">326dp</dimen>
     <dimen name="owner_cut_scanner_bottom_rl_height">100dp</dimen>
 
+    <!--TakeIdentityActivity-->
+    <dimen name="top_bg_height">229dp</dimen>
+    <dimen name="take_frame_width">520dp</dimen>
+    <dimen name="take_frame_height">822dp</dimen>
+    <dimen name="bottom_bg_height">180dp</dimen>
+    <dimen name="take_bottom_wh">110dp</dimen>
+    <dimen name="small_identity_image_width">60dp</dimen>
+    <dimen name="small_identity_image_height">36dp</dimen>
+
 </resources>

@@ -10,4 +10,7 @@
     <string name="owner_cut_change_one_pic">换一张</string>
     <string name="product_image_title">商品图片</string>
     <string name="common_confirm">确定</string>
+    <!--TakeIdentityActivity-->
+    <string name="please_take_face">请将人像面置于区域内拍摄</string>
+    <string name="please_take_national">请将国徽面置于区域内拍摄</string>
 </resources>

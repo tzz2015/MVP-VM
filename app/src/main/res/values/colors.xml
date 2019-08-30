@@ -71,6 +71,6 @@
     <color name="color_payment_code_wechatpay_bg">#37A555</color>
 
 
-
+    <color name="identity_bg">#99000000</color>
 
 </resources>
