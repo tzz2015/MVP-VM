@@ -1,7 +1,7 @@
 package com.example.mvp_vm.base
 
 import android.support.v4.app.FragmentActivity
-import com.kaopiz.kprogresshud.KProgressHUD
+import com.example.mvp_vm.widget.kprogresshud.KProgressHUD
 
 /**
 16 * @ClassName: BaseActivity
@@ -10,7 +10,7 @@ import com.kaopiz.kprogresshud.KProgressHUD
 19 * @Date: 2019-06-08 09:30
 20 */
 abstract class BaseActivity : FragmentActivity(), BaseView {
-    private val mDialog by lazy { KProgressHUD.create(this).setLabel("加载中").setCancellable(true).setSize(160, 120) }
+    private val mDialog by lazy { KProgressHUD.create(this).setLabel("加载中").setCancellable(true).setSize(120, 120) }
     override fun hideLoading() {
         mDialog.dismiss()
     }

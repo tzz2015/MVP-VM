@@ -73,4 +73,7 @@
 
     <color name="identity_bg">#99000000</color>
 
+    <color name="kprogresshud_default_color">#b1000000</color>
+    <color name="kprogresshud_grey_color">#449E9E9E</color>
+
 </resources>
