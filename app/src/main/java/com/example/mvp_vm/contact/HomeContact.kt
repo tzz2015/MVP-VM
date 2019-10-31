@@ -18,6 +18,7 @@ interface HomeContact {
         fun toTakeIdentity()
         fun binBottom(view: android.view.View)
         fun schemeTest()
+        fun rxConcat()
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.mvp_vm.presenter
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -87,6 +88,16 @@ class HomePresenter(mContext: BaseActivity, mView: HomeContact.View) :
         }
     }
 
+    override fun rxConcat() {
+        val testList: MutableList<String> = ArrayList()
+        testList.add("a")
+        testList.add("b")
+        testList.add("c")
+        testList.add("d")
+        testList.add("e")
+        mHomeModel.uploadPhoto(mContext as Context, testList)
+    }
+
 
     /**
      * scheme 测试工具
@@ -109,7 +120,7 @@ class HomePresenter(mContext: BaseActivity, mView: HomeContact.View) :
 
     data class UrlModel(var url: String, var deal: Boolean)
 
-   private fun telFunction(): Function<UrlModel, Flowable<UrlModel>> {
+    private fun telFunction(): Function<UrlModel, Flowable<UrlModel>> {
         return Function { it ->
             it.let {
                 it.deal = it.url.startsWith("taobao://") || it.url.startsWith("tel://")
@@ -117,7 +128,8 @@ class HomePresenter(mContext: BaseActivity, mView: HomeContact.View) :
             }
         }
     }
-   private fun localFunction(): Function<UrlModel, Flowable<UrlModel>> {
+
+    private fun localFunction(): Function<UrlModel, Flowable<UrlModel>> {
         return Function { it ->
             it.let {
                 Log.e("HomePresenter", "上一步已经处理:${it.deal}")

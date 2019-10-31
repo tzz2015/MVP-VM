@@ -35,6 +35,7 @@ class MainActivity : BaseActivity(), HomeContact.View {
         if (outFile.exists()) {
             outFile.delete()
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
