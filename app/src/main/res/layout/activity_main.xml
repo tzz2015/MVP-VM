@@ -38,7 +38,19 @@
                 android:onClick="@{v->mPresenter.rxConcat()}"
                 android:text="Rx合并请求"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cut" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_cut"
+                android:layout_marginStart="@dimen/common_margin_40" />
+
+        <TextView
+                android:id="@+id/tv_GLSurfaceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/common_margin_20"
+                android:layout_marginStart="@dimen/common_margin_20"
+                android:onClick="@{v->mPresenter.toGLSurfaceView()}"
+                android:text="GLSurfaceView"
+                app:layout_constraintStart_toEndOf="@+id/tv_contact"
+                app:layout_constraintTop_toBottomOf="@+id/tv_scroll_view" />
 
         <TextView
                 android:id="@+id/tv_scroll_view"
@@ -91,6 +103,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_name_dse"
                 app:layout_constraintLeft_toRightOf="@+id/tv_name_dse"
                 app:layout_constraintTop_toTopOf="@id/tv_name_dse" />
+
 
         <Button
                 android:layout_width="wrap_content"

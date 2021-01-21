@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.example.mvp_vm.activity.CutImgActivity
-import com.example.mvp_vm.activity.DoubleScrollActivity
-import com.example.mvp_vm.activity.TakeIdentityActivity
-import com.example.mvp_vm.activity.WebActivity
+import com.example.mvp_vm.activity.*
 import com.example.mvp_vm.base.BaseActivity
 import com.example.mvp_vm.base.BasePresenter
 import com.example.mvp_vm.contact.HomeContact
@@ -76,6 +73,14 @@ class HomePresenter(mContext: BaseActivity, mView: HomeContact.View) :
     override fun toTakeIdentity() {
         val intent = Intent(mContext, TakeIdentityActivity::class.java)
         mContext?.startActivityForResult(intent, 1)
+    }
+
+    /**
+     * GLSurfaceView
+     */
+    override fun toGLSurfaceView() {
+        val intent = Intent(mContext, GLSurfaceViewDemoActivity::class.java)
+        mContext?.startActivity(intent)
     }
 
 

@@ -16,6 +16,7 @@ interface HomeContact {
         fun toCutActivity()
         fun toDoubleScrollView()
         fun toTakeIdentity()
+        fun toGLSurfaceView()
         fun binBottom(view: android.view.View)
         fun schemeTest()
         fun rxConcat()

@@ -1,1 +1,2 @@
+include ':JavaTest'
 include ':app', ':utilslibrary'
